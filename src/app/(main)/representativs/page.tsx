@@ -1,3 +1,14 @@
+import Representativ from "@/features/elections/components/representativ";
+import RepresentativBoard from "@/features/elections/components/representativ-board";
+import RepresentativForm from "@/features/elections/components/representativ-form";
+
 export default function Page() {
-  return <div>representativs</div>;
+  return (
+    <>
+      <RepresentativForm />
+      <RepresentativBoard>
+        <Representativ />
+      </RepresentativBoard>
+    </>
+  );
 }
