@@ -9,7 +9,7 @@ export default function ElectionBoard({ children }: Props) {
         <p>Topic</p>
         <p className="text-center">Conclude Vote</p>
       </header>
-      {children}
+      <div className="join join-vertical w-full">{children}</div>
     </section>
   );
 }
