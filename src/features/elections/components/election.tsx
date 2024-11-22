@@ -12,7 +12,7 @@ export default function Election() {
           <VoteOptions />
           <VoteOptions />
         </article>
-        <button className="btn aling self-end">Conclude Vote</button>
+        <button className="btn aling self-end rounded-md">Conclude Vote</button>
       </div>
     </div>
   );
