@@ -50,5 +50,8 @@ export function createService() {
     async updateVoterRepresentative(id: string, representativeId: string) {
       await repository.updateVoterRepresentative(id, representativeId);
     },
+    async getVoter(id: string) {
+      return await repository.getAllVoterById(id);
+    },
   };
 }

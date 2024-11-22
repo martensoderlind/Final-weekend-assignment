@@ -8,6 +8,10 @@ export function createRepository() {
     async getAllVoters() {
       return voters;
     },
+    async getAllVoterById(id: string) {
+      const voter = voters.find((voter) => voter.id === id);
+      return voter;
+    },
     async createRepresentative(representative: Representatives) {
       representatives.push(representative);
     },
