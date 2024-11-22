@@ -7,7 +7,30 @@ export function createService() {
 
   return {
     async getAllRepresentatives() {
-      return await repository.getAllRepresentatives();
+      const representatives = await repository.getAllRepresentatives();
+
+      return representatives;
+    },
+    async getRepresentativeInformation() {
+      const voters = await repository.getAllVoters();
+      const representatives = await repository.getAllRepresentatives();
+      const votesPerRepresentative = [];
+      let count = 0;
+      for (let i = 0; i < representatives.length; i++) {
+        count = 0;
+        for (let j = 0; j < voters.length; j++) {
+          if (voters[j].representativeId === representatives[i].id) {
+            count = count + 1;
+          }
+        }
+        votesPerRepresentative.push({
+          id: representatives[i].id,
+          name: representatives[i].name,
+          voters: count,
+        });
+      }
+
+      return votesPerRepresentative;
     },
     async emailIsUnique(email: string) {
       const allEmails = await repository.getAllRepresentatives();
