@@ -1,4 +1,9 @@
-import { Representatives, representatives, voters } from "./fixtures/mockdb";
+import {
+  elections,
+  Representatives,
+  representatives,
+  voters,
+} from "./fixtures/mockdb";
 
 export function createRepository() {
   return {
@@ -19,6 +24,12 @@ export function createRepository() {
       const voterToUpdate = voters.find((voter) => voter.id === id);
       voterToUpdate!.representativeId = representativeId;
       console.log("updated representative");
+    },
+    async getAllActiveElections() {
+      const activeElections = elections.filter((election) => {
+        return election.status === true;
+      });
+      return activeElections;
     },
   };
 }

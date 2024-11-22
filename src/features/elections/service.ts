@@ -53,5 +53,8 @@ export function createService() {
     async getVoter(id: string) {
       return await repository.getAllVoterById(id);
     },
+    async getAllActiveElections() {
+      return await repository.getAllActiveElections();
+    },
   };
 }
