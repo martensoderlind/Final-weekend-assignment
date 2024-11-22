@@ -1,10 +1,12 @@
 import React from "react";
+import { chatService } from "../instance";
+import Representativ from "./representativ";
+import { Representativs } from "../fixtures/mockdb";
 
-type Props = {
-  children: React.ReactNode;
-};
+export default async function RepresentativBoard() {
+  const allRepresentativs: Representativs[] =
+    await chatService.getAllRepresentativs();
 
-export default function RepresentativBoard({ children }: Props) {
   return (
     <section className="container mx-auto w-10/12 bg-slate-100 flex flex-col my-4 rounded-md p-4">
       <header className="grid grid-cols-4 gap-4 border-b-2">
@@ -13,8 +15,9 @@ export default function RepresentativBoard({ children }: Props) {
         <p className="text-center">Votes</p>
         <p className="text-center">Pick representativ</p>
       </header>
-
-      {children}
+      {allRepresentativs.map((representativ) => (
+        <Representativ key={representativ.id} name={representativ.name} />
+      ))}
     </section>
   );
 }
