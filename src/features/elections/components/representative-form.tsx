@@ -4,7 +4,9 @@ import { createRepresentative } from "../actions";
 export default function RepresentativeForm() {
   return (
     <div className="container mx-auto w-10/12 bg-slate-100 rounded-md my-4 flex flex-col justify-center">
-      <h1 className="text-3xl text-bold text-center">Add Representativ</h1>
+      <h1 className="text-3xl font-bold text-center text-gray-950 pt-2">
+        Add Representative
+      </h1>
       <form
         action={createRepresentative}
         className="flex flex-row justify-center"
