@@ -10,7 +10,7 @@ export type Election = {
   concluded: string | null;
   status: boolean;
 };
-type ElectionChoices = {
+export type ElectionAlternatives = {
   id: string;
   electionId: string;
   voterId: string;
@@ -75,7 +75,7 @@ export const elections: Election[] = [
   },
 ];
 
-export const electionChoices: ElectionChoices[] = [
+export const electionAlternatives: ElectionAlternatives[] = [
   {
     id: "91ef60f4-1cc7-4d87-b3d7-a1fa3760d316",
     electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6521",
@@ -90,15 +90,15 @@ export const electionChoices: ElectionChoices[] = [
   },
   {
     id: "18c5f447-0e5e-4163-b68e-40ba7a153d05",
-    electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6521",
+    electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6522",
     voterId: "a87d77a4-8d3e-44cc-8a99-221c141c26b0",
-    choice: "Hund",
+    choice: "Kaffe",
   },
   {
     id: "d79d00ef-dc4e-45d4-93ca-da6c77305d63",
-    electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6521",
+    electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6522",
     voterId: "c1222bf1-439a-4a33-9290-ae43886eecdb",
-    choice: "Hund",
+    choice: "Te",
   },
 ];
 
