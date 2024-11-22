@@ -4,7 +4,7 @@ export default function Representativ() {
       <p className="">Mårten</p>
       <p className="text-center">90%</p>
       <p className="text-center">50</p>
-      <input type="checkbox" className="" />
+      <button className="btn btn-accent rounded-md">Vote</button>
     </article>
   );
 }
