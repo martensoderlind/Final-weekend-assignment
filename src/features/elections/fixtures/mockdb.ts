@@ -3,7 +3,7 @@ type Voter = {
   representativeId: string;
   voteDate: string;
 };
-type Election = {
+export type Election = {
   id: string;
   subject: string;
   created: string;
@@ -51,7 +51,7 @@ export const voters: Voter[] = [
   },
 ];
 
-export const election: Election[] = [
+export const elections: Election[] = [
   {
     id: "f442f41c-59f7-4eea-9be8-e6dae08b6521",
     subject: "katter/hundar",
@@ -68,7 +68,7 @@ export const election: Election[] = [
   },
   {
     id: "f442f41c-59f7-4eea-9be8-e6dae08b6523",
-    subject: "Kaffe/Te",
+    subject: "Äpplen eller Bananer",
     created: "2024-09-12",
     concluded: "2024-09-21",
     status: false,
