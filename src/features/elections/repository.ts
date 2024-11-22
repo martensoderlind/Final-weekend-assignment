@@ -1,9 +1,12 @@
-import { representativs } from "./fixtures/mockdb";
+import { Representatives, representatives } from "./fixtures/mockdb";
 
 export function createRepository() {
   return {
-    async getAllRepresentativs() {
-      return representativs;
+    async getAllRepresentatives() {
+      return representatives;
+    },
+    async createRepresentative(representative: Representatives) {
+      representatives.push(representative);
     },
   };
 }

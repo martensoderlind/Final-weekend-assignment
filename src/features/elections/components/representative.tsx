@@ -1,4 +1,4 @@
-export default function Representativ({ name }: { name: string }) {
+export default function Representative({ name }: { name: string }) {
   return (
     <article className="grid grid-cols-4 gap-4 my-2">
       <p className="">{name}</p>

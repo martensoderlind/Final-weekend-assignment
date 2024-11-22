@@ -1,1 +1,1 @@
-export * from "./representativ-board";
+export * from "./representative-board";

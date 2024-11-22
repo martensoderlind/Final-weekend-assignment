@@ -1,4 +1,4 @@
-export default function RepresentativElectionResult() {
+export default function RepresentativeElectionResult() {
   return (
     <div className="grid grid-cols-3 gap-4 ">
       <p>Rep name</p>

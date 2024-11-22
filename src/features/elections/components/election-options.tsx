@@ -1,4 +1,4 @@
-import RepresentativElectionResult from "./representativ-election-result";
+import RepresentativeElectionResult from "./representative-election-result";
 
 export default function ElectionOptions() {
   return (
@@ -9,8 +9,8 @@ export default function ElectionOptions() {
         <h3 className="text-center">Votes</h3>
         <h3 className="text-center">Agreement</h3>
       </header>
-      <RepresentativElectionResult />
-      <RepresentativElectionResult />
+      <RepresentativeElectionResult />
+      <RepresentativeElectionResult />
     </div>
   );
 }

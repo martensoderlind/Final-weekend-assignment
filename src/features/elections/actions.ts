@@ -1,9 +1,14 @@
 "use server";
-export async function createRepresentativ(formData: FormData) {
-  const name = formData.get("name");
-  const email = formData.get("email");
 
-  console.log(name, email);
+import { revalidatePath } from "next/cache";
+import { chatService } from "./instance";
 
-  return;
+export async function createRepresentative(formData: FormData) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const uniqueEmail = await chatService.emailIsUnique(email);
+  if (uniqueEmail) {
+    await chatService.createNewRepresentative(name, email);
+    revalidatePath("/representatives");
+  }
 }

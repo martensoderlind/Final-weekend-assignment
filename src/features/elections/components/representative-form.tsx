@@ -1,12 +1,12 @@
 import React from "react";
-import { createRepresentativ } from "../actions";
+import { createRepresentative } from "../actions";
 
-export default function RepresentativForm() {
+export default function RepresentativeForm() {
   return (
     <div className="container mx-auto w-10/12 bg-slate-100 rounded-md my-4 flex flex-col justify-center">
       <h1 className="text-3xl text-bold text-center">Add Representativ</h1>
       <form
-        action={createRepresentativ}
+        action={createRepresentative}
         className="flex flex-row justify-center"
       >
         <label className="input input-bordered flex items-center gap-2 m-2">
@@ -24,6 +24,7 @@ export default function RepresentativForm() {
             id="name"
             name="name"
             placeholder="Name"
+            required
           />
         </label>
         <label className="input input-bordered flex items-center gap-2 m-2">
@@ -42,6 +43,7 @@ export default function RepresentativForm() {
             id="email"
             name="email"
             placeholder="Email"
+            required
           />
         </label>
         <button className="btn m-2">Add</button>

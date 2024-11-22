@@ -1,6 +1,6 @@
 type Voter = {
   id: string;
-  representativId: string;
+  representativeId: string;
   voteDate: string;
 };
 type Election = {
@@ -17,30 +17,36 @@ type ElectionChoices = {
   choice: string;
 };
 
+export type Representatives = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export const voters: Voter[] = [
   {
     id: "3a44e58e-86a2-4243-96e4-6f5b4e539cb5",
-    representativId: "024bde8c-df3a-43ee-9fa8-2decd24c054f",
+    representativeId: "024bde8c-df3a-43ee-9fa8-2decd24c054f",
     voteDate: "2024-10-11",
   },
   {
     id: "ce987885-d966-4a64-b006-52a1cd60976a",
-    representativId: "024bde8c-df3a-43ee-9fa8-2decd24c054f",
+    representativeId: "024bde8c-df3a-43ee-9fa8-2decd24c054f",
     voteDate: "2024-10-11",
   },
   {
     id: "a87d77a4-8d3e-44cc-8a99-221c141c26b0",
-    representativId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
+    representativeId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
     voteDate: "2024-10-11",
   },
   {
     id: "c1222bf1-439a-4a33-9290-ae43886eecdb",
-    representativId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
+    representativeId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
     voteDate: "2024-10-11",
   },
   {
     id: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
-    representativId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
+    representativeId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
     voteDate: "2024-10-10",
   },
 ];
@@ -96,12 +102,7 @@ export const electionChoices: ElectionChoices[] = [
   },
 ];
 
-export type Representativs = {
-  id: string;
-  name: string;
-  email: string;
-};
-export const representativs: Representativs[] = [
+export const representatives: Representatives[] = [
   {
     id: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
     name: "Mårten",
