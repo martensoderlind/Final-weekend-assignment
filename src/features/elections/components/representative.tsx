@@ -1,5 +1,7 @@
 import { RepresentativeInformation } from "./representative-board";
 
+const votersRepresentativ = "024bde8c-df3a-43ee-9fa8-2decd24c054f";
+
 export default function Representative({
   representativeInformation,
 }: {
@@ -10,7 +12,14 @@ export default function Representative({
       <p className="pt-3 text-gray-900">{representativeInformation.name}</p>
       <p className="text-center pt-3">90%</p>
       <p className="text-center pt-3">{representativeInformation.voters}</p>
-      <button className="btn btn-accent rounded-md">Vote</button>
+      <button
+        className="btn btn-accent rounded-md"
+        disabled={
+          votersRepresentativ === representativeInformation.id ? true : false
+        }
+      >
+        Vote
+      </button>
     </article>
   );
 }
