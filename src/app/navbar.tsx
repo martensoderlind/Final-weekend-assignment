@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-2 ">
           <li className="px-2">
-            <Link href="\representativs\">Representativs</Link>
+            <Link href="\representatives\">Representatives</Link>
           </li>
           <li>
             <Link href="\elections\">Elections</Link>
