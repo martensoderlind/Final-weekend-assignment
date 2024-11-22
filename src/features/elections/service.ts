@@ -47,5 +47,8 @@ export function createService() {
       };
       await repository.createRepresentative(representative);
     },
+    async updateVoterRepresentative(id: string, representativeId: string) {
+      await repository.updateVoterRepresentative(id, representativeId);
+    },
   };
 }
