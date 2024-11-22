@@ -8,6 +8,10 @@ export default function Page() {
       <RepresentativForm />
       <RepresentativBoard>
         <Representativ />
+        <Representativ />
+        <Representativ />
+        <Representativ />
+        <Representativ />
       </RepresentativBoard>
     </>
   );
