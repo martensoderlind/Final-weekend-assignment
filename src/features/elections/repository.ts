@@ -1,4 +1,5 @@
 import {
+  electionAlternatives,
   elections,
   Representatives,
   representatives,
@@ -30,6 +31,17 @@ export function createRepository() {
         return election.status === true;
       });
       return activeElections;
+    },
+    async getVoteAlternatives(id: string) {
+      const voteAlternatives = electionAlternatives.filter((alternatives) => {
+        return alternatives.electionId === id;
+      });
+      const uniqueVoteAlternatives = voteAlternatives.filter(
+        (alternative, index, self) =>
+          index === self.findIndex((t) => t.choice === alternative.choice)
+      );
+
+      return uniqueVoteAlternatives;
     },
   };
 }
