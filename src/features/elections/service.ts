@@ -5,7 +5,6 @@ import {
   ElectionVote,
   RepresentativeInformation,
   RepresentativeVote,
-  representativeVote,
 } from "./types";
 
 export function createService() {
@@ -145,12 +144,20 @@ export function createService() {
     ) {
       const votersInElection =
         await repository.getAllElectionAlternativesByElectionId(electionId);
-      let votersThatAgree: number;
+      let votersThatAgree = 0;
+      let totalVoterForRepresentativ = 0;
       for (let i = 0; i < votersInElection.length; i++) {
-        if (votersInElection.representativeId === representative.id) {
+        if (votersInElection[i].representativeId === representative.id) {
+          totalVoterForRepresentativ = totalVoterForRepresentativ + 1;
+          if (votersInElection[i].choice === representative.votedOn) {
+            votersThatAgree = votersThatAgree + 1;
+          }
         }
       }
-      return votersThatAgree / representative.voters;
+      if (totalVoterForRepresentativ === 0) {
+        return 100;
+      }
+      return Math.floor((votersThatAgree / totalVoterForRepresentativ) * 100);
     },
   };
 }
