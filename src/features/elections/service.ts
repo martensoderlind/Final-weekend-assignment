@@ -1,7 +1,7 @@
 import { Representatives } from "./fixtures/mockdb";
 import { createRepository } from "./repository";
 import { v4 as uuidv4 } from "uuid";
-import { ElectionVote } from "./types";
+import { ElectionVote, RepresentativeInformation } from "./types";
 
 export function createService() {
   const repository = createRepository();
@@ -103,6 +103,35 @@ export function createService() {
         active: true,
       };
       await repository.createElection(newElection);
+    },
+    async getElectionResult(
+      representativeInformation: RepresentativeInformation[],
+      electionId: string,
+      choice: string
+    ) {
+      const electionResult = [];
+      for (let i = 0; i < representativeInformation.length; i++) {
+        const votedInElection = await repository.votedInElection(
+          electionId,
+          representativeInformation[i]
+        );
+        console.log("voted: ", votedInElection);
+
+        if (
+          votedInElection.votedInElection &&
+          votedInElection.votedOn === choice
+        ) {
+          const representativeVote = {
+            id: representativeInformation[i].id,
+            name: representativeInformation[i].name,
+            voters: representativeInformation[i].voters,
+            votedinElection: votedInElection.votedInElection,
+            votedOn: votedInElection.votedOn,
+          };
+          electionResult.push(representativeVote);
+        }
+      }
+      return electionResult;
     },
   };
 }

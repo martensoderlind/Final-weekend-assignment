@@ -7,6 +7,7 @@ import {
   representatives,
   voters,
 } from "./fixtures/mockdb";
+import { RepresentativeInformation } from "./types";
 
 export function createRepository() {
   return {
@@ -69,6 +70,22 @@ export function createRepository() {
       });
       currentElection!.active = false;
       currentElection!.concluded = new Date().toISOString().split("T")[0];
+    },
+    async votedInElection(
+      electionId: string,
+      representativeInformation: RepresentativeInformation
+    ) {
+      //kontrollera om representanten har röstat i aktuellt val
+      const electionVotes = electionAlternatives.filter((alternative) => {
+        return alternative.electionId === electionId;
+      });
+      if (electionVotes.length === 0)
+        return { votedInElection: false, votedOn: null };
+      for (let i = 0; i < electionVotes.length; i++) {
+        if (electionVotes[i].voterId === representativeInformation.id)
+          return { votedInElection: true, votedOn: electionVotes[i].choice };
+      }
+      return { votedInElection: false, votedOn: null };
     },
   };
 }

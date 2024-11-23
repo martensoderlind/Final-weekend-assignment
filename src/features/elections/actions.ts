@@ -48,3 +48,17 @@ export async function addElectionOption(electionId: string, newOption: string) {
   await voteService.addElectionOption(electionId, newOption);
   revalidatePath("/elections");
 }
+
+export async function getRepresentativeVotes(
+  electionId: string,
+  choice: string
+) {
+  const representativeInformation =
+    await voteService.getRepresentativeInformation();
+  const electionResult = await voteService.getElectionResult(
+    representativeInformation,
+    electionId,
+    choice
+  );
+  return electionResult;
+}
