@@ -30,7 +30,7 @@ export async function castVote(alternative: ElectionAlternatives) {
     choice: alternative.choice,
   };
   await voteService.addVote(vote);
-  revalidatePath("/elctions");
+  revalidatePath("/elections");
 }
 
 export async function controllVote(electionId: string) {

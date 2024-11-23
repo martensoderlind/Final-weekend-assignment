@@ -1,6 +1,6 @@
 import { Election } from "../fixtures/mockdb";
 import { voteService } from "../instance";
-import ActiveElection from "./election";
+import ActiveElection from "./active-election";
 
 export default async function ElectionBoard() {
   const elections: Election[] = await voteService.getAllActiveElections();
@@ -10,7 +10,6 @@ export default async function ElectionBoard() {
         <h2 className="text-3xl pl-4 text-slate-900 font-bold">
           Election Topics
         </h2>
-        <p className="text-center">Conclude Vote</p>
       </header>
       <div className="join join-vertical w-full">
         {elections.map((election, index) => (

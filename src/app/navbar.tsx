@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Navbar() {
   return (
-    <nav className="navbar bg-slate-950">
+    <nav className="navbar flex justify-between">
       <div className="">
         <h1 className="text-2xl">Title</h1>
       </div>
