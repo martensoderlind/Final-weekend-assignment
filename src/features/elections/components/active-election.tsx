@@ -10,7 +10,13 @@ type Props = {
 
 export default async function ActiveElection({ election }: Props) {
   const voteAlternatives = await voteService.getVoteAlternatives(election.id);
-  const haveVoted = await controllVote(voteAlternatives[0].electionId);
+  let haveVoted;
+  if (voteAlternatives.length > 0) {
+    console.log("alternatives: ", voteAlternatives);
+    haveVoted = await controllVote(voteAlternatives[0].electionId);
+  } else {
+    haveVoted = false;
+  }
 
   async function onclick() {
     "use server";
