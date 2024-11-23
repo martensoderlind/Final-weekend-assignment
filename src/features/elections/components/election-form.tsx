@@ -11,7 +11,7 @@ export default function electionForm() {
             className="grow"
             id="election"
             name="election"
-            placeholder="Name"
+            placeholder="New Election"
             required
           />
         </label>

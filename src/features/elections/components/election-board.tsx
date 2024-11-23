@@ -1,9 +1,9 @@
 import { Election } from "../fixtures/mockdb";
-import { chatService } from "../instance";
+import { voteService } from "../instance";
 import ActiveElection from "./election";
 
 export default async function ElectionBoard() {
-  const elections: Election[] = await chatService.getAllActiveElections();
+  const elections: Election[] = await voteService.getAllActiveElections();
   return (
     <section className="container mx-auto w-10/12 bg-slate-100 flex flex-col my-4 rounded-md p-4">
       <header className="grid grid-cols-4 gap-4">

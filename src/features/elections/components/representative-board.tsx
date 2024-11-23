@@ -1,5 +1,5 @@
 import React from "react";
-import { chatService } from "../instance";
+import { voteService } from "../instance";
 import Representative from "./representative";
 
 export type RepresentativeInformation = {
@@ -10,7 +10,7 @@ export type RepresentativeInformation = {
 
 export default async function RepresentativeBoard() {
   const allRepresentativs: RepresentativeInformation[] =
-    await chatService.getRepresentativeInformation();
+    await voteService.getRepresentativeInformation();
 
   return (
     <section className="container mx-auto w-10/12 bg-slate-100 flex flex-col my-4 rounded-md p-4">

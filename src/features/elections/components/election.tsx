@@ -1,6 +1,6 @@
 import { concludeVote, controllVote } from "../actions";
 import { Election } from "../fixtures/mockdb";
-import { chatService } from "../instance";
+import { voteService } from "../instance";
 import NewVoteOption from "./new-vote-option";
 import VoteOptions from "./vote-options";
 
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default async function ActiveElection({ election }: Props) {
-  const voteAlternatives = await chatService.getVoteAlternatives(election.id);
+  const voteAlternatives = await voteService.getVoteAlternatives(election.id);
   const haveVoted = await controllVote(voteAlternatives[0].electionId);
 
   async function onclick() {

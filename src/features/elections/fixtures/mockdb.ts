@@ -13,7 +13,7 @@ export type Election = {
 export type ElectionAlternatives = {
   id: string;
   electionId: string;
-  voterId: string;
+  voterId: string | null;
   choice: string;
 };
 
