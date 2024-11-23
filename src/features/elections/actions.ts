@@ -26,3 +26,10 @@ export async function castVote(alternative: ElectionAlternatives) {
   await chatService.addVote(vote);
   revalidatePath("/elctions");
 }
+
+export async function controllVote(electionId: string) {
+  const voter = await chatService.getVoter(
+    "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9"
+  );
+  return await chatService.controllVote(electionId, voter!.id);
+}

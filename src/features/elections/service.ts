@@ -69,5 +69,15 @@ export function createService() {
       };
       await repository.addVote(vote);
     },
+    async controllVote(electionId: string, voterId: string) {
+      const votes = await repository.getAllElectionAlternativesByElectionId(
+        electionId
+      );
+
+      for (let i = 0; i < votes.length; i++) {
+        if (voterId === votes[i].voterId) return true;
+      }
+      return false;
+    },
   };
 }
