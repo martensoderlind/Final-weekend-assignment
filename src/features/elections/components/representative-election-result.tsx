@@ -1,17 +1,24 @@
-import { representativeVote } from "../types";
+import { voteService } from "../instance";
+import { RepresentativeVote } from "../types";
 
 type Props = {
-  representative: representativeVote;
+  representative: RepresentativeVote;
+  electionId: string;
 };
 
-export default function RepresentativeElectionResult({
+export default async function RepresentativeElectionResult({
   representative,
+  electionId,
 }: Props) {
+  const voterAgreement = await voteService.voterAgreement(
+    representative,
+    electionId
+  );
   return (
     <div className="grid grid-cols-3 gap-4 ">
       <p className="text-gray-500">{representative.name}</p>
       <p className="text-center">{representative.voters}</p>
-      <p className="text-center">67%</p>
+      <p className="text-center">{voterAgreement}</p>
     </div>
   );
 }

@@ -1,7 +1,12 @@
 import { Representatives } from "./fixtures/mockdb";
 import { createRepository } from "./repository";
 import { v4 as uuidv4 } from "uuid";
-import { ElectionVote, RepresentativeInformation } from "./types";
+import {
+  ElectionVote,
+  RepresentativeInformation,
+  RepresentativeVote,
+  representativeVote,
+} from "./types";
 
 export function createService() {
   const repository = createRepository();
@@ -63,11 +68,12 @@ export function createService() {
     async getVoteAlternatives(id: string) {
       return await repository.getVoteAlternatives(id);
     },
-    async addVote(electionVote: ElectionVote) {
+    async addVote(electionVote: ElectionVote, representativeId: string) {
       const vote = {
         id: uuidv4(),
         electionId: electionVote.electionId,
         voterId: electionVote.voterId,
+        representativeId: representativeId,
         choice: electionVote.choice,
       };
       await repository.addVote(vote);
@@ -77,6 +83,7 @@ export function createService() {
         id: uuidv4(),
         electionId: electionId,
         voterId: null,
+        representativeId: null,
         choice: voteAlternative,
       };
       await repository.addVote(vote);
@@ -115,7 +122,6 @@ export function createService() {
           electionId,
           representativeInformation[i]
         );
-        console.log("voted: ", votedInElection);
 
         if (
           votedInElection.votedInElection &&
@@ -132,6 +138,19 @@ export function createService() {
         }
       }
       return electionResult;
+    },
+    async voterAgreement(
+      representative: RepresentativeVote,
+      electionId: string
+    ) {
+      const votersInElection =
+        await repository.getAllElectionAlternativesByElectionId(electionId);
+      let votersThatAgree: number;
+      for (let i = 0; i < votersInElection.length; i++) {
+        if (votersInElection.representativeId === representative.id) {
+        }
+      }
+      return votersThatAgree / representative.voters;
     },
   };
 }

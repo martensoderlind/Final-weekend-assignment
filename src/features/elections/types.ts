@@ -10,7 +10,7 @@ export type RepresentativeInformation = {
   voters: number;
 };
 
-export type representativeVote = {
+export type RepresentativeVote = {
   id: string;
   name: string;
   voters: number;

@@ -75,7 +75,6 @@ export function createRepository() {
       electionId: string,
       representativeInformation: RepresentativeInformation
     ) {
-      //kontrollera om representanten har röstat i aktuellt val
       const electionVotes = electionAlternatives.filter((alternative) => {
         return alternative.electionId === electionId;
       });

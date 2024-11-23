@@ -26,6 +26,7 @@ export default async function ElectionOptions({ alternative }: Props) {
         <RepresentativeElectionResult
           key={index}
           representative={representative}
+          electionId={alternative.electionId}
         />
       ))}
     </div>
