@@ -1,6 +1,6 @@
 import { Election } from "../fixtures/mockdb";
 import { voteService } from "../instance";
-import ElectionOptions from "./election-options";
+import ElectionOptions from "./concluded-election-options";
 
 type Props = {
   election: Election;

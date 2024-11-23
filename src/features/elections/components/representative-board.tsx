@@ -1,12 +1,7 @@
 import React from "react";
 import { voteService } from "../instance";
 import Representative from "./representative";
-
-export type RepresentativeInformation = {
-  id: string;
-  name: string;
-  voters: number;
-};
+import { RepresentativeInformation } from "../types";
 
 export default async function RepresentativeBoard() {
   const allRepresentativs: RepresentativeInformation[] =
