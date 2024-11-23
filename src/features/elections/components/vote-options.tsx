@@ -1,14 +1,13 @@
 import React from "react";
 import { ElectionAlternatives } from "../fixtures/mockdb";
-import { castVote, controllVote } from "../actions";
+import { castVote } from "../actions";
 
 type Props = {
   alternative: ElectionAlternatives;
+  haveVoted: boolean;
 };
 
-export default async function VoteOptions({ alternative }: Props) {
-  const haveVoted = await controllVote(alternative.electionId);
-
+export default async function VoteOptions({ alternative, haveVoted }: Props) {
   async function onClick() {
     "use server";
     await castVote(alternative);

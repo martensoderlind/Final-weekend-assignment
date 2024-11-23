@@ -1,6 +1,7 @@
-import { concludeVote } from "../actions";
+import { concludeVote, controllVote } from "../actions";
 import { Election } from "../fixtures/mockdb";
 import { chatService } from "../instance";
+import NewVoteOption from "./new-vote-option";
 import VoteOptions from "./vote-options";
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 export default async function ActiveElection({ election }: Props) {
   const voteAlternatives = await chatService.getVoteAlternatives(election.id);
+  const haveVoted = await controllVote(voteAlternatives[0].electionId);
 
   async function onclick() {
     "use server";
@@ -23,8 +25,13 @@ export default async function ActiveElection({ election }: Props) {
       <div className="collapse-content flex flex-row justify-between">
         <article>
           {voteAlternatives.map((alternative, index) => (
-            <VoteOptions key={index} alternative={alternative} />
+            <VoteOptions
+              key={index}
+              alternative={alternative}
+              haveVoted={haveVoted}
+            />
           ))}
+          {haveVoted ? undefined : <NewVoteOption electionId={election.id} />}
         </article>
         <button className="btn aling self-end rounded-md" onClick={onclick}>
           Conclude Vote
