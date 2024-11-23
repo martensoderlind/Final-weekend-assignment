@@ -6,7 +6,19 @@ import {
   RepresentativeInformation,
   RepresentativeVote,
 } from "./types";
+import { z } from "zod";
 
+const representativSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+});
+const electionSchema = z.object({
+  id: z.string().uuid(),
+  subject: z.string(),
+  created: z.string(),
+  concluded: z.string().nullable(),
+  active: z.boolean(),
+});
 export function createService() {
   const repository = createRepository();
 
@@ -50,7 +62,10 @@ export function createService() {
         name: name,
         email: email,
       };
-      await repository.createRepresentative(representative);
+      const result = representativSchema.safeParse(representative);
+      if (result.success) {
+        await repository.createRepresentative(representative);
+      }
     },
     async updateVoterRepresentative(id: string, representativeId: string) {
       await repository.updateVoterRepresentative(id, representativeId);
@@ -88,9 +103,7 @@ export function createService() {
       await repository.addVote(vote);
     },
     async controllVote(electionId: string, voterId: string) {
-      const votes = await repository.getAllElectionAlternativesByElectionId(
-        electionId
-      );
+      const votes = await repository.getAllElectionAlternatives(electionId);
 
       for (let i = 0; i < votes.length; i++) {
         if (voterId === votes[i].voterId) return true;
@@ -108,7 +121,10 @@ export function createService() {
         concluded: null,
         active: true,
       };
-      await repository.createElection(newElection);
+      const result = representativSchema.safeParse(electionSchema);
+      if (result.success) {
+        await repository.createElection(newElection);
+      }
     },
     async getElectionResult(
       representativeInformation: RepresentativeInformation[],
@@ -142,8 +158,9 @@ export function createService() {
       representative: RepresentativeVote,
       electionId: string
     ) {
-      const votersInElection =
-        await repository.getAllElectionAlternativesByElectionId(electionId);
+      const votersInElection = await repository.getAllElectionAlternatives(
+        electionId
+      );
       let votersThatAgree = 0;
       let totalVoterForRepresentativ = 0;
       for (let i = 0; i < votersInElection.length; i++) {
@@ -158,6 +175,14 @@ export function createService() {
         return 100;
       }
       return Math.floor((votersThatAgree / totalVoterForRepresentativ) * 100);
+    },
+    async getElectionWinner(electionId: string) {
+      const alternatives = await repository.getAllElectionAlternatives(
+        electionId
+      );
+
+      for (let i = 0; i < alternatives.length; i++) {}
+      return;
     },
   };
 }
