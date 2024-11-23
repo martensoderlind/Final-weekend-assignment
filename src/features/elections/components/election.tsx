@@ -2,11 +2,11 @@ import { Election } from "../fixtures/mockdb";
 import { chatService } from "../instance";
 import VoteOptions from "./vote-options";
 
-export default async function ActiveElection({
-  election,
-}: {
+type Props = {
   election: Election;
-}) {
+};
+
+export default async function ActiveElection({ election }: Props) {
   const voteAlternatives = await chatService.getVoteAlternatives(election.id);
   return (
     <div className="collapse collapse-arrow join-item border-base-300 border">

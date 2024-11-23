@@ -2,11 +2,13 @@ import { revalidatePath } from "next/cache";
 import { chatService } from "../instance";
 import { RepresentativeInformation } from "./representative-board";
 
+type Props = {
+  representativeInformation: RepresentativeInformation;
+};
+
 export default async function Representative({
   representativeInformation,
-}: {
-  representativeInformation: RepresentativeInformation;
-}) {
+}: Props) {
   const voter = await chatService.getVoter(
     "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9"
   );

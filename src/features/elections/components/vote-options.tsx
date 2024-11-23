@@ -2,11 +2,11 @@ import React from "react";
 import { ElectionAlternatives } from "../fixtures/mockdb";
 import { chatService } from "../instance";
 
-export default function VoteOptions({
-  alternative,
-}: {
+type Props = {
   alternative: ElectionAlternatives;
-}) {
+};
+
+export default function VoteOptions({ alternative }: Props) {
   async function onClick() {
     "use server";
     const voter = await chatService.getVoter(
