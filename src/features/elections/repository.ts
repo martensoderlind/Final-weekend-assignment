@@ -37,6 +37,12 @@ export function createRepository() {
       });
       return activeElections;
     },
+    async getAllConcludedElections() {
+      const activeElections = elections.filter((election) => {
+        return election.active === false;
+      });
+      return activeElections;
+    },
     async getVoteAlternatives(id: string) {
       const voteAlternatives = electionAlternatives.filter((alternatives) => {
         return alternatives.electionId === id;

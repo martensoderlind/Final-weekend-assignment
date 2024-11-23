@@ -57,6 +57,9 @@ export function createService() {
     async getAllActiveElections() {
       return await repository.getAllActiveElections();
     },
+    async getAllConcludedElections() {
+      return await repository.getAllConcludedElections();
+    },
     async getVoteAlternatives(id: string) {
       return await repository.getVoteAlternatives(id);
     },
