@@ -64,7 +64,7 @@ export const elections: Election[] = [
     subject: "Kaffe/Te",
     created: "2024-10-02",
     concluded: null,
-    active: true,
+    active: false,
   },
   {
     id: "f442f41c-59f7-4eea-9be8-e6dae08b6523",
@@ -91,7 +91,7 @@ export const electionAlternatives: ElectionAlternatives[] = [
   {
     id: "18c5f447-0e5e-4163-b68e-40ba7a153d05",
     electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6522",
-    voterId: "a87d77a4-8d3e-44cc-8a99-221c141c26b0",
+    voterId: "024bde8c-df3a-43ee-9fa8-2decd24c054f",
     choice: "Kaffe",
   },
   {
@@ -99,6 +99,18 @@ export const electionAlternatives: ElectionAlternatives[] = [
     electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6522",
     voterId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
     choice: "Te",
+  },
+  {
+    id: "d79d00ef-dc4e-45d4-93ca-da6c77305d64",
+    electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6523",
+    voterId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
+    choice: "Äpple",
+  },
+  {
+    id: "18c5f447-0e5e-4163-b68e-40ba7a153d17",
+    electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6523",
+    voterId: "024bde8c-df3a-43ee-9fa8-2decd24c054f",
+    choice: "Äpple",
   },
 ];
 
