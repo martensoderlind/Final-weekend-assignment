@@ -11,6 +11,7 @@ export default async function ActiveElection({ election }: Props) {
   const voteAlternatives = await chatService.getVoteAlternatives(election.id);
 
   async function onclick() {
+    "use server";
     await concludeVote(election.id);
   }
   return (

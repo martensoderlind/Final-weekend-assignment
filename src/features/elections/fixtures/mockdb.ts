@@ -8,7 +8,7 @@ export type Election = {
   subject: string;
   created: string;
   concluded: string | null;
-  status: boolean;
+  active: boolean;
 };
 export type ElectionAlternatives = {
   id: string;
@@ -57,21 +57,21 @@ export const elections: Election[] = [
     subject: "katter/hundar",
     created: "2024-10-01",
     concluded: null,
-    status: true,
+    active: true,
   },
   {
     id: "f442f41c-59f7-4eea-9be8-e6dae08b6522",
     subject: "Kaffe/Te",
     created: "2024-10-02",
     concluded: null,
-    status: true,
+    active: true,
   },
   {
     id: "f442f41c-59f7-4eea-9be8-e6dae08b6523",
     subject: "Äpplen eller Bananer",
     created: "2024-09-12",
     concluded: "2024-09-21",
-    status: false,
+    active: false,
   },
 ];
 
@@ -80,7 +80,7 @@ export const electionAlternatives: ElectionAlternatives[] = [
     id: "91ef60f4-1cc7-4d87-b3d7-a1fa3760d316",
     electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6521",
     voterId: "3a44e58e-86a2-4243-96e4-6f5b4e539cb5",
-    choice: "Katt",
+    choice: "hund",
   },
   {
     id: "9e7e9713-cb81-4b9c-aca7-8befd7500e56",
@@ -97,7 +97,7 @@ export const electionAlternatives: ElectionAlternatives[] = [
   {
     id: "d79d00ef-dc4e-45d4-93ca-da6c77305d63",
     electionId: "f442f41c-59f7-4eea-9be8-e6dae08b6522",
-    voterId: "c1222bf1-439a-4a33-9290-ae43886eecdb",
+    voterId: "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9",
     choice: "Te",
   },
 ];

@@ -29,7 +29,7 @@ export function createRepository() {
     },
     async getAllActiveElections() {
       const activeElections = elections.filter((election) => {
-        return election.status === true;
+        return election.active === true;
       });
       return activeElections;
     },
@@ -57,7 +57,7 @@ export function createRepository() {
       const currentElection = elections.find((election) => {
         return election.id === electionId;
       });
-      currentElection!.status = false;
+      currentElection!.active = false;
     },
   };
 }

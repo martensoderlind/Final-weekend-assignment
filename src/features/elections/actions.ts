@@ -36,4 +36,5 @@ export async function controllVote(electionId: string) {
 
 export async function concludeVote(electionId: string) {
   await chatService.concludeVote(electionId);
+  revalidatePath("/elections");
 }
