@@ -68,6 +68,7 @@ export function createRepository() {
         return election.id === electionId;
       });
       currentElection!.active = false;
+      currentElection!.concluded = new Date().toISOString().split("T")[0];
     },
   };
 }
