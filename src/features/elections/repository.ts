@@ -53,5 +53,11 @@ export function createRepository() {
       });
       return votesOnElection;
     },
+    async concludeVote(electionId: string) {
+      const currentElection = elections.find((election) => {
+        return election.id === electionId;
+      });
+      currentElection!.status = false;
+    },
   };
 }

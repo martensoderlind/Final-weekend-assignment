@@ -1,3 +1,4 @@
+import { concludeVote } from "../actions";
 import { Election } from "../fixtures/mockdb";
 import { chatService } from "../instance";
 import VoteOptions from "./vote-options";
@@ -8,6 +9,10 @@ type Props = {
 
 export default async function ActiveElection({ election }: Props) {
   const voteAlternatives = await chatService.getVoteAlternatives(election.id);
+
+  async function onclick() {
+    await concludeVote(election.id);
+  }
   return (
     <div className="collapse collapse-arrow join-item border-base-300 border">
       <input type="radio" name="my-accordion-4" defaultChecked />
@@ -20,7 +25,9 @@ export default async function ActiveElection({ election }: Props) {
             <VoteOptions key={index} alternative={alternative} />
           ))}
         </article>
-        <button className="btn aling self-end rounded-md">Conclude Vote</button>
+        <button className="btn aling self-end rounded-md" onClick={onclick}>
+          Conclude Vote
+        </button>
       </div>
     </div>
   );

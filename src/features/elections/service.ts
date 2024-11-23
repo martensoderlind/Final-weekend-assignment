@@ -79,5 +79,8 @@ export function createService() {
       }
       return false;
     },
+    async concludeVote(electionId: string) {
+      await repository.concludeVote(electionId);
+    },
   };
 }

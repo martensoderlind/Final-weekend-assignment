@@ -33,3 +33,7 @@ export async function controllVote(electionId: string) {
   );
   return await chatService.controllVote(electionId, voter!.id);
 }
+
+export async function concludeVote(electionId: string) {
+  await chatService.concludeVote(electionId);
+}
