@@ -1,12 +1,18 @@
 import React from "react";
+import { addElectionOption } from "../actions";
 
 type Props = {
   electionId: string;
 };
 
-export default function NewVoteOption({ electionId }: Props) {
+export default async function NewVoteOption({ electionId }: Props) {
+  async function handleForm(formdata: FormData) {
+    "use server";
+    const newOption = formdata.get("newOption") as string;
+    await addElectionOption(electionId, newOption);
+  }
   return (
-    <form>
+    <form action={handleForm}>
       <input
         type="text"
         name="newOption"

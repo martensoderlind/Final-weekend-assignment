@@ -44,3 +44,7 @@ export async function concludeVote(electionId: string) {
   await voteService.concludeVote(electionId);
   revalidatePath("/elections");
 }
+export async function addElectionOption(electionId: string, newOption: string) {
+  await voteService.addElectionOption(electionId, newOption);
+  revalidatePath("/elections");
+}

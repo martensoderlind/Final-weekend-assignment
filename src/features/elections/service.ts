@@ -69,6 +69,15 @@ export function createService() {
       };
       await repository.addVote(vote);
     },
+    async addElectionOption(electionId: string, voteAlternative: string) {
+      const vote = {
+        id: uuidv4(),
+        electionId: electionId,
+        voterId: null,
+        choice: voteAlternative,
+      };
+      await repository.addVote(vote);
+    },
     async controllVote(electionId: string, voterId: string) {
       const votes = await repository.getAllElectionAlternativesByElectionId(
         electionId
