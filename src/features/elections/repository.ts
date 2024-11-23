@@ -1,4 +1,5 @@
 import {
+  Election,
   ElectionAlternatives,
   electionAlternatives,
   elections,
@@ -21,6 +22,9 @@ export function createRepository() {
     },
     async createRepresentative(representative: Representatives) {
       representatives.push(representative);
+    },
+    async createElection(newElection: Election) {
+      elections.push(newElection);
     },
     async updateVoterRepresentative(id: string, representativeId: string) {
       const voterToUpdate = voters.find((voter) => voter.id === id);

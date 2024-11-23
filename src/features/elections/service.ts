@@ -82,5 +82,15 @@ export function createService() {
     async concludeVote(electionId: string) {
       await repository.concludeVote(electionId);
     },
+    async createElection(electionSubject: string) {
+      const newElection = {
+        id: uuidv4(),
+        subject: electionSubject,
+        created: new Date().toISOString().split("T")[0],
+        concluded: null,
+        active: true,
+      };
+      await repository.createElection(newElection);
+    },
   };
 }

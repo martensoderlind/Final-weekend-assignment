@@ -13,6 +13,12 @@ export async function createRepresentative(formData: FormData) {
     revalidatePath("/representatives");
   }
 }
+export async function createElection(formData: FormData) {
+  const election = formData.get("election") as string;
+  await chatService.createElection(election);
+
+  revalidatePath("/elections");
+}
 
 export async function castVote(alternative: ElectionAlternatives) {
   const voter = await chatService.getVoter(
