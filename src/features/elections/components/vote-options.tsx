@@ -1,6 +1,6 @@
 import React from "react";
 import { ElectionAlternatives } from "../fixtures/mockdb";
-import { chatService } from "../instance";
+import { castVote } from "../actions";
 
 type Props = {
   alternative: ElectionAlternatives;
@@ -9,15 +9,7 @@ type Props = {
 export default function VoteOptions({ alternative }: Props) {
   async function onClick() {
     "use server";
-    const voter = await chatService.getVoter(
-      "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9"
-    );
-    const vote = {
-      electionId: alternative.electionId,
-      voterId: voter!.id,
-      choice: alternative.choice,
-    };
-    await chatService.addVote(vote);
+    await castVote(alternative);
   }
   return (
     <div className="flex flex-row mt-2 justify-between">
