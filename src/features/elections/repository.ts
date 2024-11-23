@@ -1,4 +1,5 @@
 import {
+  ElectionAlternatives,
   electionAlternatives,
   elections,
   Representatives,
@@ -42,6 +43,9 @@ export function createRepository() {
       );
 
       return uniqueVoteAlternatives;
+    },
+    async addVote(vote: ElectionAlternatives) {
+      electionAlternatives.push(vote);
     },
   };
 }

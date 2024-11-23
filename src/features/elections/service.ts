@@ -1,6 +1,7 @@
 import { Representatives } from "./fixtures/mockdb";
 import { createRepository } from "./repository";
 import { v4 as uuidv4 } from "uuid";
+import { ElectionVote } from "./types";
 
 export function createService() {
   const repository = createRepository();
@@ -58,6 +59,15 @@ export function createService() {
     },
     async getVoteAlternatives(id: string) {
       return await repository.getVoteAlternatives(id);
+    },
+    async addVote(electionVote: ElectionVote) {
+      const vote = {
+        id: uuidv4(),
+        electionId: electionVote.electionId,
+        voterId: electionVote.voterId,
+        choice: electionVote.choice,
+      };
+      await repository.addVote(vote);
     },
   };
 }
