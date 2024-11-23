@@ -58,7 +58,7 @@ export function createRepository() {
     async addVote(vote: ElectionAlternatives) {
       electionAlternatives.push(vote);
     },
-    async getAllElectionAlternativesByElectionId(electionId: string) {
+    async getAllElectionAlternatives(electionId: string) {
       const votesOnElection = electionAlternatives.filter((vote) => {
         return vote.electionId === electionId;
       });
