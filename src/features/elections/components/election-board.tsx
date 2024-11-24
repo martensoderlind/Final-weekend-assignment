@@ -2,7 +2,7 @@ import { Election } from "../fixtures/mockdb";
 import { voteService } from "../instance";
 import ActiveElection from "./active-election";
 
-export default async function ElectionBoard() {
+export async function ElectionBoard() {
   const elections: Election[] = await voteService.getAllActiveElections();
   return (
     <section className="container mx-auto w-10/12 bg-slate-100 flex flex-col my-4 rounded-md p-4 shadow-md">

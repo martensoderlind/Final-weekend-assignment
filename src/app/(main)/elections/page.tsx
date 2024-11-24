@@ -1,5 +1,5 @@
-import ElectionBoard from "@/features/elections/components/election-board";
-import ElectionForm from "@/features/elections/components/election-form";
+import { ElectionBoard } from "@/features";
+import { ElectionForm } from "@/features";
 
 export default function Page() {
   return (

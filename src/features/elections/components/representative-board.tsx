@@ -3,7 +3,7 @@ import { voteService } from "../instance";
 import Representative from "./representative";
 import { RepresentativeInformation } from "../types";
 
-export default async function RepresentativeBoard() {
+export async function RepresentativeBoard() {
   const allRepresentatives: RepresentativeInformation[] =
     await voteService.getRepresentativeInformation();
 

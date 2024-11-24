@@ -1,5 +1,5 @@
-import RepresentativeBoard from "@/features/elections/components/representative-board";
-import RepresentativeForm from "@/features/elections/components/representative-form";
+import { RepresentativeBoard } from "@/features";
+import { RepresentativeForm } from "@/features";
 
 export default function Page() {
   return (

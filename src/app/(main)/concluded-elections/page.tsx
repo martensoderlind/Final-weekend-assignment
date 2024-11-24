@@ -1,4 +1,4 @@
-import ConcludedElectionBoard from "@/features/elections/components/concluded-election-board";
+import { ConcludedElectionBoard } from "@/features";
 
 export default function page() {
   return (
