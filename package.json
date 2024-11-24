@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed":"tsx src/features/elections/db/seed.ts"
+    "seed":"tsx src/features/elections/db/seed.ts",
+     "test": "tsx --watch --test"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
