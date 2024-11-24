@@ -1,17 +1,17 @@
-import { getRepresentativeVotes } from "../actions";
-import { ElectionAlternatives } from "../fixtures/mockdb";
+import { voteService } from "../instance";
+import { Alternative } from "../types";
 import RepresentativeElectionResult from "./representative-election-result";
 
 type Props = {
-  alternative: ElectionAlternatives;
+  alternative: Alternative;
 };
 
 export default async function ElectionOptions({ alternative }: Props) {
-  const representatives = await getRepresentativeVotes(
-    alternative.electionId,
-    alternative.choice
+  //hämta vilka som röstade i valet
+  const representatives = await voteService.getVotingRepresentatives(
+    alternative.electionId
   );
-
+  console.log("rep: ", representatives);
   return (
     <div className="mt-2">
       <h3 className="text-l text-gray-800 font-semibold">

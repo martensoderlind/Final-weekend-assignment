@@ -7,7 +7,7 @@ export type ElectionVote = {
 export type RepresentativeInformation = {
   id: string;
   name: string;
-  voters: number;
+  votes: number;
 };
 
 export type RepresentativeVote = {
@@ -38,4 +38,10 @@ export type Alternative = {
   electionId: string;
   id: string;
   choice: string;
+};
+
+export type Representative = {
+  name: string;
+  email: string;
+  id: string;
 };
