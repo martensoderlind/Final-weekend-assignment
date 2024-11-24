@@ -137,17 +137,28 @@ export function createService(db: Db) {
       }
     },
 
-    async voterAgreement(representativeId: string, choice: string) {
+    async voterAgreement(
+      representativeId: string,
+      electionId: string,
+      choice: string
+    ) {
       const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
       );
+      // console.log("choice", choice);
       const votersThatAgree = await repository.getAllVotersThatAgree(
         representativeId,
+        electionId,
         choice
       );
-      console.log("voters that agree", votersThatAgree);
+      console.log(
+        "voters that agree",
+        votersThatAgree.length,
+        representativeVoters.length
+      );
       return (
-        Math.floor(votersThatAgree[0].count / representativeVoters.length) * 100
+        Math.floor((votersThatAgree.length - 1) / representativeVoters.length) *
+        100
       );
     },
 

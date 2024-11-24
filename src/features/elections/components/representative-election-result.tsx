@@ -13,9 +13,10 @@ export default async function RepresentativeElectionResult({
   const voters = await voteService.representativeVotes(representative.voterId!);
   const voterAgreement = await voteService.voterAgreement(
     representative.voterId!,
-    electionId
+    electionId,
+    representative.choice!
   );
-
+  console.log("rep id", representative.voterId!);
   return (
     <div className="grid grid-cols-3 gap-4 ">
       <p className="text-gray-200">{representative.name}</p>

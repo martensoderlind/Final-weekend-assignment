@@ -27,13 +27,18 @@ export function createRepository(db: Db) {
       return voter;
     },
 
-    async getAllVotersThatAgree(representativeId: string, choice: string) {
+    async getAllVotersThatAgree(
+      representativeId: string,
+      electionId: string,
+      choice: string
+    ) {
       const voter = await db
-        .select({ count: sql<number>`count(*)` })
+        .select()
         .from(votes)
         .where(
           and(
             eq(votes.representativeId, representativeId),
+            eq(votes.electionId, electionId),
             eq(votes.choice, choice)
           )
         );
