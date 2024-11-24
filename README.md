@@ -94,3 +94,9 @@ The project utilizes the following technologies and tools:
    ```bash
    npm run seed
    ```
+
+5. update the user id of the user in elections/fixtures/mockdb.ts with an id from the voters-table that just got created.
+
+## final note
+
+the agreement-feature works but will only show 0% with this data-seed

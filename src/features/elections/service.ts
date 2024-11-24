@@ -176,9 +176,6 @@ export function createService(db: Db) {
     },
 
     async electionWinner(alternatives: Alternative[]) {
-      // const representativeVoters = await repository.getAllVotesforRepresentativ(
-      //   representativeId
-      // );
       return winnerOfElection(alternatives);
     },
 
