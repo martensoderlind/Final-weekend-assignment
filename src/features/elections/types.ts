@@ -38,6 +38,7 @@ export type Alternative = {
   electionId: string;
   id: string;
   choice: string;
+  votes: number;
 };
 
 export type Representative = {

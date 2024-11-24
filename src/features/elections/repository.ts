@@ -56,9 +56,20 @@ export function createRepository(db: Db) {
     },
     async getVoteAlternatives(id: string) {
       const uniqueVoteAlternatives = await db
-        .select()
+        .select({
+          id: electionVoteAlternatives.id,
+          electionId: electionVoteAlternatives.electionId,
+          choice: electionVoteAlternatives.choice,
+          votes: sql<number>`count(DISTINCT ${votes.id})`,
+        })
         .from(electionVoteAlternatives)
-        .where(eq(electionVoteAlternatives.electionId, id));
+        .where(eq(electionVoteAlternatives.electionId, id))
+        .leftJoin(votes, eq(electionVoteAlternatives.id, votes.choice))
+        .groupBy(
+          electionVoteAlternatives.id,
+          electionVoteAlternatives.electionId,
+          electionVoteAlternatives.choice
+        );
       return uniqueVoteAlternatives;
     },
     async getRepresentativeInformation() {
