@@ -4,10 +4,10 @@ import { deepEqual } from "node:assert";
 import { Alternative } from "../types";
 
 describe("winner of elections", () => {
-  it("should return message", () => {
+  it("should return undefined", () => {
     const alternatives: Alternative[] = [];
     const result = winnerOfElection(alternatives);
-    deepEqual(result, "there was no winner of this election");
+    deepEqual(result, undefined);
   });
   it("Should return the only alternative", () => {
     const alternatives: Alternative[] = [

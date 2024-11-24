@@ -5,5 +5,5 @@ export function winnerOfElection(alternatives: Alternative[]) {
     (max, current) => (current.votes > max.votes ? current : max),
     alternatives[0]
   );
-  return winner ? winner : "there was no winner of this election";
+  return winner;
 }

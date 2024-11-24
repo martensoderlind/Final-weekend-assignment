@@ -8,7 +8,6 @@ type Props = {
 
 export default async function ConcludedElection({ election }: Props) {
   const voteAlternatives = await voteService.getVoteAlternatives(election.id);
-  console.log("alternatives", voteAlternatives);
   const electionWinner = await voteService.electionWinner(voteAlternatives);
   return (
     <div className="collapse collapse-arrow join-item border-base-300 border">
