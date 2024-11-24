@@ -6,8 +6,11 @@ export function ElectionForm() {
       <h1 className="text-3xl font-bold text-center text-black">
         Add new Election
       </h1>
-      <form action={createElection} className="flex flex-row justify-center">
-        <label className="input input-bordered flex items-center gap-2 m-2">
+      <form
+        action={createElection}
+        className="flex  flex-col md:flex-row justify-center"
+      >
+        <label className="input input-bordered flex items-center gap-2 m-2 ">
           <input
             type="text"
             className="grow"

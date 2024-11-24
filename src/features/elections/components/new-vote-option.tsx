@@ -12,15 +12,15 @@ export default async function NewVoteOption({ electionId }: Props) {
     await addElectionOption(electionId, newOption);
   }
   return (
-    <form action={handleForm}>
+    <form action={handleForm} className="flex flex-col md:flex-row">
       <input
         type="text"
         name="newOption"
         id="newOption"
-        className="input mr-2 rounded-md"
+        className="input mr-2 rounded-md mt-2"
         placeholder="Add new vote alternative..."
       />
-      <button className="btn rounded-md mt-2">Add</button>
+      <button className="btn  rounded-md mt-2">Add </button>
     </form>
   );
 }

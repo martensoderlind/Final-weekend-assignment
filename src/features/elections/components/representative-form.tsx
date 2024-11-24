@@ -3,13 +3,13 @@ import { createRepresentative } from "../actions";
 
 export function RepresentativeForm() {
   return (
-    <div className="container mx-auto w-10/12 bg-slate-100 rounded-md my-4 flex flex-col justify-center shadow-md">
+    <div className="container mx-auto w-10/12 bg-slate-100 rounded-md my-4 flex  flex-col justify-center shadow-md">
       <h1 className="text-3xl font-bold text-center text-gray-950 pt-2">
         Add Representative
       </h1>
       <form
         action={createRepresentative}
-        className="flex flex-row justify-center"
+        className="flex flex-col md:flex-row justify-center"
       >
         <label className="input input-bordered flex items-center gap-2 m-2">
           <svg

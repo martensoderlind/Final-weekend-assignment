@@ -30,7 +30,7 @@ export default async function ActiveElection({ election }: Props) {
       <div className="collapse-title text-xl font-medium flex justify-between">
         <h3 className="p-1">{election.subject}</h3>
       </div>
-      <div className="collapse-content flex flex-row justify-between">
+      <div className="collapse-content flex flex-col md:flex-row justify-between">
         <article>
           {voteAlternatives.map((alternative, index) => (
             <VoteOptions
@@ -42,7 +42,7 @@ export default async function ActiveElection({ election }: Props) {
           {haveVoted ? undefined : <NewVoteOption electionId={election.id} />}
         </article>
         <button
-          className="btn btn-accent aling self-end rounded-md"
+          className="btn btn-accent aling md:self-end rounded-md my-2 md:my-0"
           onClick={onclick}
         >
           Conclude Vote
