@@ -103,13 +103,15 @@ export function createRepository(db: Db) {
       return representativeInfo;
     },
     async getAllVotesfromRepresentativ(representativeId: string) {
-      const representativeInfo = await db
-        .select()
-        .from(representatives)
-        .where(eq(representatives.id, representativeId))
-        .leftJoin(voters, eq(representatives.id, voters.representativeId));
+      const representativeVotes = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(votes)
+        .where(eq(votes.voterId, representativeId));
 
-      return representativeInfo;
+      if (representativeVotes[0].count === 0) {
+        return { count: "No votes made" };
+      }
+      return representativeVotes[0];
     },
 
     async getVotingRepresentatives(

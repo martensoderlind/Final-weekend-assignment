@@ -145,16 +145,10 @@ export function createService(db: Db) {
       const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
       );
-      // console.log("choice", choice);
       const votersThatAgree = await repository.getAllVotersThatAgree(
         representativeId,
         electionId,
         choice
-      );
-      console.log(
-        "voters that agree",
-        votersThatAgree,
-        representativeVoters.length
       );
       return (
         Math.floor(
@@ -165,6 +159,10 @@ export function createService(db: Db) {
 
     async electionWinner(alternatives: Alternative[]) {
       return winnerOfElection(alternatives);
+    },
+
+    async getAllVotesfromRepresentativ(representativeId: string) {
+      return await repository.getAllVotesfromRepresentativ(representativeId);
     },
   };
 }
