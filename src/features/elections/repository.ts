@@ -5,25 +5,25 @@ import {
   electionAlternatives,
   elections,
   Representatives,
-  representatives,
-  voters,
 } from "./fixtures/mockdb";
 import { RepresentativeInformation } from "./types";
+import { representatives, voters } from "./db/schema";
+import { eq } from "drizzle-orm";
 
 export function createRepository(db: Db) {
   return {
     async getAllRepresentatives() {
-      return representatives;
+      return await db.select().from(representatives);
     },
     async getAllVoters() {
-      return voters;
+      return await db.select().from(voters);
     },
-    async getAllVoterById(id: string) {
-      const voter = voters.find((voter) => voter.id === id);
+    async getAllVotersById(id: string) {
+      const voter = await db.select().from(voters).where(eq(voters.id, id));
       return voter;
     },
     async createRepresentative(representative: Representatives) {
-      representatives.push(representative);
+      await db.insert(representatives).values(representative);
     },
     async createElection(newElection: Election) {
       elections.push(newElection);

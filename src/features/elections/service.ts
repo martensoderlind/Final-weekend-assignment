@@ -73,7 +73,7 @@ export function createService(db: Db) {
       await repository.updateVoterRepresentative(id, representativeId);
     },
     async getVoter(id: string) {
-      return await repository.getAllVoterById(id);
+      return await repository.getAllVotersById(id);
     },
     async getAllActiveElections() {
       return await repository.getAllActiveElections();
