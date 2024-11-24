@@ -72,12 +72,10 @@ export function createService(db: Db) {
             await repository.getAllVotesforRepresentativ(
               representatives[j].voterId!
             );
-          // console.log("votes", representativeVotes);
-          votes = votes + representativeVotes[0].count;
+          votes = votes + Number(representativeVotes[0].count);
         }
         alternatives[i].votes = votes;
       }
-      console.log("alt votes:", alternatives);
       return alternatives;
     },
 
