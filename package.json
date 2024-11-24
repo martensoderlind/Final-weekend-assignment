@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed":"tsx src/features/elections/db/seed.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
