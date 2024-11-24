@@ -82,6 +82,11 @@ async function seed() {
           representativeId: representativesData[2].id,
           voteDate: new Date("2024-01-17"),
         },
+        {
+          id: "7685a70b-0b70-4f21-aa2c-1038caa13cbf",
+          representativeId: representativesData[1].id,
+          voteDate: new Date("2023-01-17"),
+        },
       ])
       .returning();
 
