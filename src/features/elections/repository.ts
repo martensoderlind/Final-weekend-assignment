@@ -1,3 +1,4 @@
+import { Db } from "@/index";
 import {
   Election,
   ElectionAlternatives,
@@ -9,7 +10,7 @@ import {
 } from "./fixtures/mockdb";
 import { RepresentativeInformation } from "./types";
 
-export function createRepository() {
+export function createRepository(db: Db) {
   return {
     async getAllRepresentatives() {
       return representatives;

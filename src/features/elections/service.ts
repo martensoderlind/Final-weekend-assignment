@@ -7,6 +7,7 @@ import {
   RepresentativeVote,
 } from "./types";
 import { z } from "zod";
+import { Db } from "@/index";
 
 const representativSchema = z.object({
   name: z.string().min(1),
@@ -19,8 +20,9 @@ const electionSchema = z.object({
   concluded: z.string().nullable(),
   active: z.boolean(),
 });
-export function createService() {
-  const repository = createRepository();
+
+export function createService(db: Db) {
+  const repository = createRepository(db);
 
   return {
     async getAllRepresentatives() {
