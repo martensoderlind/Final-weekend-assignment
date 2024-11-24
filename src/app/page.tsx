@@ -9,7 +9,7 @@ export default function Home() {
           <p className="py-6">
             Effortlessly organize elections and vote securely with our app.
             Whether for businesses, communities, or friends – we bring democracy
-            to your fingertips."
+            to your fingertips.
           </p>
           <button className="btn btn-primary">
             <Link href="\representatives\">Get started</Link>

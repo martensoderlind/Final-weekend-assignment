@@ -2,7 +2,7 @@ import { createElection } from "../actions";
 
 export default function ElectionForm() {
   return (
-    <div className="container mx-auto w-10/12 bg-slate-100 rounded-md my-4 flex flex-col justify-center">
+    <div className="container mx-auto w-10/12 bg-slate-100 rounded-md my-4 flex flex-col justify-center shadow-md">
       <h1 className="text-3xl font-bold text-center text-black">
         Add new Election
       </h1>
