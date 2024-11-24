@@ -14,10 +14,8 @@ const representativSchema = z.object({
   email: z.string().email(),
 });
 const electionSchema = z.object({
-  id: z.string().uuid(),
   subject: z.string(),
-  created: z.string(),
-  concluded: z.string().nullable(),
+  created: z.date(),
   active: z.boolean(),
 });
 
@@ -117,10 +115,8 @@ export function createService(db: Db) {
     },
     async createElection(electionSubject: string) {
       const newElection = {
-        id: uuidv4(),
         subject: electionSubject,
-        created: new Date().toISOString().split("T")[0],
-        concluded: null,
+        created: new Date(),
         active: true,
       };
       const result = representativSchema.safeParse(electionSchema);

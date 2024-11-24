@@ -6,6 +6,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { TypeOf } from "zod";
 
 export const voters = pgTable("voters", {
   id: uuid("id").primaryKey().defaultRandom(),

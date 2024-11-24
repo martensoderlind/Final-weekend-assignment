@@ -1,13 +1,11 @@
 import { Db } from "@/index";
 import {
-  Election,
   ElectionAlternatives,
   electionAlternatives,
-  elections,
   Representatives,
 } from "./fixtures/mockdb";
-import { RepresentativeInformation } from "./types";
-import { representatives, voters } from "./db/schema";
+import { NewElection, RepresentativeInformation } from "./types";
+import { elections, representatives, voters } from "./db/schema";
 import { eq } from "drizzle-orm";
 
 export function createRepository(db: Db) {
@@ -25,8 +23,8 @@ export function createRepository(db: Db) {
     async createRepresentative(representative: Representatives) {
       await db.insert(representatives).values(representative);
     },
-    async createElection(newElection: Election) {
-      elections.push(newElection);
+    async createElection(newElection: NewElection) {
+      await db.insert(elections).values(newElection);
     },
     async updateVoterRepresentative(id: string, representativeId: string) {
       const voterToUpdate = voters.find((voter) => voter.id === id);

@@ -17,3 +17,9 @@ export type RepresentativeVote = {
   votedinElection: boolean;
   votedOn: string;
 };
+
+export type NewElection = {
+  subject: string;
+  created: Date;
+  active: boolean;
+};
