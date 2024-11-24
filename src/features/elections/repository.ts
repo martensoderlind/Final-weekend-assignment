@@ -55,10 +55,9 @@ export function createRepository(db: Db) {
     },
     async getVoteAlternatives(id: string) {
       const uniqueVoteAlternatives = await db
-        .select({ voteAlternatives: electionVoteAlternatives.choice })
+        .select()
         .from(electionVoteAlternatives)
-        .where(eq(electionVoteAlternatives.electionId, id))
-        .groupBy(electionVoteAlternatives.choice);
+        .where(eq(electionVoteAlternatives.electionId, id));
       return uniqueVoteAlternatives;
     },
     async addVote(vote: NewVote) {

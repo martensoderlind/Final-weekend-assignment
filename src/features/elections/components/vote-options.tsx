@@ -1,24 +1,21 @@
 import React from "react";
 import { castVote } from "../actions";
+import { Alternative } from "../types";
 
 type Props = {
-  alternative: string;
+  alternative: Alternative;
   haveVoted: boolean;
-  electionId: string;
 };
 
-export default async function VoteOptions({
-  alternative,
-  haveVoted,
-  electionId,
-}: Props) {
+export default async function VoteOptions({ alternative, haveVoted }: Props) {
+  console.log("vote options", alternative);
   async function onClick() {
     "use server";
-    await castVote(alternative, electionId);
+    await castVote(alternative);
   }
   return (
     <div className="flex flex-row mt-2 justify-between">
-      <h3 className="p-1 mr-2">{alternative}</h3>
+      <h3 className="p-1 mr-2">{alternative.choice}</h3>
       <button
         className="btn btn-sm rounded-md"
         disabled={haveVoted ? true : false}

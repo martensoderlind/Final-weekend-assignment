@@ -36,9 +36,8 @@ export default async function ActiveElection({ election }: Props) {
           {voteAlternatives.map((alternative, index) => (
             <VoteOptions
               key={index}
-              alternative={alternative.voteAlternatives}
+              alternative={alternative}
               haveVoted={haveVoted}
-              electionId={election.id}
             />
           ))}
           {haveVoted ? undefined : <NewVoteOption electionId={election.id} />}

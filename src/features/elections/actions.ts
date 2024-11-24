@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { voteService } from "./instance";
+import { Alternative } from "./types";
 
 const user = {
   id: "57977e27-f576-4d2e-89ab-90414b42649c",
@@ -23,12 +24,12 @@ export async function createElection(formData: FormData) {
   revalidatePath("/elections");
 }
 
-export async function castVote(alternative: string, electionId: string) {
+export async function castVote(alternative: Alternative) {
   const voter = await voteService.getVoter(user.id);
   const vote = {
-    electionId: electionId,
+    electionId: alternative.electionId,
     voterId: voter[0]!.id,
-    choice: alternative,
+    choice: alternative.id,
   };
   await voteService.addVote(vote, voter[0]!.representativeId);
   revalidatePath("/elections");
