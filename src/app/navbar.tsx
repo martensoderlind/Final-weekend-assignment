@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <nav className="navbar flex justify-between">
       <div className="">
-        <h1 className="text-2xl">Title</h1>
+        <h1 className="text-3xl font-bold">Voting App</h1>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-2 ">
