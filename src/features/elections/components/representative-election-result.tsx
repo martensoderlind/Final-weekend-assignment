@@ -16,8 +16,6 @@ export default async function RepresentativeElectionResult({
     electionId
   );
 
-  console.log("representative", representative);
-  console.log("votes", voters.length);
   return (
     <div className="grid grid-cols-3 gap-4 ">
       <p className="text-gray-500">{representative.name}</p>

@@ -14,7 +14,6 @@ export default async function ActiveElection({ election }: Props) {
   let haveVoted;
 
   if (voteAlternatives.length > 0) {
-    console.log("alternatives: ", voteAlternatives);
     haveVoted = await controllVote(election.id);
   } else {
     haveVoted = false;

@@ -8,7 +8,6 @@ type Props = {
 };
 
 export default async function VoteOptions({ alternative, haveVoted }: Props) {
-  console.log("vote options", alternative);
   async function onClick() {
     "use server";
     await castVote(alternative);

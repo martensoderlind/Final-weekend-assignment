@@ -147,7 +147,6 @@ export function createRepository(db: Db) {
       if (!electionVotes) {
         return { votedInElection: false, votedOn: null };
       }
-      console.log("election votes", electionVotes);
       return { votedInElection: false, votedOn: null };
     },
   };
