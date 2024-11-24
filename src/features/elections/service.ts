@@ -1,9 +1,10 @@
 import { Representatives } from "./fixtures/mockdb";
 import { createRepository } from "./repository";
 import { v4 as uuidv4 } from "uuid";
-import { ElectionVote } from "./types";
+import { Alternative, ElectionVote } from "./types";
 import { z } from "zod";
 import { Db } from "@/index";
+import { winnerOfElection } from "./logic";
 
 const representativSchema = z.object({
   name: z.string().min(1),
@@ -135,6 +136,9 @@ export function createService(db: Db) {
       return (
         Math.floor(votersThatAgree[0].count / representativeVoters.length) * 100
       );
+    },
+    async electionWinner(alternatives: Alternative[]) {
+      return winnerOfElection(alternatives);
     },
   };
 }

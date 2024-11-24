@@ -9,7 +9,7 @@ type Props = {
 export default async function ConcludedElection({ election }: Props) {
   const voteAlternatives = await voteService.getVoteAlternatives(election.id);
   console.log("alternatives", voteAlternatives);
-
+  const electionWinner = await voteService.electionWinner(voteAlternatives);
   return (
     <div className="collapse collapse-arrow join-item border-base-300 border ">
       <input type="radio" name="my-accordion-4" defaultChecked />
@@ -19,7 +19,11 @@ export default async function ConcludedElection({ election }: Props) {
       <div className="collapse-content flex flex-row justify-between">
         <article>
           {voteAlternatives.map((alternative, index) => (
-            <ElectionOptions key={index} alternative={alternative} />
+            <ElectionOptions
+              key={index}
+              alternative={alternative}
+              electionWinner={electionWinner}
+            />
           ))}
         </article>
       </div>
