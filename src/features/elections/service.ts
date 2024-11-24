@@ -153,12 +153,13 @@ export function createService(db: Db) {
       );
       console.log(
         "voters that agree",
-        votersThatAgree.length,
+        votersThatAgree,
         representativeVoters.length
       );
       return (
-        Math.floor((votersThatAgree.length - 1) / representativeVoters.length) *
-        100
+        Math.floor(
+          (votersThatAgree[0].count - 1) / representativeVoters[0].count
+        ) * 100
       );
     },
 

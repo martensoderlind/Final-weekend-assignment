@@ -11,7 +11,7 @@ export default function Home() {
             Whether for businesses, communities, or friends – we bring democracy
             to your fingertips.
           </p>
-          <button className="btn btn-primary">
+          <button className="btn btn-accent">
             <Link href="\representatives\">Get started</Link>
           </button>
         </div>

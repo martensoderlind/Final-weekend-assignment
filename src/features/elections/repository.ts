@@ -33,7 +33,7 @@ export function createRepository(db: Db) {
       choice: string
     ) {
       const voter = await db
-        .select()
+        .select({ count: sql<number>`count(*)` })
         .from(votes)
         .where(
           and(
@@ -94,6 +94,15 @@ export function createRepository(db: Db) {
     },
 
     async getAllVotesforRepresentativ(representativeId: string) {
+      const representativeInfo = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(representatives)
+        .where(eq(representatives.id, representativeId))
+        .leftJoin(voters, eq(representatives.id, voters.representativeId));
+
+      return representativeInfo;
+    },
+    async getAllVotesfromRepresentativ(representativeId: string) {
       const representativeInfo = await db
         .select()
         .from(representatives)
