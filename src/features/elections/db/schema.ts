@@ -7,10 +7,12 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const voterTable = pgTable("voter", {
+export const voters = pgTable("voters", {
   id: uuid("id").primaryKey().defaultRandom(),
-  representativeId: text("subject").notNull(),
-  voteDate: text("subject").notNull(),
+  representativeId: uuid("representative_id")
+    .notNull()
+    .references(() => representatives.id),
+  voteDate: timestamp("vote_date").notNull(),
 });
 
 export const elections = pgTable("elections", {
