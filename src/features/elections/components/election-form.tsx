@@ -17,7 +17,7 @@ export function ElectionForm() {
             required
           />
         </label>
-        <button className="btn m-2">Add</button>
+        <button className="btn btn-secondary m-2">Add</button>
       </form>
     </div>
   );

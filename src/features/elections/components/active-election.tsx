@@ -41,7 +41,10 @@ export default async function ActiveElection({ election }: Props) {
           ))}
           {haveVoted ? undefined : <NewVoteOption electionId={election.id} />}
         </article>
-        <button className="btn aling self-end rounded-md" onClick={onclick}>
+        <button
+          className="btn btn-accent aling self-end rounded-md"
+          onClick={onclick}
+        >
           Conclude Vote
         </button>
       </div>
