@@ -189,5 +189,17 @@ export function createRepository(db: Db) {
       }
       return { votedInElection: false, votedOn: null };
     },
+    async getRepresentativesThatVoted(
+      electionId: string,
+      alternativeId: string
+    ) {
+      const representativVoters = await db
+        .select()
+        .from(votes)
+        .where(
+          and(eq(votes.electionId, electionId), eq(votes.choice, alternativeId))
+        );
+      return representativVoters;
+    },
   };
 }

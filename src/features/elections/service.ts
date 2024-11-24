@@ -59,7 +59,26 @@ export function createService(db: Db) {
     },
 
     async getVoteAlternatives(id: string) {
-      return await repository.getVoteAlternatives(id);
+      const alternatives = await repository.getVoteAlternatives(id);
+      let votes = 0;
+      for (let i = 0; i < alternatives.length; i++) {
+        votes = 0;
+        const representatives = await repository.getRepresentativesThatVoted(
+          alternatives[i].electionId,
+          alternatives[i].id
+        );
+        for (let j = 0; j < representatives.length; j++) {
+          const representativeVotes =
+            await repository.getAllVotesforRepresentativ(
+              representatives[j].voterId!
+            );
+          // console.log("votes", representativeVotes);
+          votes = votes + representativeVotes[0].count;
+        }
+        alternatives[i].votes = votes;
+      }
+      console.log("alt votes:", alternatives);
+      return alternatives;
     },
 
     async getRepresentativeInformation() {
