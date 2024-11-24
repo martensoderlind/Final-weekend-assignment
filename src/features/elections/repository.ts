@@ -3,6 +3,7 @@ import { Representatives } from "./fixtures/mockdb";
 import {
   NewElection,
   NewElectionAlternative,
+  NewVote,
   RepresentativeInformation,
 } from "./types";
 import {
@@ -60,8 +61,11 @@ export function createRepository(db: Db) {
         .groupBy(electionVoteAlternatives.choice);
       return uniqueVoteAlternatives;
     },
-    async addVote(vote: NewElectionAlternative) {
+    async addVote(vote: NewVote) {
       await db.insert(votes).values(vote);
+    },
+    async addElectionAlternative(alternative: NewElectionAlternative) {
+      await db.insert(electionVoteAlternatives).values(alternative);
     },
     async getVote(electionId: string, voterId: string) {
       const electionVotes = await db

@@ -10,7 +10,9 @@ type Props = {
 
 export default async function ActiveElection({ election }: Props) {
   const voteAlternatives = await voteService.getVoteAlternatives(election.id);
+
   let haveVoted;
+
   if (voteAlternatives.length > 0) {
     console.log("alternatives: ", voteAlternatives);
     haveVoted = await controllVote(election.id);
@@ -22,6 +24,7 @@ export default async function ActiveElection({ election }: Props) {
     "use server";
     await concludeVote(election.id);
   }
+
   return (
     <div className="collapse collapse-arrow join-item border-base-300 border">
       <input type="radio" name="my-accordion-4" defaultChecked />

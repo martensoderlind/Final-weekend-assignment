@@ -27,3 +27,9 @@ export type NewElectionAlternative = {
   electionId: string;
   choice: string;
 };
+export type NewVote = {
+  electionId: string;
+  voterId: string;
+  representativeId: string;
+  choice: string;
+};

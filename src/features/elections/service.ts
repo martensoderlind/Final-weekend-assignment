@@ -80,7 +80,6 @@ export function createService(db: Db) {
     },
     async addVote(electionVote: ElectionVote, representativeId: string) {
       const vote = {
-        id: uuidv4(),
         electionId: electionVote.electionId,
         voterId: electionVote.voterId,
         representativeId: representativeId,
@@ -89,11 +88,11 @@ export function createService(db: Db) {
       await repository.addVote(vote);
     },
     async addElectionOption(electionId: string, voteAlternative: string) {
-      const vote = {
+      const alternative = {
         electionId: electionId,
         choice: voteAlternative,
       };
-      await repository.addVote(vote);
+      await repository.addElectionAlternative(alternative);
     },
     async controllVote(electionId: string, voterId: string) {
       //har personen röstat?

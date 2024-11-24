@@ -3,6 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { voteService } from "./instance";
 
+const user = {
+  id: "57977e27-f576-4d2e-89ab-90414b42649c",
+};
+
 export async function createRepresentative(formData: FormData) {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
@@ -20,9 +24,7 @@ export async function createElection(formData: FormData) {
 }
 
 export async function castVote(alternative: string, electionId: string) {
-  const voter = await voteService.getVoter(
-    "a1d31219-8527-420a-adc5-79939d05b419"
-  );
+  const voter = await voteService.getVoter(user.id);
   const vote = {
     electionId: electionId,
     voterId: voter[0]!.id,
@@ -33,9 +35,7 @@ export async function castVote(alternative: string, electionId: string) {
 }
 
 export async function controllVote(electionId: string) {
-  const voter = await voteService.getVoter(
-    "a1d31219-8527-420a-adc5-79939d05b419"
-  );
+  const voter = await voteService.getVoter(user.id);
   return await voteService.controllVote(electionId, voter[0]!.id);
 }
 
