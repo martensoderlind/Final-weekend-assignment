@@ -1,4 +1,5 @@
-import { revalidatePath } from "next/cache";
+import { updateVoterRepresentative } from "../actions";
+import { user } from "../fixtures/mockdb";
 import { voteService } from "../instance";
 import { RepresentativeInformation } from "../types";
 
@@ -7,17 +8,13 @@ type Props = {
 };
 
 export default async function Representative({ representative }: Props) {
-  const voter = await voteService.getVoter(
-    "57977e27-f576-4d2e-89ab-90414b42649c"
-  );
+  const voter = await voteService.getVoter(user.id);
+  console.log("voter", voter);
   async function handleClick() {
     "use server";
-    await voteService.updateVoterRepresentative(
-      voter[0]!.id,
-      representative.id
-    );
-    revalidatePath("/representatives");
+    await updateVoterRepresentative(representative.id);
   }
+
   return (
     <article className="grid grid-cols-4 gap-4 my-2">
       <p className="pt-3 text-gray-900">{representative.name}</p>

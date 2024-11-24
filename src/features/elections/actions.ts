@@ -3,10 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { voteService } from "./instance";
 import { Alternative } from "./types";
-
-const user = {
-  id: "17442110-b154-4b4f-97cf-341b40f252b3",
-};
+import { user } from "./fixtures/mockdb";
 
 export async function createRepresentative(formData: FormData) {
   const name = formData.get("name") as string;
@@ -47,4 +44,9 @@ export async function concludeVote(electionId: string) {
 export async function addElectionOption(electionId: string, newOption: string) {
   await voteService.addElectionOption(electionId, newOption);
   revalidatePath("/elections");
+}
+
+export async function updateVoterRepresentative(representativeId: string) {
+  await voteService.updateVoterRepresentative(user.id, representativeId);
+  revalidatePath("/representatives");
 }
