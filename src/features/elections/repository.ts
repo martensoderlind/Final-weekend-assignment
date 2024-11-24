@@ -28,13 +28,6 @@ export function createRepository(db: Db) {
       const voter = await db.select().from(voters).where(eq(voters.id, id));
       return voter;
     },
-    async getAllVoterforRepresentativ(representativeId: string) {
-      const voter = await db
-        .select({ count: sql<number>`count(*)` })
-        .from(voters)
-        .where(eq(voters.id, representativeId));
-      return voter;
-    },
     async getAllVotersThatAgree(representativeId: string, choice: string) {
       const voter = await db
         .select({ count: sql<number>`count(*)` })
@@ -46,18 +39,6 @@ export function createRepository(db: Db) {
           )
         );
       return voter;
-    },
-    async createRepresentative(representative: Representatives) {
-      await db.insert(representatives).values(representative);
-    },
-    async createElection(newElection: NewElection) {
-      await db.insert(elections).values(newElection);
-    },
-    async updateVoterRepresentative(id: string, representativeId: string) {
-      await db
-        .update(voters)
-        .set({ representativeId: representativeId })
-        .where(eq(voters.id, id));
     },
     async getAllActiveElections() {
       const activeElections = await db
@@ -92,6 +73,15 @@ export function createRepository(db: Db) {
         .groupBy(representatives.id, representatives.name);
       return representativeVotes;
     },
+    async getAllVotesforRepresentativ(representativeId: string) {
+      const representativeInfo = await db
+        .select()
+        .from(representatives)
+        .where(eq(representatives.id, representativeId))
+        .leftJoin(voters, eq(representatives.id, voters.representativeId));
+
+      return representativeInfo;
+    },
     async getVotingRepresentatives(
       electionId: string,
       representative: Representative
@@ -112,6 +102,18 @@ export function createRepository(db: Db) {
     },
     async addElectionAlternative(alternative: NewElectionAlternative) {
       await db.insert(electionVoteAlternatives).values(alternative);
+    },
+    async createRepresentative(representative: Representatives) {
+      await db.insert(representatives).values(representative);
+    },
+    async createElection(newElection: NewElection) {
+      await db.insert(elections).values(newElection);
+    },
+    async updateVoterRepresentative(id: string, representativeId: string) {
+      await db
+        .update(voters)
+        .set({ representativeId: representativeId })
+        .where(eq(voters.id, id));
     },
     async getVote(electionId: string, voterId: string) {
       const electionVotes = await db

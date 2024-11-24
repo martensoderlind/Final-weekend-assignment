@@ -60,8 +60,8 @@ export function createService(db: Db) {
     async getRepresentativeInformation() {
       return await repository.getRepresentativeInformation();
     },
-    async representativeVoters(representativeId: string) {
-      return await repository.getAllVoterforRepresentativ(representativeId);
+    async representativeVotes(representativeId: string) {
+      return await repository.getAllVotesforRepresentativ(representativeId);
     },
     async getVotingRepresentatives(electionId: string, alternative: string) {
       const representatives = await repository.getAllRepresentatives();
@@ -72,7 +72,6 @@ export function createService(db: Db) {
           electionId,
           representatives![i]
         );
-        console.log("representatnt röst:", representativesVote);
         if (representativesVote.length === 1) {
           if (alternative === representativesVote[0].choice) {
             const representative = {
@@ -126,7 +125,7 @@ export function createService(db: Db) {
       }
     },
     async voterAgreement(representativeId: string, choice: string) {
-      const representativeVoters = await repository.getAllVoterforRepresentativ(
+      const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
       );
       const votersThatAgree = await repository.getAllVotersThatAgree(
@@ -134,8 +133,7 @@ export function createService(db: Db) {
         choice
       );
       return (
-        Math.floor(votersThatAgree[0].count / representativeVoters[0].count) *
-        100
+        Math.floor(votersThatAgree[0].count / representativeVoters.length) * 100
       );
     },
   };

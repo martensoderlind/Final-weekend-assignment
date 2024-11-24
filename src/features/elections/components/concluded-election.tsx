@@ -8,6 +8,8 @@ type Props = {
 
 export default async function ConcludedElection({ election }: Props) {
   const voteAlternatives = await voteService.getVoteAlternatives(election.id);
+  //ett val
+  //visar vad som det röstades om
   return (
     <div className="collapse collapse-arrow join-item border-base-300 border ">
       <input type="radio" name="my-accordion-4" defaultChecked />
