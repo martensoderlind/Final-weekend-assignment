@@ -23,3 +23,9 @@ export type NewElection = {
   created: Date;
   active: boolean;
 };
+export type NewElectionAlternative = {
+  electionId: string;
+  voterId: string;
+  representativeId: string;
+  choice: string;
+};

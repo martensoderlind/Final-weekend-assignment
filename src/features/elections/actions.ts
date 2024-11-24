@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { voteService } from "./instance";
-import { ElectionAlternatives } from "./fixtures/mockdb";
 
 export async function createRepresentative(formData: FormData) {
   const name = formData.get("name") as string;
@@ -20,24 +19,24 @@ export async function createElection(formData: FormData) {
   revalidatePath("/elections");
 }
 
-export async function castVote(alternative: ElectionAlternatives) {
+export async function castVote(alternative: string, electionId: string) {
   const voter = await voteService.getVoter(
-    "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9"
+    "a1d31219-8527-420a-adc5-79939d05b419"
   );
   const vote = {
-    electionId: alternative.electionId,
-    voterId: voter!.id,
-    choice: alternative.choice,
+    electionId: electionId,
+    voterId: voter[0]!.id,
+    choice: alternative,
   };
-  await voteService.addVote(vote, voter!.representativeId);
+  await voteService.addVote(vote, voter[0]!.representativeId);
   revalidatePath("/elections");
 }
 
 export async function controllVote(electionId: string) {
   const voter = await voteService.getVoter(
-    "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9"
+    "a1d31219-8527-420a-adc5-79939d05b419"
   );
-  return await voteService.controllVote(electionId, voter!.id);
+  return await voteService.controllVote(electionId, voter[0]!.id);
 }
 
 export async function concludeVote(electionId: string) {

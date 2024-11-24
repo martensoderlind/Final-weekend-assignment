@@ -13,7 +13,7 @@ export default async function ActiveElection({ election }: Props) {
   let haveVoted;
   if (voteAlternatives.length > 0) {
     console.log("alternatives: ", voteAlternatives);
-    haveVoted = await controllVote(voteAlternatives[0].electionId);
+    haveVoted = await controllVote(election.id);
   } else {
     haveVoted = false;
   }
@@ -33,8 +33,9 @@ export default async function ActiveElection({ election }: Props) {
           {voteAlternatives.map((alternative, index) => (
             <VoteOptions
               key={index}
-              alternative={alternative}
+              alternative={alternative.voteAlternatives}
               haveVoted={haveVoted}
+              electionId={election.id}
             />
           ))}
           {haveVoted ? undefined : <NewVoteOption electionId={election.id} />}

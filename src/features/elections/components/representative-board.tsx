@@ -18,10 +18,7 @@ export default async function RepresentativeBoard() {
         </p>
       </header>
       {allRepresentativs.map((representativ) => (
-        <Representative
-          key={representativ.id}
-          representativeInformation={representativ}
-        />
+        <Representative key={representativ.id} representative={representativ} />
       ))}
     </section>
   );

@@ -6,8 +6,8 @@ type Voter = {
 export type Election = {
   id: string;
   subject: string;
-  created: string;
-  concluded: string | null;
+  created: Date;
+  concluded: Date | null;
   active: boolean;
 };
 export type ElectionAlternatives = {

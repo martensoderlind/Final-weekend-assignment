@@ -1,20 +1,24 @@
 import React from "react";
-import { ElectionAlternatives } from "../fixtures/mockdb";
 import { castVote } from "../actions";
 
 type Props = {
-  alternative: ElectionAlternatives;
+  alternative: string;
   haveVoted: boolean;
+  electionId: string;
 };
 
-export default async function VoteOptions({ alternative, haveVoted }: Props) {
+export default async function VoteOptions({
+  alternative,
+  haveVoted,
+  electionId,
+}: Props) {
   async function onClick() {
     "use server";
-    await castVote(alternative);
+    await castVote(alternative, electionId);
   }
   return (
     <div className="flex flex-row mt-2 justify-between">
-      <h3 className="p-1 mr-2">{alternative.choice}</h3>
+      <h3 className="p-1 mr-2">{alternative}</h3>
       <button
         className="btn btn-sm rounded-md"
         disabled={haveVoted ? true : false}

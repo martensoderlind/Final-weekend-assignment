@@ -1,39 +1,35 @@
 import { revalidatePath } from "next/cache";
 import { voteService } from "../instance";
-import { RepresentativeInformation } from "./representative-board";
+import { RepresentativeInformation } from "../types";
 
 type Props = {
-  representativeInformation: RepresentativeInformation;
+  representative: RepresentativeInformation;
 };
 
-export default async function Representative({
-  representativeInformation,
-}: Props) {
+export default async function Representative({ representative }: Props) {
   const voter = await voteService.getVoter(
-    "c4409dc1-ad5b-4e2a-a8e5-de2051e7a6c9"
+    "a1d31219-8527-420a-adc5-79939d05b419"
   );
   async function handleClick() {
     "use server";
     await voteService.updateVoterRepresentative(
-      voter!.id,
-      representativeInformation.id
+      voter[0]!.id,
+      representative.id
     );
     revalidatePath("/representatives");
   }
   return (
     <article className="grid grid-cols-4 gap-4 my-2">
-      <p className="pt-3 text-gray-900">{representativeInformation.name}</p>
+      <p className="pt-3 text-gray-900">{representative.name}</p>
       <p className="text-center pt-3">90%</p>
-      <p className="text-center pt-3">{representativeInformation.voters}</p>
+      <p className="text-center pt-3">{representative.voters}</p>
       <button
         className="btn btn-accent rounded-md"
         disabled={
-          voter!.representativeId === representativeInformation.id
-            ? true
-            : false
+          voter[0]!.representativeId === representative.id ? true : false
         }
         onClick={
-          voter!.representativeId === representativeInformation.id
+          voter[0]!.representativeId === representative.id
             ? undefined
             : handleClick
         }
