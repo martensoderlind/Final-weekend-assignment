@@ -18,7 +18,7 @@ export default async function ElectionOptions({
   //val alternativ
   //hämtar representanter som röstat på förslaget
   return (
-    <div className="mt-2">
+    <div className="mt-4">
       <h3 className="text-l text-gray-800 font-semibold">
         {alternative.id === electionWinner.id
           ? `${alternative.choice} - Winner`
