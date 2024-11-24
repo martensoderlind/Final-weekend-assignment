@@ -21,19 +21,22 @@ export default async function ElectionOptions({
   }
 
   return (
-    <section className="mt-4  bg-secondary p-1 rounded-md">
-      <h3 className="text-l text-gray-900 font-semibold">
+    <section className="mt-4  bg-accent p-1 rounded-md">
+      <h3 className="text-l text-gray-950 font-semibold">
         {alternative.id === electionWinner.id
           ? `${alternative.choice} - Winner`
           : alternative.choice}
       </h3>
-      <h2 className="text-gray-200 text-sm">
-        votes <span className="text-gray-50 text-md">{alternative.votes}</span>
+      <h2 className="text-gray-800 text-sm">
+        votes{" "}
+        <span className="text-gray-950 text-md font-semibold">
+          {alternative.votes}
+        </span>
       </h2>
-      <header className="grid grid-cols-3 gap-4 border-b-2 ">
-        <h3 className="text-gray-100">Representativs</h3>
-        <h3 className="text-center text-gray-200">Votes</h3>
-        <h3 className="text-center text-gray-200">Agreement</h3>
+      <header className="grid grid-cols-3 gap-4 border-b-2">
+        <h3 className="text-gray-800 font-semibold">Representativs</h3>
+        <h3 className="text-center text-gray-800 font-semibold">Votes</h3>
+        <h3 className="text-center text-gray-800 font-semibold">Agreement</h3>
       </header>
       {representatives.map((representative, index) => (
         <RepresentativeElectionResult

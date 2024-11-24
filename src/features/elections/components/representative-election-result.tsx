@@ -18,7 +18,7 @@ export default async function RepresentativeElectionResult({
   );
   return (
     <div className="grid grid-cols-3 gap-4 ">
-      <p className="text-gray-200">{representative.name}</p>
+      <p className="text-gray-950">{representative.name}</p>
       <p className="text-center">{voters[0].count}</p>
       <p className="text-center">{voterAgreement}%</p>
     </div>
