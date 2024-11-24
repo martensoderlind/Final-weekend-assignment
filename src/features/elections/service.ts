@@ -142,6 +142,7 @@ export function createService(db: Db) {
       electionId: string,
       choice: string
     ) {
+      //retunerar rätt
       const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
       );
@@ -150,14 +151,17 @@ export function createService(db: Db) {
         electionId,
         choice
       );
+      if (representativeVoters[0].count === 0) return 0;
       return (
-        Math.floor(
-          (votersThatAgree[0].count - 1) / representativeVoters[0].count
-        ) * 100
+        Math.floor(votersThatAgree[0].count / representativeVoters[0].count) *
+        100
       );
     },
 
     async electionWinner(alternatives: Alternative[]) {
+      // const representativeVoters = await repository.getAllVotesforRepresentativ(
+      //   representativeId
+      // );
       return winnerOfElection(alternatives);
     },
 
