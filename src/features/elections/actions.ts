@@ -5,7 +5,7 @@ import { voteService } from "./instance";
 import { Alternative } from "./types";
 
 const user = {
-  id: "57977e27-f576-4d2e-89ab-90414b42649c",
+  id: "17442110-b154-4b4f-97cf-341b40f252b3",
 };
 
 export async function createRepresentative(formData: FormData) {

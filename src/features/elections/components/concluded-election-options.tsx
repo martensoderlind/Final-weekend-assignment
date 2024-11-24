@@ -7,11 +7,10 @@ type Props = {
 };
 
 export default async function ElectionOptions({ alternative }: Props) {
-  //hämta vilka som röstade i valet
   const representatives = await voteService.getVotingRepresentatives(
-    alternative.electionId
+    alternative.electionId,
+    alternative.id
   );
-  console.log("rep: ", representatives);
   return (
     <div className="mt-2">
       <h3 className="text-l text-gray-800 font-semibold">

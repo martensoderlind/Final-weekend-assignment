@@ -1,8 +1,8 @@
 import { voteService } from "../instance";
-import { Representative } from "../types";
+import { VotingRepresentative } from "../types";
 
 type Props = {
-  representative: Representative;
+  representative: VotingRepresentative;
   electionId: string;
 };
 

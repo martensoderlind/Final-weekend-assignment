@@ -63,21 +63,27 @@ export function createService(db: Db) {
     async representativeVoters(representativeId: string) {
       return await repository.getAllVoterforRepresentativ(representativeId);
     },
-    async getVotingRepresentatives(electionId: string) {
+    async getVotingRepresentatives(electionId: string, alternative: string) {
       const representatives = await repository.getAllRepresentatives();
-      console.log(representatives);
       const votingRepresentatives = [];
-
+      let representativesVote;
       for (let i = 0; i < representatives.length; i++) {
-        if (
-          await repository.getVotingRepresentatives(
-            electionId,
-            representatives![i]
-          )
-        ) {
-          votingRepresentatives.push(representatives[i]);
+        representativesVote = await repository.getVotingRepresentatives(
+          electionId,
+          representatives![i]
+        );
+        console.log("representatnt röst:", representativesVote);
+        if (representativesVote.length === 1) {
+          if (alternative === representativesVote[0].choice) {
+            const representative = {
+              ...representativesVote[0],
+              name: representatives[i].name,
+            };
+            votingRepresentatives.push(representative);
+          }
         }
       }
+
       return votingRepresentatives;
     },
     async addVote(electionVote: ElectionVote, representativeId: string) {
