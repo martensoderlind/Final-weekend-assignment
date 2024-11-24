@@ -56,18 +56,20 @@ export function createRepository(db: Db) {
       const uniqueVoteAlternatives = await db
         .select({ voteAlternatives: electionAlternatives.choice })
         .from(electionAlternatives)
-        .where(eq(electionAlternatives.electionId, id));
-
+        .where(eq(electionAlternatives.electionId, id))
+        .groupBy(electionAlternatives.choice);
       return uniqueVoteAlternatives;
     },
     async addVote(vote: NewElectionAlternative) {
       await db.insert(electionAlternatives).values(vote);
     },
     async getAllElectionAlternatives(electionId: string) {
-      const votesOnElection = electionAlternatives.filter((vote) => {
-        return vote.electionId === electionId;
-      });
-      return votesOnElection;
+      const electionVotes = await db
+        .select()
+        .from(electionAlternatives)
+        .where(eq(electionAlternatives.electionId, electionId));
+
+      return electionVotes;
     },
     async concludeVote(electionId: string) {
       const currentElection = elections.find((election) => {
