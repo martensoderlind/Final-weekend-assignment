@@ -23,7 +23,7 @@ export const elections = pgTable("elections", {
   active: boolean("active").notNull().default(true),
 });
 
-export const electionAlternatives = pgTable("election_alternatives", {
+export const votes = pgTable("votes", {
   id: uuid("id").primaryKey().defaultRandom(),
   electionId: uuid("election_id")
     .notNull()
@@ -32,11 +32,19 @@ export const electionAlternatives = pgTable("election_alternatives", {
   representativeId: uuid("representative_id").references(
     () => representatives.id
   ),
-  choice: text("choice").notNull(),
+  choice: uuid("alternative_id").references(() => electionVoteAlternatives.id),
 });
 
 export const representatives = pgTable("representatives", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
+});
+
+export const electionVoteAlternatives = pgTable("electionVoteAlternatives", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  electionId: uuid("election_id")
+    .notNull()
+    .references(() => elections.id, { onDelete: "cascade" }),
+  choice: text("choice").notNull(),
 });

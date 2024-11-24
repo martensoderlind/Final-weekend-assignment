@@ -25,7 +25,5 @@ export type NewElection = {
 };
 export type NewElectionAlternative = {
   electionId: string;
-  voterId: string;
-  representativeId: string;
   choice: string;
 };

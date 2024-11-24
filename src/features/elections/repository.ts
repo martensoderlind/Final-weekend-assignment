@@ -1,17 +1,18 @@
 import { Db } from "@/index";
-import { ElectionAlternatives, Representatives } from "./fixtures/mockdb";
+import { Representatives } from "./fixtures/mockdb";
 import {
   NewElection,
   NewElectionAlternative,
   RepresentativeInformation,
 } from "./types";
 import {
-  electionAlternatives,
+  electionVoteAlternatives,
   elections,
   representatives,
   voters,
+  votes,
 } from "./db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export function createRepository(db: Db) {
   return {
@@ -32,7 +33,6 @@ export function createRepository(db: Db) {
       await db.insert(elections).values(newElection);
     },
     async updateVoterRepresentative(id: string, representativeId: string) {
-      // inte kontrollerad
       await db
         .update(voters)
         .set({ representativeId: representativeId })
@@ -54,20 +54,22 @@ export function createRepository(db: Db) {
     },
     async getVoteAlternatives(id: string) {
       const uniqueVoteAlternatives = await db
-        .select({ voteAlternatives: electionAlternatives.choice })
-        .from(electionAlternatives)
-        .where(eq(electionAlternatives.electionId, id))
-        .groupBy(electionAlternatives.choice);
+        .select({ voteAlternatives: electionVoteAlternatives.choice })
+        .from(electionVoteAlternatives)
+        .where(eq(electionVoteAlternatives.electionId, id))
+        .groupBy(electionVoteAlternatives.choice);
       return uniqueVoteAlternatives;
     },
     async addVote(vote: NewElectionAlternative) {
-      await db.insert(electionAlternatives).values(vote);
+      await db.insert(votes).values(vote);
     },
-    async getAllElectionAlternatives(electionId: string) {
+    async getVote(electionId: string, voterId: string) {
       const electionVotes = await db
         .select()
-        .from(electionAlternatives)
-        .where(eq(electionAlternatives.electionId, electionId));
+        .from(votes)
+        .where(
+          and(eq(votes.electionId, electionId), eq(votes.voterId, voterId))
+        );
 
       return electionVotes;
     },
@@ -81,15 +83,19 @@ export function createRepository(db: Db) {
       electionId: string,
       representativeInformation: RepresentativeInformation
     ) {
-      const electionVotes = electionAlternatives.filter((alternative) => {
-        return alternative.electionId === electionId;
-      });
-      if (electionVotes.length === 0)
+      const electionVotes = await db
+        .select()
+        .from(votes)
+        .where(
+          and(
+            eq(votes.electionId, electionId),
+            eq(votes.voterId, representativeInformation.id)
+          )
+        );
+      if (!electionVotes) {
         return { votedInElection: false, votedOn: null };
-      for (let i = 0; i < electionVotes.length; i++) {
-        if (electionVotes[i].voterId === representativeInformation.id)
-          return { votedInElection: true, votedOn: electionVotes[i].choice };
       }
+      console.log("election votes", electionVotes);
       return { votedInElection: false, votedOn: null };
     },
   };

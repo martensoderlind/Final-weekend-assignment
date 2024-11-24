@@ -8,7 +8,7 @@ type Props = {
 
 export default async function Representative({ representative }: Props) {
   const voter = await voteService.getVoter(
-    "a1d31219-8527-420a-adc5-79939d05b419"
+    "57977e27-f576-4d2e-89ab-90414b42649c"
   );
   async function handleClick() {
     "use server";

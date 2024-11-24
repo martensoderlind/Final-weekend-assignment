@@ -4,7 +4,7 @@ import Representative from "./representative";
 import { RepresentativeInformation } from "../types";
 
 export default async function RepresentativeBoard() {
-  const allRepresentativs: RepresentativeInformation[] =
+  const allRepresentatives: RepresentativeInformation[] =
     await voteService.getRepresentativeInformation();
 
   return (
@@ -17,8 +17,11 @@ export default async function RepresentativeBoard() {
           Pick Representative
         </p>
       </header>
-      {allRepresentativs.map((representativ) => (
-        <Representative key={representativ.id} representative={representativ} />
+      {allRepresentatives.map((representative) => (
+        <Representative
+          key={representative.id}
+          representative={representative}
+        />
       ))}
     </section>
   );

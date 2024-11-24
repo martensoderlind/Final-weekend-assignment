@@ -1,11 +1,7 @@
 import { Representatives } from "./fixtures/mockdb";
 import { createRepository } from "./repository";
 import { v4 as uuidv4 } from "uuid";
-import {
-  ElectionVote,
-  RepresentativeInformation,
-  RepresentativeVote,
-} from "./types";
+import { ElectionVote, RepresentativeInformation } from "./types";
 import { z } from "zod";
 import { Db } from "@/index";
 
@@ -95,14 +91,13 @@ export function createService(db: Db) {
     async addElectionOption(electionId: string, voteAlternative: string) {
       const vote = {
         electionId: electionId,
-        voterId: null,
-        representativeId: null,
         choice: voteAlternative,
       };
       await repository.addVote(vote);
     },
     async controllVote(electionId: string, voterId: string) {
-      const votes = await repository.getAllElectionAlternatives(electionId);
+      //har personen röstat?
+      const votes = await repository.getVote(electionId, voterId);
 
       for (let i = 0; i < votes.length; i++) {
         if (voterId === votes[i].voterId) return true;
@@ -151,35 +146,19 @@ export function createService(db: Db) {
       }
       return electionResult;
     },
-    async voterAgreement(
-      representative: RepresentativeVote,
-      electionId: string
-    ) {
-      const votersInElection = await repository.getAllElectionAlternatives(
-        electionId
-      );
-      let votersThatAgree = 0;
-      let totalVoterForRepresentativ = 0;
-      for (let i = 0; i < votersInElection.length; i++) {
-        if (votersInElection[i].representativeId === representative.id) {
-          totalVoterForRepresentativ = totalVoterForRepresentativ + 1;
-          if (votersInElection[i].choice === representative.votedOn) {
-            votersThatAgree = votersThatAgree + 1;
-          }
-        }
-      }
-      if (totalVoterForRepresentativ === 0) {
-        return 100;
-      }
-      return Math.floor((votersThatAgree / totalVoterForRepresentativ) * 100);
-    },
-    async getElectionWinner(electionId: string) {
-      const alternatives = await repository.getAllElectionAlternatives(
-        electionId
-      );
+    // async voterAgreement(
+    //   representative: RepresentativeVote,
+    //   electionId: string
+    // ) {
+    //   //skriv om
+    //   //hur många har röstat samma som representanten
 
-      for (let i = 0; i < alternatives.length; i++) {}
-      return;
-    },
+    //   // return Math.floor((votersThatAgree / totalVoterForRepresentativ) * 100);
+    //   return 100;
+    // },
+    // async getElectionWinner(electionId: string) {
+    //   //skriv om
+    //   return;
+    // },
   };
 }
