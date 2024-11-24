@@ -38,7 +38,7 @@ export function createService(db: Db) {
       };
       const result = representativSchema.safeParse(representative);
       if (result.success) {
-        await repository.createRepresentative(representative);
+        await repository.addRepresentative(representative);
       }
     },
 
@@ -133,7 +133,7 @@ export function createService(db: Db) {
 
       const result = representativSchema.safeParse(electionSchema);
       if (result.success) {
-        await repository.createElection(newElection);
+        await repository.addElection(newElection);
       }
     },
 

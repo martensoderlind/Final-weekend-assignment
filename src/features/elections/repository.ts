@@ -21,10 +21,12 @@ export function createRepository(db: Db) {
     async getAllRepresentatives() {
       return await db.select().from(representatives);
     },
+
     async getAllVotersById(id: string) {
       const voter = await db.select().from(voters).where(eq(voters.id, id));
       return voter;
     },
+
     async getAllVotersThatAgree(representativeId: string, choice: string) {
       const voter = await db
         .select({ count: sql<number>`count(*)` })
@@ -37,6 +39,7 @@ export function createRepository(db: Db) {
         );
       return voter;
     },
+
     async getAllActiveElections() {
       const activeElections = await db
         .select()
@@ -44,6 +47,7 @@ export function createRepository(db: Db) {
         .where(eq(elections.active, true));
       return activeElections;
     },
+
     async getAllConcludedElections() {
       const concludedElections = await db
         .select()
@@ -51,6 +55,7 @@ export function createRepository(db: Db) {
         .where(eq(elections.active, false));
       return concludedElections;
     },
+
     async getVoteAlternatives(id: string) {
       const uniqueVoteAlternatives = await db
         .select({
@@ -69,6 +74,7 @@ export function createRepository(db: Db) {
         );
       return uniqueVoteAlternatives;
     },
+
     async getRepresentativeInformation() {
       const representativeVotes = await db
         .select({
@@ -81,6 +87,7 @@ export function createRepository(db: Db) {
         .groupBy(representatives.id, representatives.name);
       return representativeVotes;
     },
+
     async getAllVotesforRepresentativ(representativeId: string) {
       const representativeInfo = await db
         .select()
@@ -90,6 +97,7 @@ export function createRepository(db: Db) {
 
       return representativeInfo;
     },
+
     async getVotingRepresentatives(
       electionId: string,
       representative: Representative
@@ -105,24 +113,30 @@ export function createRepository(db: Db) {
         );
       return representativeVote;
     },
+
     async addVote(vote: NewVote) {
       await db.insert(votes).values(vote);
     },
+
     async addElectionAlternative(alternative: NewElectionAlternative) {
       await db.insert(electionVoteAlternatives).values(alternative);
     },
-    async createRepresentative(representative: NewRepresentative) {
+
+    async addRepresentative(representative: NewRepresentative) {
       await db.insert(representatives).values(representative);
     },
-    async createElection(newElection: NewElection) {
+
+    async addElection(newElection: NewElection) {
       await db.insert(elections).values(newElection);
     },
+
     async updateVoterRepresentative(id: string, representativeId: string) {
       await db
         .update(voters)
         .set({ representativeId: representativeId })
         .where(eq(voters.id, id));
     },
+
     async getVote(electionId: string, voterId: string) {
       const electionVotes = await db
         .select()
@@ -133,12 +147,14 @@ export function createRepository(db: Db) {
 
       return electionVotes;
     },
+
     async concludeVote(electionId: string) {
       await db
         .update(elections)
         .set({ active: false, concluded: new Date() })
         .where(eq(elections.id, electionId));
     },
+
     async votedInElection(
       electionId: string,
       representativeInformation: RepresentativeInformation
