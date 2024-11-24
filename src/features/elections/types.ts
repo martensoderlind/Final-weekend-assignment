@@ -46,6 +46,10 @@ export type Representative = {
   email: string;
   id: string;
 };
+export type NewRepresentative = {
+  name: string;
+  email: string;
+};
 
 export type VotingRepresentative = {
   name: string;

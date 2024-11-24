@@ -1,7 +1,5 @@
-import { Representatives } from "./fixtures/mockdb";
 import { createRepository } from "./repository";
-import { v4 as uuidv4 } from "uuid";
-import { Alternative, ElectionVote } from "./types";
+import { Alternative, ElectionVote, NewRepresentative } from "./types";
 import { z } from "zod";
 import { Db } from "@/index";
 import { winnerOfElection } from "./logic";
@@ -22,9 +20,9 @@ export function createService(db: Db) {
   return {
     async getAllRepresentatives() {
       const representatives = await repository.getAllRepresentatives();
-
       return representatives;
     },
+
     async emailIsUnique(email: string) {
       const allEmails = await repository.getAllRepresentatives();
       for (let i = 0; i < allEmails.length; i++) {
@@ -32,9 +30,9 @@ export function createService(db: Db) {
       }
       return true;
     },
+
     async createNewRepresentative(name: string, email: string) {
-      const representative: Representatives = {
-        id: uuidv4(),
+      const representative: NewRepresentative = {
         name: name,
         email: email,
       };
@@ -43,27 +41,35 @@ export function createService(db: Db) {
         await repository.createRepresentative(representative);
       }
     },
+
     async updateVoterRepresentative(id: string, representativeId: string) {
       await repository.updateVoterRepresentative(id, representativeId);
     },
+
     async getVoter(id: string) {
       return await repository.getAllVotersById(id);
     },
+
     async getAllActiveElections() {
       return await repository.getAllActiveElections();
     },
+
     async getAllConcludedElections() {
       return await repository.getAllConcludedElections();
     },
+
     async getVoteAlternatives(id: string) {
       return await repository.getVoteAlternatives(id);
     },
+
     async getRepresentativeInformation() {
       return await repository.getRepresentativeInformation();
     },
+
     async representativeVotes(representativeId: string) {
       return await repository.getAllVotesforRepresentativ(representativeId);
     },
+
     async getVotingRepresentatives(electionId: string, alternative: string) {
       const representatives = await repository.getAllRepresentatives();
       const votingRepresentatives = [];
@@ -86,6 +92,7 @@ export function createService(db: Db) {
 
       return votingRepresentatives;
     },
+
     async addVote(electionVote: ElectionVote, representativeId: string) {
       const vote = {
         electionId: electionVote.electionId,
@@ -95,6 +102,7 @@ export function createService(db: Db) {
       };
       await repository.addVote(vote);
     },
+
     async addElectionOption(electionId: string, voteAlternative: string) {
       const alternative = {
         electionId: electionId,
@@ -102,8 +110,8 @@ export function createService(db: Db) {
       };
       await repository.addElectionAlternative(alternative);
     },
+
     async controllVote(electionId: string, voterId: string) {
-      //har personen röstat?
       const votes = await repository.getVote(electionId, voterId);
 
       for (let i = 0; i < votes.length; i++) {
@@ -111,20 +119,24 @@ export function createService(db: Db) {
       }
       return false;
     },
+
     async concludeVote(electionId: string) {
       await repository.concludeVote(electionId);
     },
+
     async createElection(electionSubject: string) {
       const newElection = {
         subject: electionSubject,
         created: new Date(),
         active: true,
       };
+
       const result = representativSchema.safeParse(electionSchema);
       if (result.success) {
         await repository.createElection(newElection);
       }
     },
+
     async voterAgreement(representativeId: string, choice: string) {
       const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
@@ -133,10 +145,12 @@ export function createService(db: Db) {
         representativeId,
         choice
       );
+      console.log("voters that agree", votersThatAgree);
       return (
         Math.floor(votersThatAgree[0].count / representativeVoters.length) * 100
       );
     },
+
     async electionWinner(alternatives: Alternative[]) {
       return winnerOfElection(alternatives);
     },

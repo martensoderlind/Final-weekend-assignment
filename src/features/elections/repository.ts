@@ -1,8 +1,8 @@
 import { Db } from "@/index";
-import { Representatives } from "./fixtures/mockdb";
 import {
   NewElection,
   NewElectionAlternative,
+  NewRepresentative,
   NewVote,
   Representative,
   RepresentativeInformation,
@@ -114,7 +114,7 @@ export function createRepository(db: Db) {
     async addElectionAlternative(alternative: NewElectionAlternative) {
       await db.insert(electionVoteAlternatives).values(alternative);
     },
-    async createRepresentative(representative: Representatives) {
+    async createRepresentative(representative: NewRepresentative) {
       await db.insert(representatives).values(representative);
     },
     async createElection(newElection: NewElection) {
