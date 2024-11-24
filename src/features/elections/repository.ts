@@ -1,11 +1,16 @@
 import { Db } from "@/index";
+import { ElectionAlternatives, Representatives } from "./fixtures/mockdb";
 import {
-  ElectionAlternatives,
+  NewElection,
+  NewElectionAlternative,
+  RepresentativeInformation,
+} from "./types";
+import {
   electionAlternatives,
-  Representatives,
-} from "./fixtures/mockdb";
-import { NewElection, RepresentativeInformation } from "./types";
-import { elections, representatives, voters } from "./db/schema";
+  elections,
+  representatives,
+  voters,
+} from "./db/schema";
 import { eq } from "drizzle-orm";
 
 export function createRepository(db: Db) {
@@ -27,35 +32,36 @@ export function createRepository(db: Db) {
       await db.insert(elections).values(newElection);
     },
     async updateVoterRepresentative(id: string, representativeId: string) {
-      const voterToUpdate = voters.find((voter) => voter.id === id);
-      voterToUpdate!.representativeId = representativeId;
-      console.log("updated representative");
+      // inte kontrollerad
+      await db
+        .update(voters)
+        .set({ representativeId: representativeId })
+        .where(eq(voters.id, id));
     },
     async getAllActiveElections() {
-      const activeElections = elections.filter((election) => {
-        return election.active === true;
-      });
+      const activeElections = await db
+        .select()
+        .from(elections)
+        .where(eq(elections.active, true));
       return activeElections;
     },
     async getAllConcludedElections() {
-      const activeElections = elections.filter((election) => {
-        return election.active === false;
-      });
-      return activeElections;
+      const concludedElections = await db
+        .select()
+        .from(elections)
+        .where(eq(elections.active, false));
+      return concludedElections;
     },
     async getVoteAlternatives(id: string) {
-      const voteAlternatives = electionAlternatives.filter((alternatives) => {
-        return alternatives.electionId === id;
-      });
-      const uniqueVoteAlternatives = voteAlternatives.filter(
-        (alternative, index, self) =>
-          index === self.findIndex((t) => t.choice === alternative.choice)
-      );
+      const uniqueVoteAlternatives = await db
+        .select({ voteAlternatives: electionAlternatives.choice })
+        .from(electionAlternatives)
+        .where(eq(electionAlternatives.electionId, id));
 
       return uniqueVoteAlternatives;
     },
-    async addVote(vote: ElectionAlternatives) {
-      electionAlternatives.push(vote);
+    async addVote(vote: NewElectionAlternative) {
+      await db.insert(electionAlternatives).values(vote);
     },
     async getAllElectionAlternatives(electionId: string) {
       const votesOnElection = electionAlternatives.filter((vote) => {

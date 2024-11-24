@@ -94,7 +94,6 @@ export function createService(db: Db) {
     },
     async addElectionOption(electionId: string, voteAlternative: string) {
       const vote = {
-        id: uuidv4(),
         electionId: electionId,
         voterId: null,
         representativeId: null,
