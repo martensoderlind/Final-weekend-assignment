@@ -72,11 +72,10 @@ export function createRepository(db: Db) {
       return electionVotes;
     },
     async concludeVote(electionId: string) {
-      const currentElection = elections.find((election) => {
-        return election.id === electionId;
-      });
-      currentElection!.active = false;
-      currentElection!.concluded = new Date().toISOString().split("T")[0];
+      await db
+        .update(elections)
+        .set({ active: false, concluded: new Date() })
+        .where(eq(elections.id, electionId));
     },
     async votedInElection(
       electionId: string,
