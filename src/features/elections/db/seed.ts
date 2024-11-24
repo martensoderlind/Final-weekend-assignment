@@ -6,136 +6,82 @@ import {
   voters,
   votes,
 } from "./schema";
+import { faker } from "@faker-js/faker";
+import { randomUUID } from "crypto";
 
-async function seed() {
-  try {
-    await db.insert(votes).values([
-      {
-        electionId: "86bacccb-6f06-4c1d-b4c2-6b143b8f1618",
-        voterId: "4eb395a5-2c88-4067-b184-e7bec38471c7",
-        representativeId: "17442110-b154-4b4f-97cf-341b40f252b3",
-        choice: "2b74a142-52ab-4716-b8ff-c190cf0baacc",
-      },
-      {
-        electionId: "86bacccb-6f06-4c1d-b4c2-6b143b8f1618",
-        voterId: "18d2f8d0-8a82-450b-ab91-1e45846dad96",
-        representativeId: "51c587ab-c4fc-4708-8b92-eb55b9795b86",
-        choice: "31dc8ba9-3d63-4be4-bbbf-4a913c9bce7b",
-      },
-      {
-        electionId: "91af59bd-2f5f-4ed2-ace9-80f82275a654",
-        voterId: "42cf16d1-a0fe-48ce-8cec-0bb679264953",
-        representativeId: "a3597891-797a-4ee6-8ecd-9a00474d42dd",
-        choice: "e2d0f9dc-747e-4f4e-91c2-f1b851e37b89",
-      },
-      {
-        electionId: "91af59bd-2f5f-4ed2-ace9-80f82275a654",
-        voterId: "3685a70b-0b70-4f21-aa2c-1038caa13cbf",
-        representativeId: "a3597891-797a-4ee6-8ecd-9a00474d42dd",
-        choice: "ec28e2bc-7edd-488a-9557-1723c76b5395",
-      },
-      {
-        electionId: "bb95a58b-7438-410f-979a-aaad80bba8ac",
-        voterId: "4eb395a5-2c88-4067-b184-e7bec38471c7",
-        representativeId: "17442110-b154-4b4f-97cf-341b40f252b3",
-        choice: "2b74a142-52ab-4716-b8ff-c190cf0baacc",
-      },
-    ]);
-    const representativesData = await db
-      .insert(representatives)
-      .values([
-        {
-          name: "Anna Andersson",
-          email: "anna.andersson@example.com",
-        },
-        {
-          name: "Erik Eriksson",
-          email: "erik.eriksson@example.com",
-        },
-        {
-          name: "Maria Nilsson",
-          email: "maria.nilsson@example.com",
-        },
-      ])
-      .returning();
+const randomDateInLastYears = (years: number) => {
+  const end = new Date();
+  const start = new Date();
+  start.setFullYear(end.getFullYear() - years);
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+};
 
-    await db
-      .insert(voters)
-      .values([
-        {
-          id: "4eb395a5-2c88-4067-b184-e7bec38471c7",
-          representativeId: representativesData[0].id,
-          voteDate: new Date("2024-03-15"),
-        },
-        {
-          id: "18d2f8d0-8a82-450b-ab91-1e45846dad96",
-          representativeId: representativesData[1].id,
-          voteDate: new Date("2024-03-16"),
-        },
-        {
-          id: "42cf16d1-a0fe-48ce-8cec-0bb679264953",
-          representativeId: representativesData[2].id,
-          voteDate: new Date("2024-03-17"),
-        },
-        {
-          id: "3685a70b-0b70-4f21-aa2c-1038caa13cbf",
-          representativeId: representativesData[2].id,
-          voteDate: new Date("2024-01-17"),
-        },
-        {
-          id: "7685a70b-0b70-4f21-aa2c-1038caa13cbf",
-          representativeId: representativesData[1].id,
-          voteDate: new Date("2023-01-17"),
-        },
-      ])
-      .returning();
+const sample = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
-    const electionsData = await db
-      .insert(elections)
-      .values([
-        {
-          subject: "Budget 2024",
-          created: new Date(),
-          active: true,
-        },
-        {
-          subject: "Ny styrelsemedlem",
-          created: new Date(),
-          active: true,
-        },
-        {
-          subject: "Tidigare omröstning",
-          created: new Date("2024-01-01"),
-          concluded: new Date("2024-01-15"),
-          active: false,
-        },
-      ])
-      .returning();
+const seed = async () => {
+  const representativeData = Array.from({ length: 10 }, () => ({
+    id: randomUUID(),
+    name: faker.person.fullName(),
+    email: faker.internet.email(),
+  }));
+  await db.insert(representatives).values(representativeData);
 
-    await db
-      .insert(electionVoteAlternatives)
-      .values([
-        {
-          electionId: electionsData[0].id,
-          choice: "Godkänn",
-        },
-        {
-          electionId: electionsData[0].id,
-          choice: "Avslå",
-        },
-        {
-          electionId: electionsData[1].id,
-          choice: "Maria Svensson",
-        },
-        {
-          electionId: electionsData[1].id,
-          choice: "Erik Eriksson",
-        },
-      ])
-      .returning();
-  } catch (error) {
-    console.error("Error seeding database:", error);
-  }
-}
+  const electionData = Array.from({ length: 15 }, () => {
+    const created = randomDateInLastYears(4);
+    const concluded =
+      Math.random() > 0.5 ? new Date(created.getTime() + 86400000) : null;
+    return {
+      id: randomUUID(),
+      subject: faker.lorem.sentence(),
+      created,
+      concluded,
+      active: concluded === null,
+    };
+  });
+  await db.insert(elections).values(electionData);
 
-seed().catch(console.error);
+  const alternativesData = electionData.flatMap((election) => [
+    {
+      id: randomUUID(),
+      electionId: election.id,
+      choice: faker.lorem.words(),
+    },
+    {
+      id: randomUUID(),
+      electionId: election.id,
+      choice: faker.lorem.words(),
+    },
+  ]);
+  await db.insert(electionVoteAlternatives).values(alternativesData);
+
+  const voterData = Array.from({ length: 100 }, () => ({
+    id: randomUUID(),
+    representativeId: sample(representativeData).id,
+    voteDate: randomDateInLastYears(4),
+  }));
+  await db.insert(voters).values(voterData);
+
+  const votesData = voterData.map((voter) => {
+    const election = sample(electionData);
+    const alternative = sample(
+      alternativesData.filter((alt) => alt.electionId === election.id)
+    );
+    return {
+      id: randomUUID(),
+      electionId: election.id,
+      voterId: sample(representativeData).id,
+      representativeId: voter.representativeId,
+      choice: alternative.id,
+    };
+  });
+  await db.insert(votes).values(votesData);
+
+  console.log("Seeding complete!");
+};
+
+seed().catch((err) => {
+  console.error("Error seeding data:", err);
+  process.exit(1);
+});

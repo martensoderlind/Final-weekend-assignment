@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed":"tsx src/features/elections/db/seed.ts",
-     "test": "tsx --watch --test"
+    "seed": "tsx src/features/elections/db/seed.ts",
+    "test": "tsx --watch --test"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -21,6 +21,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
     "@types/react": "^18",
