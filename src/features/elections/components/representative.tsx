@@ -16,11 +16,13 @@ export default async function Representative({ representative }: Props) {
   const votes = await voteService.getAllVotesfromRepresentativ(
     representative.id
   );
+  const agreement = await voteService.getVotesFromVoters(representative, votes);
+
   console.log("votes:", votes);
   return (
     <article className="grid grid-cols-4 gap-4 my-2">
       <p className="pt-3 text-gray-900">{representative.name}</p>
-      <p className="text-center pt-3">{votes.count}</p>
+      <p className="text-center pt-3">{agreement}%</p>
       <p className="text-center pt-3">{representative.votes}</p>
       <button
         className="btn btn-accent rounded-md"

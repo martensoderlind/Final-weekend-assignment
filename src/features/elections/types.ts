@@ -59,3 +59,6 @@ export type VotingRepresentative = {
   representativeId: string | null;
   choice: string | null;
 };
+export type Count = {
+  count: number;
+};

@@ -1,8 +1,14 @@
 import { createRepository } from "./repository";
-import { Alternative, ElectionVote, NewRepresentative } from "./types";
+import {
+  Alternative,
+  Count,
+  ElectionVote,
+  NewRepresentative,
+  RepresentativeInformation,
+} from "./types";
 import { z } from "zod";
 import { Db } from "@/index";
-import { winnerOfElection } from "./logic";
+import { calculatePerecentage, winnerOfElection } from "./logic";
 
 const representativSchema = z.object({
   name: z.string().min(1),
@@ -159,7 +165,6 @@ export function createService(db: Db) {
       electionId: string,
       choice: string
     ) {
-      //retunerar rätt
       const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
       );
@@ -181,6 +186,17 @@ export function createService(db: Db) {
 
     async getAllVotesfromRepresentativ(representativeId: string) {
       return await repository.getAllVotesfromRepresentativ(representativeId);
+    },
+    async getVotesFromVoters(
+      representative: RepresentativeInformation,
+      representativeVotes: Count
+    ) {
+      const votes = await repository.getVoterCount(representative.id);
+      return calculatePerecentage(
+        votes[0],
+        representative,
+        representativeVotes
+      );
     },
   };
 }

@@ -109,7 +109,7 @@ export function createRepository(db: Db) {
         .where(eq(votes.voterId, representativeId));
 
       if (representativeVotes[0].count === 0) {
-        return { count: "No votes made" };
+        return { count: 0 };
       }
       return representativeVotes[0];
     },
@@ -200,6 +200,19 @@ export function createRepository(db: Db) {
           and(eq(votes.electionId, electionId), eq(votes.choice, alternativeId))
         );
       return representativVoters;
+    },
+    async getRepresentativesElections(representativeId: string) {
+      const elections = await db
+        .select()
+        .from(votes)
+        .where(and(eq(votes.voterId, representativeId)));
+      return elections;
+    },
+    async getVoterCount(representativeId: string) {
+      return await db
+        .select({ count: sql<number>`count(*)` })
+        .from(votes)
+        .where(and(eq(votes.representativeId, representativeId)));
     },
   };
 }
