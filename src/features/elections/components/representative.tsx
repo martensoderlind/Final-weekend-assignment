@@ -9,13 +9,16 @@ type Props = {
 
 export default async function Representative({ representative }: Props) {
   const voter = await voteService.getVoter(user.id);
+
   async function handleClick() {
     "use server";
     await updateVoterRepresentative(representative.id);
   }
+
   const votes = await voteService.getAllVotesfromRepresentativ(
     representative.id
   );
+
   const agreement = await voteService.getVotesFromVoters(representative, votes);
 
   console.log("votes:", votes);
@@ -27,10 +30,10 @@ export default async function Representative({ representative }: Props) {
       <button
         className="btn btn-accent rounded-md"
         disabled={
-          voter[0]!.representativeId === representative.id ? true : false
+          voter[0].representativeId === representative.id ? true : false
         }
         onClick={
-          voter[0]!.representativeId === representative.id
+          voter[0].representativeId === representative.id
             ? undefined
             : handleClick
         }
