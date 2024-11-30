@@ -5,12 +5,12 @@ import { voteService } from "./instance";
 import { Alternative } from "./types";
 import { user } from "./fixtures/mockdb";
 
-export async function createRepresentative(formData: FormData) {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  await voteService.createNewRepresentative(name, email);
-  revalidatePath("/representatives");
-}
+// export async function createRepresentative(formData: FormData) {
+//   const name = formData.get("name") as string;
+//   const email = formData.get("email") as string;
+//   await voteService.createNewRepresentative(name, email);
+//   revalidatePath("/representatives");
+// }
 export async function createElection(formData: FormData) {
   const election = formData.get("election") as string;
   await voteService.createElection(election);

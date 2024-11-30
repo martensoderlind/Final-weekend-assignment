@@ -1,7 +1,7 @@
 import { Db } from "@/index";
-import { NewRepresentative, NewVoter, Representative } from "./types";
-import { representatives, voters } from "../db/schema";
 import { eq, and, sql } from "drizzle-orm";
+import { representatives, voters } from "./db/schema";
+import { NewRepresentative, NewVoter, Representative } from "./types";
 
 export function createRepository(db: Db) {
   return {

@@ -1,5 +1,5 @@
 import React from "react";
-import { createRepresentative } from "../actions";
+// import { createRepresentative } from "../actions";
 
 export function RepresentativeForm() {
   return (
@@ -8,7 +8,7 @@ export function RepresentativeForm() {
         Add Representative
       </h1>
       <form
-        action={createRepresentative}
+        // action={createRepresentative}
         className="flex flex-col md:flex-row justify-center"
       >
         <label className="input input-bordered flex items-center gap-2 m-2">

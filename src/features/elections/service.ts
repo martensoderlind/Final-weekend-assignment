@@ -1,18 +1,13 @@
 import { createRepository } from "./repository";
-import {
-  Alternative,
-  Count,
-  NewRepresentative,
-  RepresentativeInformation,
-} from "./types";
+import { Alternative, Count, RepresentativeInformation } from "./types";
 import { Db } from "@/index";
 import { calculatePerecentage, winnerOfElection } from "./logic";
 import { voteService } from "./instance";
 import { user } from "./fixtures/mockdb";
-import { electionSchema, representativSchema } from "./validation";
+import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 
-export function createService(db: Db) {
+export function createService(db: Db, featureConnection: () => Promise<void>) {
   const repository = createRepository(db);
 
   return {
@@ -29,19 +24,19 @@ export function createService(db: Db) {
       return true;
     },
 
-    async createNewRepresentative(name: string, email: string) {
-      const uniqueEmail = await voteService.emailIsUnique(email);
-      if (uniqueEmail) {
-        const representative: NewRepresentative = {
-          name: name,
-          email: email,
-        };
-        const result = representativSchema.safeParse(representative);
-        if (result.success) {
-          await repository.addRepresentative(representative);
-        }
-      }
-    },
+    // async createNewRepresentative(name: string, email: string) {
+    //   const uniqueEmail = await voteService.emailIsUnique(email);
+    //   if (uniqueEmail) {
+    //     const representative: NewRepresentative = {
+    //       name: name,
+    //       email: email,
+    //     };
+    //     const result = representativSchema.safeParse(representative);
+    //     if (result.success) {
+    //       await repository.addRepresentative(representative);
+    //     }
+    //   }
+    // },
 
     async updateVoterRepresentative(id: string, representativeId: string) {
       await repository.updateVoterRepresentative(id, representativeId);
@@ -218,6 +213,9 @@ export function createService(db: Db) {
         representative,
         representativeVotes
       );
+    },
+    async electionConnection() {
+      await featureConnection();
     },
   };
 }

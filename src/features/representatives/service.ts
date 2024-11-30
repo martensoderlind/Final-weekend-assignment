@@ -11,6 +11,7 @@ import { representativSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 import { user } from "./db/mockUser";
 import { representativeService } from "./instance";
+import { connection } from "next/server";
 
 export function createService(db: Db) {
   const repository = createRepository(db);
@@ -131,6 +132,9 @@ export function createService(db: Db) {
 
     async addVoter(voterData: NewVoter) {
       await repository.addVoter(voterData);
+    },
+    async featureConnection() {
+      console.log("Hello from representative!");
     },
   };
 }
