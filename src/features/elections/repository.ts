@@ -4,6 +4,7 @@ import {
   NewElectionAlternative,
   NewRepresentative,
   NewVote,
+  NewVoter,
   Representative,
   SeedElection,
 } from "./types";
@@ -194,6 +195,12 @@ export function createRepository(db: Db) {
     },
     async seedElections(electionData: SeedElection[]) {
       await db.insert(elections).values(electionData);
+    },
+    async seedElectionAlternative(alternative: NewElectionAlternative[]) {
+      await db.insert(electionVoteAlternatives).values(alternative);
+    },
+    async seedVoters(voterData: NewVoter[]) {
+      await db.insert(voters).values(voterData);
     },
   };
 }

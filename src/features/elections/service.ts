@@ -9,6 +9,7 @@ import { Db } from "@/index";
 import {
   calculatePerecentage,
   randomDateInLastYears,
+  sample,
   winnerOfElection,
 } from "./logic";
 import { voteService } from "./instance";
@@ -223,6 +224,28 @@ export function createService(db: Db) {
         };
       });
       await repository.seedElections(electionData);
+
+      const alternativesData = electionData.flatMap((election) => [
+        {
+          id: randomUUID(),
+          electionId: election.id,
+          choice: faker.lorem.words(),
+        },
+        {
+          id: randomUUID(),
+          electionId: election.id,
+          choice: faker.lorem.words(),
+        },
+      ]);
+      await repository.seedElectionAlternative(alternativesData);
+
+      const voterData = Array.from({ length: 100 }, () => ({
+        id: randomUUID(),
+        representativeId: sample(representativeData).id,
+        voteDate: randomDateInLastYears(4),
+      }));
+      await repository.seedVoters(voterData);
+
       console.log("seeding data");
     },
   };

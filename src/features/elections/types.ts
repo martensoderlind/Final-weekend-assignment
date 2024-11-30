@@ -26,6 +26,7 @@ export type NewElection = {
   active: boolean;
 };
 export type NewElectionAlternative = {
+  id?: UUID;
   electionId: string;
   choice: string;
 };
@@ -72,4 +73,9 @@ export type SeedElection = {
   created: Date;
   concluded: Date | null;
   active: boolean;
+};
+export type NewVoter = {
+  id: UUID;
+  representativeId: UUID;
+  voteDate: Date;
 };
