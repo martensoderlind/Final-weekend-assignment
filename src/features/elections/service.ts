@@ -261,7 +261,7 @@ export function createService(db: Db) {
       });
       await repository.seedVotes(votesData);
 
-      console.log("seeding data");
+      console.log("Seeding complete!");
     },
   };
 }
