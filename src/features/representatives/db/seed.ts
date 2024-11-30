@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
-import { randomDateInLastYears, sample } from "../components/logic";
-import { representativeService } from "../components/instance";
+import { randomDateInLastYears, sample } from "../logic";
+import { representativeService } from "../instance";
 import { faker } from "@faker-js/faker";
 
 const seed = async () => {
@@ -27,7 +27,7 @@ const seed = async () => {
   for (let i = 0; i < voterData.length; i++) {
     await representativeService.addVoter(voterData[i]);
   }
-  console.log("Seeding complete!");
+  console.log("representative seeding complete!");
 };
 
 seed().catch((err) => {

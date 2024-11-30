@@ -23,3 +23,11 @@ export type Representative = {
   email: string;
   id: string | UUID;
 };
+export type VotingRepresentative = {
+  name: string;
+  id: string;
+  electionId: string;
+  voterId: string | null;
+  representativeId: string | null;
+  choice: string | null;
+};

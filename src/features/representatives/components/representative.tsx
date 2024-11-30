@@ -1,6 +1,6 @@
 import { updateVoterRepresentative } from "../actions";
-import { user } from "../fixtures/mockdb";
-import { voteService } from "../instance";
+import { user } from "../db/mockUser";
+import { representativeService } from "../instance";
 import { RepresentativeInformation } from "../types";
 
 type Props = {
@@ -8,18 +8,21 @@ type Props = {
 };
 
 export default async function Representative({ representative }: Props) {
-  const voter = await voteService.getVoter(user.id);
+  const voter = await representativeService.getVoter(user.id);
 
   async function handleClick() {
     "use server";
     await updateVoterRepresentative(representative.id);
   }
 
-  const votes = await voteService.getAllVotesfromRepresentativ(
+  const votes = await representativeService.getAllVotesfromRepresentativ(
     representative.id
   );
 
-  const agreement = await voteService.getVotesFromVoters(representative, votes);
+  const agreement = await representativeService.getVotesFromVoters(
+    representative,
+    votes
+  );
 
   return (
     <article className="grid grid-cols-4 gap-4 my-2">

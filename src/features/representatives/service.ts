@@ -9,7 +9,7 @@ import { Db } from "@/index";
 import { calculatePerecentage } from "./logic";
 import { representativSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
-import { user } from "../db/mockUser";
+import { user } from "./db/mockUser";
 import { representativeService } from "./instance";
 
 export function createService(db: Db) {
