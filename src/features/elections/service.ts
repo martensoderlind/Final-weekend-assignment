@@ -151,11 +151,17 @@ export function createService(db: Db) {
       await repository.concludeVote(electionId);
     },
 
-    async createElection(electionSubject: string) {
+    async createElection(
+      electionSubject: string,
+      id?: string,
+      created?: Date,
+      active?: boolean
+    ) {
       const newElection = {
+        id: id ? id : randomUUID(),
         subject: electionSubject,
-        created: new Date(),
-        active: true,
+        created: created ? created : new Date(),
+        active: active ? active : true,
       };
 
       const result = electionSchema.safeParse(newElection);
@@ -204,13 +210,6 @@ export function createService(db: Db) {
     },
 
     async seed() {
-      const representativeData = Array.from({ length: 10 }, () => ({
-        id: randomUUID(),
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
-      }));
-      await repository.seedRepresentative(representativeData);
-
       const electionData = Array.from({ length: 15 }, () => {
         const created = randomDateInLastYears(4);
         const concluded =
@@ -238,13 +237,6 @@ export function createService(db: Db) {
         },
       ]);
       await repository.seedElectionAlternative(alternativesData);
-
-      const voterData = Array.from({ length: 100 }, () => ({
-        id: randomUUID(),
-        representativeId: sample(representativeData).id,
-        voteDate: randomDateInLastYears(4),
-      }));
-      await repository.seedVoters(voterData);
 
       const votesData = voterData.map((voter) => {
         const election = sample(electionData);

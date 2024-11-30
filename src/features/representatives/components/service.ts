@@ -1,12 +1,16 @@
 import { createRepository } from "./repository";
-import { Count, NewRepresentative, RepresentativeInformation } from "./types";
+import {
+  Count,
+  NewRepresentative,
+  NewVoter,
+  RepresentativeInformation,
+} from "./types";
 import { Db } from "@/index";
-import { calculatePerecentage, randomDateInLastYears, sample } from "./logic";
-import { voteService } from "./instance";
+import { calculatePerecentage } from "./logic";
 import { representativSchema } from "./validation";
-import { faker } from "@faker-js/faker";
-import { randomUUID } from "crypto";
+import { randomUUID, UUID } from "crypto";
 import { user } from "../db/mockUser";
+import { representativeService } from "./instance";
 
 export function createService(db: Db) {
   const repository = createRepository(db);
@@ -25,10 +29,11 @@ export function createService(db: Db) {
       return true;
     },
 
-    async createNewRepresentative(name: string, email: string) {
-      const uniqueEmail = await voteService.emailIsUnique(email);
+    async createNewRepresentative(name: string, email: string, id?: UUID) {
+      const uniqueEmail = await representativeService.emailIsUnique(email);
       if (uniqueEmail) {
         const representative: NewRepresentative = {
+          id: id ? id : randomUUID(),
           name: name,
           email: email,
         };
@@ -79,7 +84,7 @@ export function createService(db: Db) {
 
     //skrivas om??
     async controllVote(electionId: string) {
-      const voter = await voteService.getVoter(user.id);
+      const voter = await representativeService.getVoter(user.id);
       const votes = await repository.getVote(electionId, voter[0].id);
 
       for (let i = 0; i < votes.length; i++) {
@@ -124,22 +129,8 @@ export function createService(db: Db) {
       );
     },
 
-    async seed() {
-      const representativeData = Array.from({ length: 10 }, () => ({
-        id: randomUUID(),
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
-      }));
-      await repository.seedRepresentative(representativeData);
-
-      const voterData = Array.from({ length: 100 }, () => ({
-        id: randomUUID(),
-        representativeId: sample(representativeData).id,
-        voteDate: randomDateInLastYears(4),
-      }));
-      await repository.seedVoters(voterData);
-
-      console.log("Seeding complete!");
+    async addVoter(voterData: NewVoter) {
+      await repository.addVoter(voterData);
     },
   };
 }

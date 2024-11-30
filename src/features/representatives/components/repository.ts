@@ -113,11 +113,7 @@ export function createRepository(db: Db) {
         .where(and(eq(votes.representativeId, representativeId)));
     },
 
-    async seedRepresentative(representative: Representative[]) {
-      await db.insert(representatives).values(representative);
-    },
-
-    async seedVoters(voterData: NewVoter[]) {
+    async addVoter(voterData: NewVoter) {
       await db.insert(voters).values(voterData);
     },
   };

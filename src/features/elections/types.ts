@@ -53,7 +53,7 @@ export type Representative = {
 export type NewRepresentative = {
   name: string;
   email: string;
-  id?: string;
+  id?: UUID;
 };
 
 export type VotingRepresentative = {
