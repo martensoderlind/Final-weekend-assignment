@@ -3,6 +3,7 @@
 ## Big picture plan
 
 <img src="./big-picture-plan.png" alt="hero image">
+Projectboard: https://github.com/users/martensoderlind/projects/7/views/1
 # Voting Application for Representative Democracy
 
 ## Project Overview
