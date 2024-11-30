@@ -202,5 +202,8 @@ export function createRepository(db: Db) {
     async seedVoters(voterData: NewVoter[]) {
       await db.insert(voters).values(voterData);
     },
+    async seedVotes(votesData: NewVote[]) {
+      await db.insert(votes).values(votesData);
+    },
   };
 }

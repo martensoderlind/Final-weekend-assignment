@@ -31,10 +31,11 @@ export type NewElectionAlternative = {
   choice: string;
 };
 export type NewVote = {
-  electionId: string;
-  voterId: string;
-  representativeId: string;
-  choice: string;
+  id?: UUID;
+  electionId: string | UUID;
+  voterId: string | UUID;
+  representativeId: string | UUID;
+  choice: string | UUID;
 };
 
 export type Alternative = {

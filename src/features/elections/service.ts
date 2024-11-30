@@ -246,6 +246,21 @@ export function createService(db: Db) {
       }));
       await repository.seedVoters(voterData);
 
+      const votesData = voterData.map((voter) => {
+        const election = sample(electionData);
+        const alternative = sample(
+          alternativesData.filter((alt) => alt.electionId === election.id)
+        );
+        return {
+          id: randomUUID(),
+          electionId: election.id,
+          voterId: sample(representativeData).id,
+          representativeId: voter.representativeId,
+          choice: alternative.id,
+        };
+      });
+      await repository.seedVotes(votesData);
+
       console.log("seeding data");
     },
   };
