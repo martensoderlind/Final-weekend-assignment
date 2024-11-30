@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { voteService } from "../instance";
-import { randomDateInLastYears } from "../logic";
+import { randomDateInLastYears, sample } from "../logic";
 import { faker } from "@faker-js/faker";
 
 const seed = async () => {
@@ -16,12 +16,56 @@ const seed = async () => {
       active: concluded === null,
     };
   });
+
   for (let i = 0; i < electionData.length; i++) {
     await voteService.createElection(
       electionData[i].subject,
       electionData[i].id,
       electionData[i].created,
       electionData[i].active
+    );
+  }
+
+  const alternativesData = electionData.flatMap((election) => [
+    {
+      id: randomUUID(),
+      electionId: election.id,
+      choice: faker.lorem.words(),
+    },
+    {
+      id: randomUUID(),
+      electionId: election.id,
+      choice: faker.lorem.words(),
+    },
+  ]);
+
+  for (let i = 0; i < alternativesData.length; i++) {
+    await voteService.addElectionOption(
+      alternativesData[i].electionId,
+      alternativesData[i].choice
+    );
+  }
+
+  const votesData = Array.from({ length: 100 }, () => {
+    const election = sample(electionData);
+    const alternative = sample(
+      alternativesData.filter((alt) => alt.electionId === election.id)
+    );
+    return {
+      id: randomUUID(),
+      electionId: election.id,
+      voterId: randomUUID(),
+      representativeId: randomUUID(),
+      choice: alternative.id,
+    };
+  });
+  for (let i = 0; i < votesData.length; i++) {
+    await voteService.addVote(
+      votesData[i].electionId,
+      votesData[i].choice,
+      votesData[i].id,
+      votesData[i].voterId,
+      votesData[i].representativeId
     );
   }
 

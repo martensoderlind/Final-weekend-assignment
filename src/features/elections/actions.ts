@@ -18,7 +18,7 @@ export async function createElection(formData: FormData) {
 }
 
 export async function castVote(alternative: Alternative) {
-  await voteService.addVote(alternative);
+  await voteService.addVote(alternative.electionId, alternative.choice);
   revalidatePath("/elections");
 }
 

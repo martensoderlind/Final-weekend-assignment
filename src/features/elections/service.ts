@@ -6,17 +6,11 @@ import {
   RepresentativeInformation,
 } from "./types";
 import { Db } from "@/index";
-import {
-  calculatePerecentage,
-  randomDateInLastYears,
-  sample,
-  winnerOfElection,
-} from "./logic";
+import { calculatePerecentage, winnerOfElection } from "./logic";
 import { voteService } from "./instance";
 import { user } from "./fixtures/mockdb";
 import { electionSchema, representativSchema } from "./validation";
-import { faker } from "@faker-js/faker";
-import { randomUUID } from "crypto";
+import { randomUUID, UUID } from "crypto";
 
 export function createService(db: Db) {
   const repository = createRepository(db);
@@ -116,14 +110,31 @@ export function createService(db: Db) {
       return votingRepresentatives;
     },
 
-    async addVote(alternative: Alternative) {
-      const voter = await voteService.getVoter(user.id);
-      if (voter.length > 0) {
+    async addVote(
+      electionId: string,
+      choiceId: string,
+      id?: UUID,
+      voterId?: UUID,
+      representativeId?: UUID
+    ) {
+      if (!id) {
+        const voter = await voteService.getVoter(user.id);
+        if (voter.length > 0) {
+          const vote = {
+            electionId: electionId,
+            voterId: voter[0]!.id,
+            representativeId: voter[0].representativeId,
+            choice: choiceId,
+          };
+          await repository.addVote(vote);
+        }
+      } else {
         const vote = {
-          electionId: alternative.electionId,
-          voterId: voter[0]!.id,
-          representativeId: voter[0].representativeId,
-          choice: alternative.id,
+          id: id,
+          electionId: electionId,
+          voterId: voterId!,
+          representativeId: representativeId!,
+          choice: choiceId!,
         };
         await repository.addVote(vote);
       }
@@ -207,53 +218,6 @@ export function createService(db: Db) {
         representative,
         representativeVotes
       );
-    },
-
-    async seed() {
-      const electionData = Array.from({ length: 15 }, () => {
-        const created = randomDateInLastYears(4);
-        const concluded =
-          Math.random() > 0.5 ? new Date(created.getTime() + 86400000) : null;
-        return {
-          id: randomUUID(),
-          subject: faker.lorem.sentence(),
-          created,
-          concluded,
-          active: concluded === null,
-        };
-      });
-      await repository.seedElections(electionData);
-
-      const alternativesData = electionData.flatMap((election) => [
-        {
-          id: randomUUID(),
-          electionId: election.id,
-          choice: faker.lorem.words(),
-        },
-        {
-          id: randomUUID(),
-          electionId: election.id,
-          choice: faker.lorem.words(),
-        },
-      ]);
-      await repository.seedElectionAlternative(alternativesData);
-
-      const votesData = voterData.map((voter) => {
-        const election = sample(electionData);
-        const alternative = sample(
-          alternativesData.filter((alt) => alt.electionId === election.id)
-        );
-        return {
-          id: randomUUID(),
-          electionId: election.id,
-          voterId: sample(representativeData).id,
-          representativeId: voter.representativeId,
-          choice: alternative.id,
-        };
-      });
-      await repository.seedVotes(votesData);
-
-      console.log("Seeding complete!");
     },
   };
 }
