@@ -1,5 +1,5 @@
-import { Election } from "../fixtures/mockdb";
 import { voteService } from "../instance";
+import { Election } from "../types";
 import ActiveElection from "./active-election";
 
 export async function ElectionBoard() {

@@ -80,3 +80,10 @@ export type NewVoter = {
   representativeId: UUID;
   voteDate: Date;
 };
+export type Election = {
+  id: string;
+  subject: string;
+  created: Date;
+  concluded: Date | null;
+  active: boolean;
+};

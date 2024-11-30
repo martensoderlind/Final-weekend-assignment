@@ -1,6 +1,6 @@
 import { concludeVote, controllVote } from "../actions";
-import { Election } from "../fixtures/mockdb";
 import { voteService } from "../instance";
+import { Election } from "../types";
 import NewVoteOption from "./new-vote-option";
 import VoteOptions from "./vote-options";
 
