@@ -5,6 +5,7 @@ import {
   NewRepresentative,
   NewVote,
   Representative,
+  SeedElection,
 } from "./types";
 import {
   electionVoteAlternatives,
@@ -187,6 +188,12 @@ export function createRepository(db: Db) {
         .select({ count: sql<number>`count(*)` })
         .from(votes)
         .where(and(eq(votes.representativeId, representativeId)));
+    },
+    async seedRepresentative(representative: Representative[]) {
+      await db.insert(representatives).values(representative);
+    },
+    async seedElections(electionData: SeedElection[]) {
+      await db.insert(elections).values(electionData);
     },
   };
 }

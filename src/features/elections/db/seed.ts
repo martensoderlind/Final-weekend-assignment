@@ -8,17 +8,8 @@ import {
 } from "./schema";
 import { faker } from "@faker-js/faker";
 import { randomUUID } from "crypto";
-
-const randomDateInLastYears = (years: number) => {
-  const end = new Date();
-  const start = new Date();
-  start.setFullYear(end.getFullYear() - years);
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
-};
-
-const sample = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+import { voteService } from "../instance";
+import { randomDateInLastYears, sample } from "../logic";
 
 const seed = async () => {
   const representativeData = Array.from({ length: 10 }, () => ({
@@ -79,6 +70,7 @@ const seed = async () => {
   await db.insert(votes).values(votesData);
 
   console.log("Seeding complete!");
+  // voteService.seed();
 };
 
 seed().catch((err) => {

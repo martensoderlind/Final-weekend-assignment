@@ -6,10 +6,16 @@ import {
   RepresentativeInformation,
 } from "./types";
 import { Db } from "@/index";
-import { calculatePerecentage, winnerOfElection } from "./logic";
+import {
+  calculatePerecentage,
+  randomDateInLastYears,
+  winnerOfElection,
+} from "./logic";
 import { voteService } from "./instance";
 import { user } from "./fixtures/mockdb";
 import { electionSchema, representativSchema } from "./validation";
+import { faker } from "@faker-js/faker";
+import { randomUUID } from "crypto";
 
 export function createService(db: Db) {
   const repository = createRepository(db);
@@ -106,7 +112,6 @@ export function createService(db: Db) {
           }
         }
       }
-
       return votingRepresentatives;
     },
 
@@ -195,6 +200,30 @@ export function createService(db: Db) {
         representative,
         representativeVotes
       );
+    },
+
+    async seed() {
+      const representativeData = Array.from({ length: 10 }, () => ({
+        id: randomUUID(),
+        name: faker.person.fullName(),
+        email: faker.internet.email(),
+      }));
+      await repository.seedRepresentative(representativeData);
+
+      const electionData = Array.from({ length: 15 }, () => {
+        const created = randomDateInLastYears(4);
+        const concluded =
+          Math.random() > 0.5 ? new Date(created.getTime() + 86400000) : null;
+        return {
+          id: randomUUID(),
+          subject: faker.lorem.sentence(),
+          created,
+          concluded,
+          active: concluded === null,
+        };
+      });
+      await repository.seedElections(electionData);
+      console.log("seeding data");
     },
   };
 }

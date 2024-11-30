@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 export type ElectionVote = {
   electionId: string;
   voterId: string;
@@ -44,11 +46,12 @@ export type Alternative = {
 export type Representative = {
   name: string;
   email: string;
-  id: string;
+  id: string | UUID;
 };
 export type NewRepresentative = {
   name: string;
   email: string;
+  id?: string;
 };
 
 export type VotingRepresentative = {
@@ -61,4 +64,12 @@ export type VotingRepresentative = {
 };
 export type Count = {
   count: number;
+};
+
+export type SeedElection = {
+  id: UUID;
+  subject: string;
+  created: Date;
+  concluded: Date | null;
+  active: boolean;
 };
