@@ -2,23 +2,14 @@ import { createRepository } from "./repository";
 import {
   Alternative,
   Count,
-  ElectionVote,
   NewRepresentative,
   RepresentativeInformation,
 } from "./types";
-import { z } from "zod";
 import { Db } from "@/index";
 import { calculatePerecentage, winnerOfElection } from "./logic";
-
-const representativSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-});
-const electionSchema = z.object({
-  subject: z.string(),
-  created: z.date(),
-  active: z.boolean(),
-});
+import { voteService } from "./instance";
+import { user } from "./fixtures/mockdb";
+import { electionSchema, representativSchema } from "./validation";
 
 export function createService(db: Db) {
   const repository = createRepository(db);
@@ -38,13 +29,16 @@ export function createService(db: Db) {
     },
 
     async createNewRepresentative(name: string, email: string) {
-      const representative: NewRepresentative = {
-        name: name,
-        email: email,
-      };
-      const result = representativSchema.safeParse(representative);
-      if (result.success) {
-        await repository.addRepresentative(representative);
+      const uniqueEmail = await voteService.emailIsUnique(email);
+      if (uniqueEmail) {
+        const representative: NewRepresentative = {
+          name: name,
+          email: email,
+        };
+        const result = representativSchema.safeParse(representative);
+        if (result.success) {
+          await repository.addRepresentative(representative);
+        }
       }
     },
 
@@ -116,14 +110,17 @@ export function createService(db: Db) {
       return votingRepresentatives;
     },
 
-    async addVote(electionVote: ElectionVote, representativeId: string) {
-      const vote = {
-        electionId: electionVote.electionId,
-        voterId: electionVote.voterId,
-        representativeId: representativeId,
-        choice: electionVote.choice,
-      };
-      await repository.addVote(vote);
+    async addVote(alternative: Alternative) {
+      const voter = await voteService.getVoter(user.id);
+      if (voter.length > 0) {
+        const vote = {
+          electionId: alternative.electionId,
+          voterId: voter[0]!.id,
+          representativeId: voter[0].representativeId,
+          choice: alternative.id,
+        };
+        await repository.addVote(vote);
+      }
     },
 
     async addElectionOption(electionId: string, voteAlternative: string) {
@@ -134,11 +131,12 @@ export function createService(db: Db) {
       await repository.addElectionAlternative(alternative);
     },
 
-    async controllVote(electionId: string, voterId: string) {
-      const votes = await repository.getVote(electionId, voterId);
+    async controllVote(electionId: string) {
+      const voter = await voteService.getVoter(user.id);
+      const votes = await repository.getVote(electionId, voter[0].id);
 
       for (let i = 0; i < votes.length; i++) {
-        if (voterId === votes[i].voterId) return true;
+        if (voter[0].id === votes[i].voterId) return true;
       }
       return false;
     },
@@ -154,7 +152,7 @@ export function createService(db: Db) {
         active: true,
       };
 
-      const result = representativSchema.safeParse(electionSchema);
+      const result = electionSchema.safeParse(newElection);
       if (result.success) {
         await repository.addElection(newElection);
       }
