@@ -182,13 +182,6 @@ export function createRepository(db: Db) {
         );
       return representativVoters;
     },
-    async getRepresentativesElections(representativeId: string) {
-      const elections = await db
-        .select()
-        .from(votes)
-        .where(and(eq(votes.voterId, representativeId)));
-      return elections;
-    },
     async getVoterCount(representativeId: string) {
       return await db
         .select({ count: sql<number>`count(*)` })
