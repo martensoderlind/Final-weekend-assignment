@@ -5,7 +5,6 @@ import {
   NewRepresentative,
   NewVote,
   Representative,
-  RepresentativeInformation,
 } from "./types";
 import {
   electionVoteAlternatives,
@@ -171,24 +170,6 @@ export function createRepository(db: Db) {
         .where(eq(elections.id, electionId));
     },
 
-    async votedInElection(
-      electionId: string,
-      representativeInformation: RepresentativeInformation
-    ) {
-      const electionVotes = await db
-        .select()
-        .from(votes)
-        .where(
-          and(
-            eq(votes.electionId, electionId),
-            eq(votes.voterId, representativeInformation.id)
-          )
-        );
-      if (!electionVotes) {
-        return { votedInElection: false, votedOn: null };
-      }
-      return { votedInElection: false, votedOn: null };
-    },
     async getRepresentativesThatVoted(
       electionId: string,
       alternativeId: string
