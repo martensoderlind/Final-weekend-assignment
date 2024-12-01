@@ -31,3 +31,10 @@ export type VotingRepresentative = {
   representativeId: string | null;
   choice: string | null;
 };
+export type Vote = {
+  id: string;
+  choice: string | null;
+  representativeId: string | null;
+  voterId: string | null;
+  electionId: string;
+};

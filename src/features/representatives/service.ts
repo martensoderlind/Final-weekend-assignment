@@ -4,6 +4,7 @@ import {
   NewRepresentative,
   NewVoter,
   RepresentativeInformation,
+  Vote,
 } from "./types";
 import { Db } from "@/index";
 import { calculatePerecentage } from "./logic";
@@ -11,9 +12,11 @@ import { representativSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 import { user } from "./db/mockUser";
 import { representativeService } from "./instance";
-import { connection } from "next/server";
 
-export function createService(db: Db) {
+export function createService(
+  db: Db,
+  getVoteFromVoter: (electionId: string, voterId: string) => Promise<Vote[]>
+) {
   const repository = createRepository(db);
 
   return {
@@ -86,7 +89,7 @@ export function createService(db: Db) {
     //skrivas om??
     async controllVote(electionId: string) {
       const voter = await representativeService.getVoter(user.id);
-      const votes = await repository.getVote(electionId, voter[0].id);
+      const votes = await getVoteFromVoter(electionId, voter[0].id);
 
       for (let i = 0; i < votes.length; i++) {
         if (voter[0].id === votes[i].voterId) return true;
@@ -132,9 +135,6 @@ export function createService(db: Db) {
 
     async addVoter(voterData: NewVoter) {
       await repository.addVoter(voterData);
-    },
-    async featureConnection() {
-      console.log("Hello from representative!");
     },
   };
 }

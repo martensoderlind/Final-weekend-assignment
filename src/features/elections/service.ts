@@ -7,7 +7,7 @@ import { user } from "./fixtures/mockdb";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 
-export function createService(db: Db, featureConnection: () => Promise<void>) {
+export function createService(db: Db) {
   const repository = createRepository(db);
 
   return {
@@ -214,8 +214,8 @@ export function createService(db: Db, featureConnection: () => Promise<void>) {
         representativeVotes
       );
     },
-    async electionConnection() {
-      await featureConnection();
+    async getVoteFromVoter(electionId: string, voterId: string) {
+      return await repository.getVote(electionId, voterId);
     },
   };
 }
