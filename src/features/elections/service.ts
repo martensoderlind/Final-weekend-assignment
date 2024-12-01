@@ -17,6 +17,7 @@ import {
 import { user } from "./fixtures/mockdb";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
+import { voteService } from "./instance";
 
 export function createService(
   db: Db,
@@ -155,6 +156,25 @@ export function createService(
       );
       return (votersThatAgree[0].count / totalVoter[0].count) * 100;
     },
+    //beräknar total agreement
+    async getTotalRatioOfVotersThatAgree(representativeId: string) {
+      const totalVoter = await repository.getAllVotes(representativeId);
+      const elections = await repository.getPartisipatingElections(
+        representativeId
+      );
+
+      let amountOfVotersThatAgree = 0;
+      for (let i = 0; i < elections.length; i++) {
+        const votersThatAgree = await repository.getAllVotersThatAgree(
+          representativeId,
+          elections[i].electionId,
+          elections[i].choice!
+        );
+        amountOfVotersThatAgree =
+          amountOfVotersThatAgree + votersThatAgree[0].count;
+      }
+      return (amountOfVotersThatAgree / totalVoter[0].count) * 100;
+    },
 
     async electionWinner(alternatives: Alternative[]) {
       return winnerOfElection(alternatives);
@@ -168,7 +188,7 @@ export function createService(
       representative: RepresentativeInformation,
       representativeVotes: Count
     ) {
-      const votes = await repository.getVoterCount(representative.id);
+      const votes = await repository.getVoteCount(representative.id);
       return calculatePerecentage(
         votes[0],
         representative,
@@ -209,6 +229,16 @@ export function createService(
     },
     sampleData<T>(data: T[]) {
       return sample(data);
+    },
+    async getTotalVotes(votingRepresentatives: Vote[]) {
+      let totalVotes = 0;
+      for (let i = 0; i < votingRepresentatives.length; i++) {
+        const votes = await voteService.representativeVotes(
+          votingRepresentatives[i].representativeId!
+        );
+        totalVotes = Number(totalVotes) + Number(votes[0].count);
+      }
+      return totalVotes;
     },
   };
 }

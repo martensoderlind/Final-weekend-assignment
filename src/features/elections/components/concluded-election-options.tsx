@@ -19,13 +19,8 @@ export default async function ElectionOptions({
   if (votingRepresentatives.length === 0) {
     return <NoVotes alternative={alternative} />;
   }
-  let totalVotes = 0;
-  for (let i = 0; i < votingRepresentatives.length; i++) {
-    const votes = await voteService.representativeVotes(
-      votingRepresentatives[i].representativeId!
-    );
-    totalVotes = Number(totalVotes) + Number(votes[0].count);
-  }
+
+  const totalVotes = await voteService.getTotalVotes(votingRepresentatives);
 
   return (
     <section className="mt-4  bg-accent p-1 rounded-md">

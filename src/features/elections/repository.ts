@@ -39,6 +39,13 @@ export function createRepository(db: Db) {
         );
       return voter;
     },
+    async getAllVotes(representativeId: string) {
+      const voter = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(votes)
+        .where(and(eq(votes.representativeId, representativeId)));
+      return voter;
+    },
 
     async getAllActiveElections() {
       const activeElections = await db
@@ -80,18 +87,6 @@ export function createRepository(db: Db) {
         .from(electionVoteAlternatives)
         .where(eq(electionVoteAlternatives.electionId, electionId));
     },
-    // async getRepresentativeInformation() {
-    //   const representativeVotes = await db
-    //     .select({
-    //       id: representatives.id,
-    //       name: representatives.name,
-    //       votes: sql<number>`count(DISTINCT ${voters.id})`,
-    //     })
-    //     .from(representatives)
-    //     .leftJoin(voters, eq(representatives.id, voters.representativeId))
-    //     .groupBy(representatives.id, representatives.name);
-    //   return representativeVotes;
-    // },
 
     async getAllVotesfromRepresentativ(representativeId: string) {
       const representativeVotes = await db
@@ -120,7 +115,7 @@ export function createRepository(db: Db) {
         );
       return representativeVote;
     },
-    async getVoterCount(representativeId: string) {
+    async getVoteCount(representativeId: string) {
       return await db
         .select({ count: sql<number>`count(*)` })
         .from(votes)
@@ -154,18 +149,12 @@ export function createRepository(db: Db) {
         .where(eq(elections.id, electionId));
     },
 
-    // async seedRepresentative(representative: Representative[]) {
-    //   await db.insert(representatives).values(representative);
-    // },
     async seedElections(electionData: SeedElection[]) {
       await db.insert(elections).values(electionData);
     },
     async seedElectionAlternative(alternative: NewElectionAlternative[]) {
       await db.insert(electionVoteAlternatives).values(alternative);
     },
-    // async seedVoters(voterData: NewVoter[]) {
-    //   await db.insert(voters).values(voterData);
-    // },
     async seedVotes(votesData: NewVote[]) {
       await db.insert(votes).values(votesData);
     },
@@ -184,6 +173,12 @@ export function createRepository(db: Db) {
             eq(votes.choice, choice)
           )
         );
+    },
+    async getPartisipatingElections(representativeId: string) {
+      return await db
+        .select()
+        .from(votes)
+        .where(eq(votes.voterId, representativeId));
     },
   };
 }

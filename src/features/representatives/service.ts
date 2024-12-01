@@ -64,6 +64,7 @@ export function createService(db: Db) {
     async getAllVotesfromRepresentativ() {
       return { count: 3 };
     },
+
     //skrivas om
     async getVotesFromVoters(
       representative: RepresentativeInformation,
