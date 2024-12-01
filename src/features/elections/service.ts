@@ -68,6 +68,7 @@ export function createService(
             representativeId: voter[0].representativeId,
             choice: choiceId,
           };
+          console.log("add vote:", vote);
           await repository.addVote(vote);
         }
       } else {
