@@ -4,5 +4,6 @@ import { representativeService } from "../representatives/instance";
 
 export const voteService = createService(
   db,
-  representativeService.representativeVotes
+  representativeService.representativeVotes,
+  representativeService.getVoter
 );

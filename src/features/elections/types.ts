@@ -80,6 +80,11 @@ export type NewVoter = {
   representativeId: UUID;
   voteDate: Date;
 };
+export type Voter = {
+  id: string;
+  representativeId: string;
+  voteDate: Date;
+};
 export type Election = {
   id: string;
   subject: string;

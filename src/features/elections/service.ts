@@ -1,15 +1,15 @@
 import { createRepository } from "./repository";
-import { Alternative, Count, RepresentativeInformation } from "./types";
+import { Alternative, Count, RepresentativeInformation, Voter } from "./types";
 import { Db } from "@/index";
 import { calculatePerecentage, winnerOfElection } from "./logic";
-import { voteService } from "./instance";
 import { user } from "./fixtures/mockdb";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 
 export function createService(
   db: Db,
-  representativeVotes: (representativeId: string) => Promise<Count[]>
+  representativeVotes: (representativeId: string) => Promise<Count[]>,
+  getVoter: (id: string) => Promise<Voter[]>
 ) {
   const repository = createRepository(db);
 
@@ -46,10 +46,6 @@ export function createService(
       return await repository.getVoteAlternatives(electionId);
     },
 
-    async getRepresentativeInformation() {
-      return await repository.getRepresentativeInformation();
-    },
-
     async getVotingRepresentatives(
       electionId: string,
       representativeId: string
@@ -68,7 +64,7 @@ export function createService(
       representativeId?: UUID
     ) {
       if (!id) {
-        const voter = await voteService.getVoter(user.id);
+        const voter = await getVoter(user.id);
         if (voter.length > 0) {
           const vote = {
             electionId: electionId,
@@ -99,7 +95,7 @@ export function createService(
     },
 
     async controllVote(electionId: string) {
-      const voter = await voteService.getVoter(user.id);
+      const voter = await getVoter(user.id);
       const votes = await repository.getVote(electionId, voter[0].id);
 
       for (let i = 0; i < votes.length; i++) {
