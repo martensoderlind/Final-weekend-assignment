@@ -2,31 +2,22 @@ import { Db } from "@/index";
 import {
   NewElection,
   NewElectionAlternative,
-  NewRepresentative,
   NewVote,
-  NewVoter,
-  Representative,
   SeedElection,
 } from "./types";
-import {
-  electionVoteAlternatives,
-  elections,
-  representatives,
-  voters,
-  votes,
-} from "./db/schema";
+import { electionVoteAlternatives, elections, votes } from "./db/schema";
 import { eq, and, sql } from "drizzle-orm";
 
 export function createRepository(db: Db) {
   return {
-    async getAllRepresentatives() {
-      return await db.select().from(representatives);
-    },
+    // async getAllRepresentatives() {
+    //   return await db.select().from(representatives);
+    // },
 
-    async getAllVotersById(id: string) {
-      const voter = await db.select().from(voters).where(eq(voters.id, id));
-      return voter;
-    },
+    // async getAllVotersById(id: string) {
+    //   const voter = await db.select().from(voters).where(eq(voters.id, id));
+    //   return voter;
+    // },
 
     async getAllVotersThatAgree(
       representativeId: string,
@@ -81,18 +72,18 @@ export function createRepository(db: Db) {
       return uniqueVoteAlternatives;
     },
 
-    async getRepresentativeInformation() {
-      const representativeVotes = await db
-        .select({
-          id: representatives.id,
-          name: representatives.name,
-          votes: sql<number>`count(DISTINCT ${voters.id})`,
-        })
-        .from(representatives)
-        .leftJoin(voters, eq(representatives.id, voters.representativeId))
-        .groupBy(representatives.id, representatives.name);
-      return representativeVotes;
-    },
+    // async getRepresentativeInformation() {
+    //   const representativeVotes = await db
+    //     .select({
+    //       id: representatives.id,
+    //       name: representatives.name,
+    //       votes: sql<number>`count(DISTINCT ${voters.id})`,
+    //     })
+    //     .from(representatives)
+    //     .leftJoin(voters, eq(representatives.id, voters.representativeId))
+    //     .groupBy(representatives.id, representatives.name);
+    //   return representativeVotes;
+    // },
 
     async getAllVotesfromRepresentativ(representativeId: string) {
       const representativeVotes = await db
@@ -130,20 +121,20 @@ export function createRepository(db: Db) {
       await db.insert(electionVoteAlternatives).values(alternative);
     },
 
-    async addRepresentative(representative: NewRepresentative) {
-      await db.insert(representatives).values(representative);
-    },
+    // async addRepresentative(representative: NewRepresentative) {
+    //   await db.insert(representatives).values(representative);
+    // },
 
     async addElection(newElection: NewElection) {
       await db.insert(elections).values(newElection);
     },
 
-    async updateVoterRepresentative(id: string, representativeId: string) {
-      await db
-        .update(voters)
-        .set({ representativeId: representativeId })
-        .where(eq(voters.id, id));
-    },
+    // async updateVoterRepresentative(id: string, representativeId: string) {
+    //   await db
+    //     .update(voters)
+    //     .set({ representativeId: representativeId })
+    //     .where(eq(voters.id, id));
+    // },
 
     async getVote(electionId: string, voterId: string) {
       const electionVotes = await db
@@ -181,18 +172,18 @@ export function createRepository(db: Db) {
         .from(votes)
         .where(and(eq(votes.representativeId, representativeId)));
     },
-    async seedRepresentative(representative: Representative[]) {
-      await db.insert(representatives).values(representative);
-    },
+    // async seedRepresentative(representative: Representative[]) {
+    //   await db.insert(representatives).values(representative);
+    // },
     async seedElections(electionData: SeedElection[]) {
       await db.insert(elections).values(electionData);
     },
     async seedElectionAlternative(alternative: NewElectionAlternative[]) {
       await db.insert(electionVoteAlternatives).values(alternative);
     },
-    async seedVoters(voterData: NewVoter[]) {
-      await db.insert(voters).values(voterData);
-    },
+    // async seedVoters(voterData: NewVoter[]) {
+    //   await db.insert(voters).values(voterData);
+    // },
     async seedVotes(votesData: NewVote[]) {
       await db.insert(votes).values(votesData);
     },

@@ -9,7 +9,9 @@ type Props = {
 };
 
 export default async function ActiveElection({ election }: Props) {
-  const voteAlternatives = await voteService.getVoteAlternatives(election.id);
+  const voteAlternatives = await voteService.getElectionAlternatives(
+    election.id
+  );
 
   let haveVoted;
 

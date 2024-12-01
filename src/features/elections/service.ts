@@ -7,45 +7,13 @@ import { user } from "./fixtures/mockdb";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 
-export function createService(db: Db) {
+export function createService(
+  db: Db,
+  representativeVotes: (representativeId: string) => Promise<Count[]>
+) {
   const repository = createRepository(db);
 
   return {
-    async getAllRepresentatives() {
-      const representatives = await repository.getAllRepresentatives();
-      return representatives;
-    },
-
-    async emailIsUnique(email: string) {
-      const allEmails = await repository.getAllRepresentatives();
-      for (let i = 0; i < allEmails.length; i++) {
-        if (email === allEmails[i].email) return false;
-      }
-      return true;
-    },
-
-    // async createNewRepresentative(name: string, email: string) {
-    //   const uniqueEmail = await voteService.emailIsUnique(email);
-    //   if (uniqueEmail) {
-    //     const representative: NewRepresentative = {
-    //       name: name,
-    //       email: email,
-    //     };
-    //     const result = representativSchema.safeParse(representative);
-    //     if (result.success) {
-    //       await repository.addRepresentative(representative);
-    //     }
-    //   }
-    // },
-
-    async updateVoterRepresentative(id: string, representativeId: string) {
-      await repository.updateVoterRepresentative(id, representativeId);
-    },
-
-    async getVoter(id: string) {
-      return await repository.getAllVotersById(id);
-    },
-
     async getAllActiveElections() {
       return await repository.getAllActiveElections();
     },
@@ -64,15 +32,18 @@ export function createService(db: Db) {
           alternatives[i].id
         );
         for (let j = 0; j < representatives.length; j++) {
-          const representativeVotes =
-            await repository.getAllVotesforRepresentativ(
-              representatives[j].voterId!
-            );
-          votes = votes + Number(representativeVotes[0].count);
+          const representativeVote: Count[] = await representativeVotes(
+            representatives[j].voterId!
+          );
+          votes = votes + Number(representativeVote[0].count);
         }
         alternatives[i].votes = votes;
       }
       return alternatives;
+    },
+
+    async getElectionAlternatives(electionId: string) {
+      return await repository.getVoteAlternatives(electionId);
     },
 
     async getRepresentativeInformation() {
@@ -179,6 +150,7 @@ export function createService(db: Db) {
     async getAllVotesfromRepresentativ(representativeId: string) {
       return await repository.getAllVotesfromRepresentativ(representativeId);
     },
+
     async getVotesFromVoters(
       representative: RepresentativeInformation,
       representativeVotes: Count
@@ -190,6 +162,7 @@ export function createService(db: Db) {
         representativeVotes
       );
     },
+
     async getVoteFromVoter(electionId: string, voterId: string) {
       return await repository.getVote(electionId, voterId);
     },
