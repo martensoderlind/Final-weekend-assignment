@@ -1,16 +1,16 @@
 import { createRepository } from "./repository";
-import { Alternative, Count, RepresentativeInformation, Voter } from "./types";
+import {
+  Alternative,
+  Count,
+  Representative,
+  RepresentativeInformation,
+  Voter,
+} from "./types";
 import { Db } from "@/index";
 import { calculatePerecentage, winnerOfElection } from "./logic";
 import { user } from "./fixtures/mockdb";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
-
-type Representative = {
-  id: string;
-  name: string;
-  email: string;
-};
 
 export function createService(
   db: Db,

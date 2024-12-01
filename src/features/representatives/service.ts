@@ -4,33 +4,13 @@ import {
   NewRepresentative,
   NewVoter,
   RepresentativeInformation,
-  Vote,
-  Voters,
 } from "./types";
 import { Db } from "@/index";
 import { representativSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
-import { user } from "./db/mockUser";
 import { representativeService } from "./instance";
 
-export function createService(
-  db: Db,
-  getVoteFromVoter: (electionId: string, voterId: string) => Promise<Vote[]>,
-  getVotingRepresentatives: (
-    electionId: string,
-    representativeId: string
-  ) => Promise<Vote[]>,
-  getAllVotersThatAgree: (
-    representativeId: string,
-    electionId: string,
-    choice: string
-  ) => Promise<Voters[]>,
-  getAllVotesfromRepresentativ: (representativeId: string) => Promise<Voters>,
-  getVotesFromVoters: (
-    representative: RepresentativeInformation,
-    representativeVotes: Count
-  ) => Promise<number>
-) {
+export function createService(db: Db) {
   const repository = createRepository(db);
 
   return {
@@ -80,69 +60,19 @@ export function createService(
     async representativeVotes(representativeId: string) {
       return await repository.getAllVotesforRepresentativ(representativeId);
     },
-
-    async getVotingRepresentatives(electionId: string, alternative: string) {
-      const representatives = await repository.getAllRepresentatives();
-      const votingRepresentatives = [];
-      let representativesVote;
-      for (let i = 0; i < representatives.length; i++) {
-        representativesVote = await getVotingRepresentatives(
-          electionId,
-          representatives![i].id
-        );
-        if (representativesVote.length === 1) {
-          if (alternative === representativesVote[0].choice) {
-            const representative = {
-              ...representativesVote[0],
-              name: representatives[i].name,
-            };
-            votingRepresentatives.push(representative);
-          }
-        }
-      }
-      return votingRepresentatives;
-    },
-
-    //skrivas om??
-    async controllVote(electionId: string) {
-      const voter = await representativeService.getVoter(user.id);
-      const votes = await getVoteFromVoter(electionId, voter[0].id);
-
-      for (let i = 0; i < votes.length; i++) {
-        if (voter[0].id === votes[i].voterId) return true;
-      }
-      return false;
-    },
-
-    async voterAgreement(
-      representativeId: string,
-      electionId: string,
-      choice: string
-    ) {
-      const representativeVoters = await repository.getAllVotesforRepresentativ(
-        representativeId
-      );
-      const votersThatAgree = await getAllVotersThatAgree(
-        representativeId,
-        electionId,
-        choice
-      );
-      if (representativeVoters[0].count === 0) return 0;
-      return (
-        Math.floor(votersThatAgree[0].count / representativeVoters[0].count) *
-        100
-      );
-    },
-
-    async getAllVotesfromRepresentativ(representativeId: string) {
-      return await getAllVotesfromRepresentativ(representativeId);
+    //skriv om
+    async getAllVotesfromRepresentativ() {
+      return { count: 3 };
     },
     //skrivas om
     async getVotesFromVoters(
       representative: RepresentativeInformation,
       representativeVotes: Count
     ) {
-      return await getVotesFromVoters(representative, representativeVotes);
+      return (
+        (Math.floor(Math.random() * 4) / representativeVotes.count) *
+        100
+      ).toFixed(0);
     },
 
     async addVoter(voterData: NewVoter) {

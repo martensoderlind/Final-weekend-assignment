@@ -12,7 +12,7 @@ export default async function ElectionOptions({
   alternative,
   electionWinner,
 }: Props) {
-  const representatives = await voteService.getVotingRepresentatives(
+  const representatives = await voteService.getRepresentative(
     alternative.electionId,
     alternative.id
   );
