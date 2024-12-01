@@ -38,3 +38,6 @@ export type Vote = {
   voterId: string | null;
   electionId: string;
 };
+export type Voters = {
+  count: number;
+};

@@ -79,30 +79,14 @@ export function createService(db: Db) {
       return await repository.getRepresentativeInformation();
     },
 
-    async representativeVotes(representativeId: string) {
-      return await repository.getAllVotesforRepresentativ(representativeId);
-    },
-
-    async getVotingRepresentatives(electionId: string, alternative: string) {
-      const representatives = await repository.getAllRepresentatives();
-      const votingRepresentatives = [];
-      let representativesVote;
-      for (let i = 0; i < representatives.length; i++) {
-        representativesVote = await repository.getVotingRepresentatives(
-          electionId,
-          representatives![i]
-        );
-        if (representativesVote.length === 1) {
-          if (alternative === representativesVote[0].choice) {
-            const representative = {
-              ...representativesVote[0],
-              name: representatives[i].name,
-            };
-            votingRepresentatives.push(representative);
-          }
-        }
-      }
-      return votingRepresentatives;
+    async getVotingRepresentatives(
+      electionId: string,
+      representativeId: string
+    ) {
+      return await repository.getVotingRepresentatives(
+        electionId,
+        representativeId
+      );
     },
 
     async addVote(
@@ -176,23 +160,15 @@ export function createService(db: Db) {
       }
     },
 
-    async voterAgreement(
+    async getAllVotersThatAgree(
       representativeId: string,
       electionId: string,
       choice: string
     ) {
-      const representativeVoters = await repository.getAllVotesforRepresentativ(
-        representativeId
-      );
-      const votersThatAgree = await repository.getAllVotersThatAgree(
+      return await repository.getAllVotersThatAgree(
         representativeId,
         electionId,
         choice
-      );
-      if (representativeVoters[0].count === 0) return 0;
-      return (
-        Math.floor(votersThatAgree[0].count / representativeVoters[0].count) *
-        100
       );
     },
 

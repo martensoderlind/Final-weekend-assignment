@@ -5,6 +5,7 @@ import {
   NewVoter,
   RepresentativeInformation,
   Vote,
+  Voters,
 } from "./types";
 import { Db } from "@/index";
 import { calculatePerecentage } from "./logic";
@@ -15,7 +16,16 @@ import { representativeService } from "./instance";
 
 export function createService(
   db: Db,
-  getVoteFromVoter: (electionId: string, voterId: string) => Promise<Vote[]>
+  getVoteFromVoter: (electionId: string, voterId: string) => Promise<Vote[]>,
+  getVotingRepresentatives: (
+    electionId: string,
+    representativeId: string
+  ) => Promise<Vote[]>,
+  getAllVotersThatAgree: (
+    representativeId: string,
+    electionId: string,
+    choice: string
+  ) => Promise<Voters[]>
 ) {
   const repository = createRepository(db);
 
@@ -69,9 +79,9 @@ export function createService(
       const votingRepresentatives = [];
       let representativesVote;
       for (let i = 0; i < representatives.length; i++) {
-        representativesVote = await repository.getVotingRepresentatives(
+        representativesVote = await getVotingRepresentatives(
           electionId,
-          representatives![i]
+          representatives![i].id
         );
         if (representativesVote.length === 1) {
           if (alternative === representativesVote[0].choice) {
@@ -105,7 +115,7 @@ export function createService(
       const representativeVoters = await repository.getAllVotesforRepresentativ(
         representativeId
       );
-      const votersThatAgree = await repository.getAllVotersThatAgree(
+      const votersThatAgree = await getAllVotersThatAgree(
         representativeId,
         electionId,
         choice

@@ -1,7 +1,7 @@
 import { Db } from "@/index";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { representatives, voters } from "./db/schema";
-import { NewRepresentative, NewVoter, Representative } from "./types";
+import { NewRepresentative, NewVoter } from "./types";
 
 export function createRepository(db: Db) {
   return {
@@ -11,24 +11,6 @@ export function createRepository(db: Db) {
 
     async getAllVotersById(id: string) {
       const voter = await db.select().from(voters).where(eq(voters.id, id));
-      return voter;
-    },
-
-    async getAllVotersThatAgree(
-      representativeId: string,
-      electionId: string,
-      choice: string
-    ) {
-      const voter = await db
-        .select({ count: sql<number>`count(*)` })
-        .from(votes)
-        .where(
-          and(
-            eq(votes.representativeId, representativeId),
-            eq(votes.electionId, electionId),
-            eq(votes.choice, choice)
-          )
-        );
       return voter;
     },
 
@@ -54,33 +36,6 @@ export function createRepository(db: Db) {
 
       return representativeInfo;
     },
-    async getAllVotesfromRepresentativ(representativeId: string) {
-      const representativeVotes = await db
-        .select({ count: sql<number>`count(*)` })
-        .from(votes)
-        .where(eq(votes.voterId, representativeId));
-
-      if (representativeVotes[0].count === 0) {
-        return { count: 0 };
-      }
-      return representativeVotes[0];
-    },
-
-    async getVotingRepresentatives(
-      electionId: string,
-      representative: Representative
-    ) {
-      const representativeVote = await db
-        .select()
-        .from(votes)
-        .where(
-          and(
-            eq(votes.electionId, electionId),
-            eq(votes.voterId, representative.id)
-          )
-        );
-      return representativeVote;
-    },
 
     async addRepresentative(representative: NewRepresentative) {
       await db.insert(representatives).values(representative);
@@ -91,26 +46,6 @@ export function createRepository(db: Db) {
         .update(voters)
         .set({ representativeId: representativeId })
         .where(eq(voters.id, id));
-    },
-
-    async getRepresentativesThatVoted(
-      electionId: string,
-      alternativeId: string
-    ) {
-      const representativVoters = await db
-        .select()
-        .from(votes)
-        .where(
-          and(eq(votes.electionId, electionId), eq(votes.choice, alternativeId))
-        );
-      return representativVoters;
-    },
-
-    async getVoterCount(representativeId: string) {
-      return await db
-        .select({ count: sql<number>`count(*)` })
-        .from(votes)
-        .where(and(eq(votes.representativeId, representativeId)));
     },
 
     async addVoter(voterData: NewVoter) {
