@@ -14,7 +14,6 @@ export default async function RepresentativeElectionResult({
     vote.representativeId!
   );
   const voters = await voteService.representativeVotes(vote.representativeId!);
-  //skriv om
   const voterAgreement = await voteService.getRatioOfVotersThatAgree(
     vote.representativeId!,
     electionId,

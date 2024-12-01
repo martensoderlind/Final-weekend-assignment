@@ -20,8 +20,6 @@ export default async function Representative({ representative }: Props) {
     await updateVoterRepresentative(representative.id);
   }
 
-  // const votes = await representativeService.getAllVotesfromRepresentativ();
-
   const agreement = await representativeService.representativeAgreementRatio(
     representative.id
   );

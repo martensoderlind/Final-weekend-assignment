@@ -156,7 +156,6 @@ export function createService(
       );
       return (votersThatAgree[0].count / totalVoter[0].count) * 100;
     },
-    //beräknar total agreement
     async getTotalRatioOfVotersThatAgree(representativeId: string) {
       const totalVoter = await repository.getAllVotes(representativeId);
       const elections = await repository.getPartisipatingElections(
