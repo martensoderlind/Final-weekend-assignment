@@ -1,5 +1,5 @@
-import { RepresentativeBoard } from "@/features/representatives";
-import { RepresentativeForm } from "@/features/representatives";
+import { RepresentativeBoard } from "@/features";
+import { RepresentativeForm } from "@/features";
 
 export default function Page() {
   return (
