@@ -21,12 +21,10 @@ export default async function ElectionOptions({
   }
   let totalVotes = 0;
   for (let i = 0; i < votingRepresentatives.length; i++) {
-    console.log("rep vote:", votingRepresentatives[i]);
     const votes = await voteService.representativeVotes(
       votingRepresentatives[i].representativeId!
     );
     totalVotes = Number(totalVotes) + Number(votes[0].count);
-    console.log("total votes:", totalVotes);
   }
 
   return (

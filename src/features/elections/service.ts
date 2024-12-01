@@ -68,7 +68,6 @@ export function createService(
             representativeId: voter[0].representativeId,
             choice: choiceId,
           };
-          console.log("add vote:", vote);
           await repository.addVote(vote);
         }
       } else {
@@ -177,7 +176,6 @@ export function createService(
     },
     async representativeVotes(representativeId: string) {
       const vote = await representativeVotes(representativeId);
-      console.log("votes:", vote);
       return vote;
     },
     async getRepresentative(representativeId: string) {
