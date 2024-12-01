@@ -11,7 +11,7 @@ export default function LoadingSkeleton() {
           Pick Representative
         </p>
       </header>
-      <p className="text-center">Loading..,</p>
+      <span className="loading loading-dots loading-lg self-center"></span>{" "}
     </section>
   );
 }

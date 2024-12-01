@@ -8,7 +8,7 @@ export function LoadingSkeleton() {
           Concluded Elections
         </h1>
       </header>
-      <div className="join join-vertical w-full text-center">Loading..</div>
+      <span className="loading loading-dots loading-lg self-center"></span>{" "}
     </section>
   );
 }

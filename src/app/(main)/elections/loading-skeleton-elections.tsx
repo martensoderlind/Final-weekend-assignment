@@ -6,7 +6,7 @@ export default function LoadingSkeleton() {
           Election Topics
         </h2>
       </header>
-      <div className="join join-vertical w-full pl-4">Loading..</div>
+      <span className="loading loading-dots loading-lg self-center"></span>{" "}
     </section>
   );
 }
