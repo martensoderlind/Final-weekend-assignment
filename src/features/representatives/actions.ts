@@ -1,3 +1,4 @@
+"use server";
 import { revalidatePath } from "next/cache";
 import { representativeService } from "./instance";
 import { user } from "./db/mockUser";
