@@ -8,7 +8,6 @@ import {
   Voters,
 } from "./types";
 import { Db } from "@/index";
-import { calculatePerecentage } from "./logic";
 import { representativSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 import { user } from "./db/mockUser";
@@ -25,7 +24,12 @@ export function createService(
     representativeId: string,
     electionId: string,
     choice: string
-  ) => Promise<Voters[]>
+  ) => Promise<Voters[]>,
+  getAllVotesfromRepresentativ: (representativeId: string) => Promise<Voters>,
+  getVotesFromVoters: (
+    representative: RepresentativeInformation,
+    representativeVotes: Count
+  ) => Promise<number>
 ) {
   const repository = createRepository(db);
 
@@ -127,20 +131,15 @@ export function createService(
       );
     },
 
-    //skrivas om
     async getAllVotesfromRepresentativ(representativeId: string) {
-      return await repository.getAllVotesfromRepresentativ(representativeId);
+      return await getAllVotesfromRepresentativ(representativeId);
     },
+    //skrivas om
     async getVotesFromVoters(
       representative: RepresentativeInformation,
       representativeVotes: Count
     ) {
-      const votes = await repository.getVoterCount(representative.id);
-      return calculatePerecentage(
-        votes[0],
-        representative,
-        representativeVotes
-      );
+      return await getVotesFromVoters(representative, representativeVotes);
     },
 
     async addVoter(voterData: NewVoter) {
