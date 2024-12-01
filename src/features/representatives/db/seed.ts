@@ -1,5 +1,4 @@
 import { randomUUID } from "crypto";
-import { randomDateInLastYears, sample } from "../logic";
 import { representativeService } from "../instance";
 import { faker } from "@faker-js/faker";
 
@@ -20,8 +19,8 @@ const seed = async () => {
 
   const voterData = Array.from({ length: 100 }, () => ({
     id: randomUUID(),
-    representativeId: sample(representativesData).id,
-    voteDate: randomDateInLastYears(4),
+    representativeId: representativeService.sampleData(representativesData).id,
+    voteDate: representativeService.getRandomDate(4),
   }));
 
   for (let i = 0; i < voterData.length; i++) {

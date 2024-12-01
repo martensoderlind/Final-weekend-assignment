@@ -8,7 +8,12 @@ import {
   Voter,
 } from "./types";
 import { Db } from "@/index";
-import { calculatePerecentage, winnerOfElection } from "./logic";
+import {
+  calculatePerecentage,
+  randomDate,
+  sample,
+  winnerOfElection,
+} from "./logic";
 import { user } from "./fixtures/mockdb";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
@@ -198,6 +203,12 @@ export function createService(
         }
       }
       return votingRepresentatives;
+    },
+    getRandomDate(years: number) {
+      return randomDate(years);
+    },
+    sampleData<T>(data: T[]) {
+      return sample(data);
     },
   };
 }

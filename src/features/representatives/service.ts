@@ -9,6 +9,7 @@ import { Db } from "@/index";
 import { representativSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 import { representativeService } from "./instance";
+import { randomDate, sample } from "../elections/logic";
 
 export function createService(db: Db) {
   const repository = createRepository(db);
@@ -76,6 +77,12 @@ export function createService(db: Db) {
 
     async addVoter(voterData: NewVoter) {
       await repository.addVoter(voterData);
+    },
+    getRandomDate(years: number) {
+      return randomDate(years);
+    },
+    sampleData<T>(data: T[]) {
+      return sample(data);
     },
   };
 }

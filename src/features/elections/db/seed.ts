@@ -1,11 +1,10 @@
 import { randomUUID } from "crypto";
 import { voteService } from "../instance";
-import { randomDateInLastYears, sample } from "../logic";
 import { faker } from "@faker-js/faker";
 
 const seed = async () => {
   const electionData = Array.from({ length: 15 }, () => {
-    const created = randomDateInLastYears(4);
+    const created = voteService.getRandomDate(4);
     const concluded =
       Math.random() > 0.5 ? new Date(created.getTime() + 86400000) : null;
     return {
@@ -47,8 +46,8 @@ const seed = async () => {
   }
 
   const votesData = Array.from({ length: 100 }, () => {
-    const election = sample(electionData);
-    const alternative = sample(
+    const election = voteService.sampleData(electionData);
+    const alternative = voteService.sampleData(
       alternativesData.filter((alt) => alt.electionId === election.id)
     );
     return {

@@ -21,7 +21,7 @@ export function calculatePerecentage(
 export const sample = <T>(arr: T[]): T =>
   arr[Math.floor(Math.random() * arr.length)];
 
-export const randomDateInLastYears = (years: number) => {
+export const randomDate = (years: number) => {
   const end = new Date();
   const start = new Date();
   start.setFullYear(end.getFullYear() - years);
