@@ -10,15 +10,6 @@ import { eq, and, sql } from "drizzle-orm";
 
 export function createRepository(db: Db) {
   return {
-    // async getAllRepresentatives() {
-    //   return await db.select().from(representatives);
-    // },
-
-    // async getAllVotersById(id: string) {
-    //   const voter = await db.select().from(voters).where(eq(voters.id, id));
-    //   return voter;
-    // },
-
     async getAllVotersThatAgree(
       representativeId: string,
       electionId: string,
@@ -32,6 +23,18 @@ export function createRepository(db: Db) {
             eq(votes.representativeId, representativeId),
             eq(votes.electionId, electionId),
             eq(votes.choice, choice)
+          )
+        );
+      return voter;
+    },
+    async getAllVoters(representativeId: string, electionId: string) {
+      const voter = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(votes)
+        .where(
+          and(
+            eq(votes.representativeId, representativeId),
+            eq(votes.electionId, electionId)
           )
         );
       return voter;
@@ -112,30 +115,22 @@ export function createRepository(db: Db) {
         );
       return representativeVote;
     },
-
-    async addVote(vote: NewVote) {
-      await db.insert(votes).values(vote);
+    async getVoterCount(representativeId: string) {
+      return await db
+        .select({ count: sql<number>`count(*)` })
+        .from(votes)
+        .where(and(eq(votes.representativeId, representativeId)));
     },
-
     async addElectionAlternative(alternative: NewElectionAlternative) {
       await db.insert(electionVoteAlternatives).values(alternative);
     },
 
-    // async addRepresentative(representative: NewRepresentative) {
-    //   await db.insert(representatives).values(representative);
-    // },
-
     async addElection(newElection: NewElection) {
       await db.insert(elections).values(newElection);
     },
-
-    // async updateVoterRepresentative(id: string, representativeId: string) {
-    //   await db
-    //     .update(voters)
-    //     .set({ representativeId: representativeId })
-    //     .where(eq(voters.id, id));
-    // },
-
+    async addVote(vote: NewVote) {
+      await db.insert(votes).values(vote);
+    },
     async getVote(electionId: string, voterId: string) {
       const electionVotes = await db
         .select()
@@ -154,24 +149,6 @@ export function createRepository(db: Db) {
         .where(eq(elections.id, electionId));
     },
 
-    async getRepresentativesThatVoted(
-      electionId: string,
-      alternativeId: string
-    ) {
-      const representativVoters = await db
-        .select()
-        .from(votes)
-        .where(
-          and(eq(votes.electionId, electionId), eq(votes.choice, alternativeId))
-        );
-      return representativVoters;
-    },
-    async getVoterCount(representativeId: string) {
-      return await db
-        .select({ count: sql<number>`count(*)` })
-        .from(votes)
-        .where(and(eq(votes.representativeId, representativeId)));
-    },
     // async seedRepresentative(representative: Representative[]) {
     //   await db.insert(representatives).values(representative);
     // },

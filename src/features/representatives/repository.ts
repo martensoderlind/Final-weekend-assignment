@@ -5,6 +5,12 @@ import { NewRepresentative, NewVoter } from "./types";
 
 export function createRepository(db: Db) {
   return {
+    async getRepresentative(representativeId: string) {
+      return await db
+        .select()
+        .from(representatives)
+        .where(eq(representatives.id, representativeId));
+    },
     async getAllRepresentatives() {
       return await db.select().from(representatives);
     },
