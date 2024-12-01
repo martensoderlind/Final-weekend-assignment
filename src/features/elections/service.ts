@@ -171,9 +171,11 @@ export function createService(
           elections[i].choice!
         );
         amountOfVotersThatAgree =
-          amountOfVotersThatAgree + votersThatAgree[0].count;
+          Number(amountOfVotersThatAgree) + Number(votersThatAgree[0].count);
       }
-      return (amountOfVotersThatAgree / totalVoter[0].count) * 100;
+      return parseInt(
+        (100 * (amountOfVotersThatAgree / totalVoter[0].count)).toFixed(0)
+      );
     },
 
     async electionWinner(alternatives: Alternative[]) {

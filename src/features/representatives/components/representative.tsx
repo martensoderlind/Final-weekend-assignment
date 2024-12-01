@@ -1,3 +1,4 @@
+import { voteService } from "@/features/elections/instance";
 import { updateVoterRepresentative } from "../actions";
 import { user } from "../db/mockUser";
 import { representativeService } from "../instance";
@@ -10,16 +11,19 @@ type Props = {
 export default async function Representative({ representative }: Props) {
   const voter = await representativeService.getVoter(user.id);
 
+  representativeService.setVoteRatioMethod(
+    voteService.getTotalRatioOfVotersThatAgree
+  );
+
   async function handleClick() {
     "use server";
     await updateVoterRepresentative(representative.id);
   }
 
-  const votes = await representativeService.getAllVotesfromRepresentativ();
+  // const votes = await representativeService.getAllVotesfromRepresentativ();
 
-  const agreement = await representativeService.getVotesFromVoters(
-    representative,
-    votes
+  const agreement = await representativeService.representativeAgreementRatio(
+    representative.id
   );
 
   return (

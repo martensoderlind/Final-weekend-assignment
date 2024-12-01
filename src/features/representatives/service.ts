@@ -14,7 +14,20 @@ import { randomDate, sample } from "../elections/logic";
 export function createService(db: Db) {
   const repository = createRepository(db);
 
+  let voteRatioMethod: ((id: string) => Promise<number>) | undefined;
+
   return {
+    setVoteRatioMethod(method: (id: string) => Promise<number>) {
+      voteRatioMethod = method;
+    },
+
+    async representativeAgreementRatio(representativeId: string) {
+      if (!voteRatioMethod) {
+        throw new Error("Vote ratio method not set");
+      }
+      return await voteRatioMethod(representativeId);
+    },
+
     async getRepresentative(representativeId: string) {
       return await repository.getRepresentative(representativeId);
     },
