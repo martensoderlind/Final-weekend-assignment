@@ -18,8 +18,7 @@ export function createService(db: Db) {
       return await repository.getRepresentative(representativeId);
     },
     async getAllRepresentatives() {
-      const representatives = await repository.getAllRepresentatives();
-      return representatives;
+      return await repository.getAllRepresentatives();
     },
 
     async emailIsUnique(email: string) {

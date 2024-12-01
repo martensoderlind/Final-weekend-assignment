@@ -1,10 +1,10 @@
 import { voteService } from "../instance";
-import { Alternative } from "../types";
+import { Alternative, ElectionAlternative } from "../types";
 import NoVotes from "./no-votes";
 import RepresentativeElectionResult from "./representative-election-result";
 
 type Props = {
-  alternative: Alternative;
+  alternative: ElectionAlternative;
   electionWinner: Alternative;
 };
 
@@ -12,12 +12,21 @@ export default async function ElectionOptions({
   alternative,
   electionWinner,
 }: Props) {
-  const representatives = await voteService.getRepresentative(
+  const votingRepresentatives = await voteService.votedForTheAlternative(
     alternative.electionId,
     alternative.id
   );
-  if (representatives.length === 0) {
+  if (votingRepresentatives.length === 0) {
     return <NoVotes alternative={alternative} />;
+  }
+  let totalVotes = 0;
+  for (let i = 0; i < votingRepresentatives.length; i++) {
+    console.log("rep vote:", votingRepresentatives[i]);
+    const votes = await voteService.representativeVotes(
+      votingRepresentatives[i].representativeId!
+    );
+    totalVotes = Number(totalVotes) + Number(votes[0].count);
+    console.log("total votes:", totalVotes);
   }
 
   return (
@@ -30,7 +39,7 @@ export default async function ElectionOptions({
       <h2 className="text-gray-800 text-sm">
         votes{" "}
         <span className="text-gray-950 text-md font-semibold">
-          {alternative.votes}
+          {totalVotes}
         </span>
       </h2>
       <header className="grid grid-cols-3 gap-4 border-b-2">
@@ -38,10 +47,10 @@ export default async function ElectionOptions({
         <h3 className="text-center text-gray-800 font-semibold">Votes</h3>
         <h3 className="text-center text-gray-800 font-semibold">Agreement</h3>
       </header>
-      {representatives.map((representative, index) => (
+      {votingRepresentatives.map((representativeVote, index) => (
         <RepresentativeElectionResult
           key={index}
-          representative={representative}
+          vote={representativeVote}
           electionId={alternative.electionId}
         />
       ))}

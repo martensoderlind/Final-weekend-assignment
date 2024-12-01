@@ -1,7 +1,7 @@
 import React from "react";
-import { Alternative } from "../types";
+import { ElectionAlternative } from "../types";
 type Props = {
-  alternative: Alternative;
+  alternative: ElectionAlternative;
 };
 
 export default function NoVotes({ alternative }: Props) {

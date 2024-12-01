@@ -4,6 +4,7 @@ import {
   Count,
   Representative,
   RepresentativeInformation,
+  Vote,
   Voter,
 } from "./types";
 import { Db } from "@/index";
@@ -16,7 +17,8 @@ export function createService(
   db: Db,
   representativeVotes: (representativeId: string) => Promise<Count[]>,
   getVoter: (id: string) => Promise<Voter[]>,
-  getRepresentative: (id: string) => Promise<Representative[]>
+  getRepresentative: (id: string) => Promise<Representative[]>,
+  getAllRepresentatives: () => Promise<Representative[]>
 ) {
   const repository = createRepository(db);
 
@@ -28,25 +30,12 @@ export function createService(
     async getAllConcludedElections() {
       return await repository.getAllConcludedElections();
     },
-    //kontrollera om logiken stämmer
     async getVoteAlternatives(id: string) {
       const alternatives = await repository.getVoteAlternatives(id);
-      let votes = 0;
-      for (let i = 0; i < alternatives.length; i++) {
-        votes = 0;
-        const representatives = await repository.getVotingRepresentatives(
-          alternatives[i].electionId,
-          alternatives[i].id
-        );
-        for (let j = 0; j < representatives.length; j++) {
-          const representativeVote: Count[] = await representativeVotes(
-            representatives[j].voterId!
-          );
-          votes = votes + Number(representativeVote[0].count);
-        }
-        alternatives[i].votes = votes;
-      }
       return alternatives;
+    },
+    async getAllRepresentatives() {
+      return await getAllRepresentatives();
     },
 
     async getElectionAlternatives(electionId: string) {
@@ -186,10 +175,30 @@ export function createService(
       return await repository.getVote(electionId, voterId);
     },
     async representativeVotes(representativeId: string) {
-      return await representativeVotes(representativeId);
+      const vote = await representativeVotes(representativeId);
+      console.log("votes:", vote);
+      return vote;
     },
     async getRepresentative(representativeId: string) {
       return await getRepresentative(representativeId);
+    },
+
+    async votedForTheAlternative(electionId: string, choice: string) {
+      const representatives = await getAllRepresentatives();
+      const votingRepresentatives: Vote[] = [];
+      let vote = [];
+      for (let i = 0; i < representatives.length; i++) {
+        vote = [];
+        vote = await repository.getRepresentativesForAlternative(
+          representatives[i].id,
+          electionId,
+          choice
+        );
+        if (vote.length !== 0) {
+          votingRepresentatives.push(vote[0]);
+        }
+      }
+      return votingRepresentatives;
     },
   };
 }

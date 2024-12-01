@@ -74,7 +74,12 @@ export function createRepository(db: Db) {
         );
       return uniqueVoteAlternatives;
     },
-
+    async getElectionAlternatives(electionId: string) {
+      return await db
+        .select()
+        .from(electionVoteAlternatives)
+        .where(eq(electionVoteAlternatives.electionId, electionId));
+    },
     // async getRepresentativeInformation() {
     //   const representativeVotes = await db
     //     .select({
@@ -163,6 +168,22 @@ export function createRepository(db: Db) {
     // },
     async seedVotes(votesData: NewVote[]) {
       await db.insert(votes).values(votesData);
+    },
+    async getRepresentativesForAlternative(
+      representativeId: string,
+      electionId: string,
+      choice: string
+    ) {
+      return await db
+        .select()
+        .from(votes)
+        .where(
+          and(
+            eq(votes.electionId, electionId),
+            eq(votes.voterId, representativeId),
+            eq(votes.choice, choice)
+          )
+        );
     },
   };
 }

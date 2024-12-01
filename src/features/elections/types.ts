@@ -92,3 +92,15 @@ export type Election = {
   concluded: Date | null;
   active: boolean;
 };
+export type ElectionAlternative = {
+  id: string;
+  electionId: string;
+  choice: string;
+};
+export type Vote = {
+  id: string;
+  electionId: string;
+  choice: string | null;
+  voterId: string | null;
+  representativeId: string | null;
+};
