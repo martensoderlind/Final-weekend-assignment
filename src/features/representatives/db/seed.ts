@@ -19,16 +19,19 @@ const seed = async () => {
   const voterId = [...representativesData];
   const voterData = Array.from({ length: 100 }, () => {
     let voter: UUID;
+    let representativeId: UUID | null = null;
     if (voterId.length > 0) {
       voter = voterId[0].id;
+      representativeId = voter;
       voterId.shift();
     } else {
       voter = randomUUID();
     }
     return {
       id: voter,
-      representativeId:
-        representativeService.sampleData(representativesData).id,
+      representativeId: representativeId
+        ? representativeId
+        : representativeService.sampleData(representativesData).id,
       voteDate: representativeService.getRandomDate(4),
     };
   });

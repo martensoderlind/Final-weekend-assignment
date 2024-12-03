@@ -10,12 +10,10 @@ export default async function RepresentativeElectionResult({
   vote,
   electionId,
 }: Props) {
-  const representatives = await voteService.getRepresentative(
-    vote.representativeId!
-  );
-  const voters = await voteService.representativeVotes(vote.representativeId!);
+  const representatives = await voteService.getRepresentative(vote.voterId!);
+  const voters = await voteService.representativeVotes(vote.voterId!);
   const voterAgreement = await voteService.getRatioOfVotersThatAgree(
-    vote.representativeId!,
+    vote.voterId!,
     electionId,
     vote.id!
   );

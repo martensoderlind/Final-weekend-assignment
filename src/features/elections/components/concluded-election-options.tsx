@@ -19,7 +19,7 @@ export default async function ElectionOptions({
   if (votingRepresentatives.length === 0) {
     return <NoVotes alternative={alternative} />;
   }
-
+  console.log("voting reps:", votingRepresentatives);
   const totalVotes = await voteService.getTotalVotes(votingRepresentatives);
 
   return (
