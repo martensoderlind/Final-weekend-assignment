@@ -14,7 +14,7 @@ import {
   sample,
   winnerOfElection,
 } from "./logic";
-import { user } from "./fixtures/mockdb";
+import { user } from "./fixtures/mockuser";
 import { electionSchema } from "./validation";
 import { randomUUID, UUID } from "crypto";
 import { voteService } from "./instance";
