@@ -52,7 +52,6 @@ const seed = async () => {
       (alt) => alt.electionId === election.id
     );
     const alternative = voteService.sampleData(alternatives);
-    console.log("alternative:", alternative);
     return {
       id: randomUUID(),
       electionId: election.id,
