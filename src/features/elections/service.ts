@@ -68,7 +68,7 @@ export function createService(
       choiceId: string,
       id?: UUID,
       voterId?: UUID | string,
-      representativeId?: UUID
+      representativeId?: UUID | string
     ) {
       if (!id) {
         const voter = await getVoter(user.id);
@@ -186,6 +186,7 @@ export function createService(
     },
     async getTotalRatioOfVotersThatAgree(representativeId: string) {
       const totalVoter = await repository.getAllVotes(representativeId);
+      console.log("total voters", totalVoter);
       const elections = await repository.getPartisipatingElections(
         representativeId
       );
