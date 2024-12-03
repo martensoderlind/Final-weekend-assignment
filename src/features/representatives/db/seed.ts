@@ -26,12 +26,12 @@ const seed = async () => {
       voterId.shift();
     } else {
       voter = randomUUID();
+      representativeId =
+        representativeService.sampleData(representativesData).id;
     }
     return {
       id: voter,
-      representativeId: representativeId
-        ? representativeId
-        : representativeService.sampleData(representativesData).id,
+      representativeId: representativeId,
       voteDate: representativeService.getRandomDate(4),
     };
   });

@@ -135,17 +135,23 @@ export function createService(
       concluded?: Date | null,
       active?: boolean
     ) {
+      if (active !== false) {
+        active = true;
+      }
       const newElection = {
         id: id ? id : randomUUID(),
         subject: electionSubject,
         created: created ? created : new Date(),
         concluded: concluded ? concluded : null,
-        active: active ? true : false,
+        active,
       };
 
       const result = electionSchema.safeParse(newElection);
       if (result.success) {
+        console.log("new election added");
         await repository.addElection(newElection);
+      } else {
+        console.log("invalid format:", result.error);
       }
     },
 
@@ -169,11 +175,13 @@ export function createService(
         representativeId,
         electionId
       );
+      console.log("total:", totalVoter);
       const votersThatAgree = await repository.getAllVotersThatAgree(
         representativeId,
         electionId,
         choice
       );
+      console.log("agree:", votersThatAgree);
       return (votersThatAgree[0].count / totalVoter[0].count) * 100;
     },
     async getTotalRatioOfVotersThatAgree(representativeId: string) {
