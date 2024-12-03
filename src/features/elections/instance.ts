@@ -7,5 +7,6 @@ export const voteService = createService(
   representativeService.representativeVotes,
   representativeService.getVoter,
   representativeService.getRepresentative,
-  representativeService.getAllRepresentatives
+  representativeService.getAllRepresentatives,
+  representativeService.getAllVoters
 );

@@ -46,8 +46,11 @@ const seed = async () => {
     );
   }
 
+  const voters = await voteService.getVoters();
   const votesData = Array.from({ length: 100 }, () => {
     const election = voteService.sampleData(electionData);
+    const index = Math.floor(Math.random() * voters.length);
+    const voterId = voters[index].id;
     const alternatives = alternativesData.filter(
       (alt) => alt.electionId === election.id
     );
@@ -55,7 +58,7 @@ const seed = async () => {
     return {
       id: randomUUID(),
       electionId: election.id,
-      voterId: randomUUID(),
+      voterId: voterId,
       representativeId: randomUUID(),
       choice: alternative.id,
     };

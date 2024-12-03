@@ -66,6 +66,10 @@ export function createService(db: Db) {
       return await repository.getAllVotersById(id);
     },
 
+    async getAllVoters() {
+      return await repository.getAllVoters();
+    },
+
     async getRepresentativeInformation() {
       return await repository.getRepresentativeInformation();
     },

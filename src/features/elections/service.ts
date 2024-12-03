@@ -24,13 +24,18 @@ export function createService(
   representativeVotes: (representativeId: string) => Promise<Count[]>,
   getVoter: (id: string) => Promise<Voter[]>,
   getRepresentative: (id: string) => Promise<Representative[]>,
-  getAllRepresentatives: () => Promise<Representative[]>
+  getAllRepresentatives: () => Promise<Representative[]>,
+  getAllVoters: () => Promise<Voter[]>
 ) {
   const repository = createRepository(db);
 
   return {
     async getAllActiveElections() {
       return await repository.getAllActiveElections();
+    },
+
+    async getVoters() {
+      return await getAllVoters();
     },
 
     async getAllConcludedElections() {
@@ -62,7 +67,7 @@ export function createService(
       electionId: string,
       choiceId: string,
       id?: UUID,
-      voterId?: UUID,
+      voterId?: UUID | string,
       representativeId?: UUID
     ) {
       if (!id) {

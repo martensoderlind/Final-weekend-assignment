@@ -19,6 +19,10 @@ export function createRepository(db: Db) {
       const voter = await db.select().from(voters).where(eq(voters.id, id));
       return voter;
     },
+    async getAllVoters() {
+      const voter = await db.select().from(voters);
+      return voter;
+    },
 
     async getRepresentativeInformation() {
       const representativeVotes = await db

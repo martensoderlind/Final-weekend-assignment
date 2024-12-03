@@ -17,11 +17,18 @@ const seed = async () => {
     );
   }
 
-  const voterData = Array.from({ length: 100 }, () => ({
-    id: randomUUID(),
-    representativeId: representativeService.sampleData(representativesData).id,
-    voteDate: representativeService.getRandomDate(4),
-  }));
+  const voterData = Array.from({ length: 100 }, () => {
+    const voter = Math.random()
+      ? randomUUID()
+      : representativeService.sampleData(representativesData).id;
+
+    return {
+      id: voter,
+      representativeId:
+        representativeService.sampleData(representativesData).id,
+      voteDate: representativeService.getRandomDate(4),
+    };
+  });
 
   for (let i = 0; i < voterData.length; i++) {
     await representativeService.addVoter(voterData[i]);
