@@ -16,7 +16,7 @@ const seed = async () => {
       representativesData[i].id
     );
   }
-  const voterId = representativesData;
+  const voterId = [...representativesData];
   const voterData = Array.from({ length: 100 }, () => {
     let voter: UUID;
     if (voterId.length > 0) {

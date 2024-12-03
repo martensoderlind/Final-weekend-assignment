@@ -8,11 +8,9 @@ const seed = async () => {
     let concluded: Date | null;
     let active: boolean;
     if (Math.random() > 0.5) {
-      console.log(false);
       concluded = new Date(created.getTime() + 86400000);
       active = false;
     } else {
-      console.log(true);
       concluded = null;
       active = true;
     }
