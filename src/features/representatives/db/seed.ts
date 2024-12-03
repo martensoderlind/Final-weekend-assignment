@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID, UUID } from "crypto";
 import { representativeService } from "../instance";
 import { faker } from "@faker-js/faker";
 
@@ -16,12 +16,15 @@ const seed = async () => {
       representativesData[i].id
     );
   }
-
+  const voterId = representativesData;
   const voterData = Array.from({ length: 100 }, () => {
-    const voter = Math.random()
-      ? randomUUID()
-      : representativeService.sampleData(representativesData).id;
-
+    let voter: UUID;
+    if (voterId.length > 0) {
+      voter = voterId[0].id;
+      voterId.shift();
+    } else {
+      voter = randomUUID();
+    }
     return {
       id: voter,
       representativeId:
