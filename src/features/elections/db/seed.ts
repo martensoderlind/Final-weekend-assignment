@@ -55,7 +55,7 @@ const seed = async () => {
   }
 
   const voters = await voteService.getVoters();
-  const votesData = Array.from({ length: 100 }, () => {
+  const votesData = Array.from({ length: 200 }, () => {
     const election = voteService.sampleData(electionData);
     const index = Math.floor(Math.random() * voters.length);
     const voterId = voters[index].id;

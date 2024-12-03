@@ -148,7 +148,6 @@ export function createService(
 
       const result = electionSchema.safeParse(newElection);
       if (result.success) {
-        console.log("new election added");
         await repository.addElection(newElection);
       } else {
         console.log("invalid format:", result.error);
@@ -175,18 +174,15 @@ export function createService(
         representativeId,
         electionId
       );
-      console.log("total:", totalVoter);
       const votersThatAgree = await repository.getAllVotersThatAgree(
         representativeId,
         electionId,
         choice
       );
-      console.log("agree:", votersThatAgree);
       return (votersThatAgree[0].count / totalVoter[0].count) * 100;
     },
     async getTotalRatioOfVotersThatAgree(representativeId: string) {
       const totalVoter = await repository.getAllVotes(representativeId);
-      console.log("total voters", totalVoter);
       const elections = await repository.getPartisipatingElections(
         representativeId
       );
