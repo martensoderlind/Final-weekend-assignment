@@ -132,13 +132,15 @@ export function createService(
       electionSubject: string,
       id?: string,
       created?: Date,
+      concluded?: Date | null,
       active?: boolean
     ) {
       const newElection = {
         id: id ? id : randomUUID(),
         subject: electionSubject,
         created: created ? created : new Date(),
-        active: active ? active : true,
+        concluded: concluded ? concluded : null,
+        active: active ? true : false,
       };
 
       const result = electionSchema.safeParse(newElection);

@@ -5,14 +5,23 @@ import { faker } from "@faker-js/faker";
 const seed = async () => {
   const electionData = Array.from({ length: 15 }, () => {
     const created = voteService.getRandomDate(4);
-    const concluded =
-      Math.random() > 0.5 ? new Date(created.getTime() + 86400000) : null;
+    let concluded: Date | null;
+    let active: boolean;
+    if (Math.random() > 0.5) {
+      console.log(false);
+      concluded = new Date(created.getTime() + 86400000);
+      active = false;
+    } else {
+      console.log(true);
+      concluded = null;
+      active = true;
+    }
     return {
       id: randomUUID(),
       subject: faker.lorem.sentence(),
       created,
-      concluded,
-      active: concluded === null,
+      concluded: concluded,
+      active: active,
     };
   });
 
@@ -21,6 +30,7 @@ const seed = async () => {
       electionData[i].subject,
       electionData[i].id,
       electionData[i].created,
+      electionData[i].concluded,
       electionData[i].active
     );
   }
