@@ -255,7 +255,7 @@ export function createService(
       let totalVotes = 0;
       for (let i = 0; i < votingRepresentatives.length; i++) {
         const votes = await voteService.representativeVotes(
-          votingRepresentatives[i].representativeId!
+          votingRepresentatives[i].voterId!
         );
         totalVotes = Number(totalVotes) + Number(votes[0].count);
       }
