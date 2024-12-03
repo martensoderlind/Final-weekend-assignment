@@ -88,12 +88,25 @@ export function createService(
       }
     },
 
-    async addElectionOption(electionId: string, voteAlternative: string) {
-      const alternative = {
-        electionId: electionId,
-        choice: voteAlternative,
-      };
-      await repository.addElectionAlternative(alternative);
+    async addElectionOption(
+      electionId: string,
+      voteAlternative: string,
+      id?: UUID
+    ) {
+      if (!id) {
+        const alternative = {
+          electionId: electionId,
+          choice: voteAlternative,
+        };
+        await repository.addElectionAlternative(alternative);
+      } else {
+        const alternative = {
+          id: id,
+          electionId: electionId,
+          choice: voteAlternative,
+        };
+        await repository.addElectionAlternative(alternative);
+      }
     },
 
     async controllVote(electionId: string) {

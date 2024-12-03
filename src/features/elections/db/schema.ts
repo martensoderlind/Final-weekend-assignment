@@ -1,19 +1,4 @@
-import {
-  boolean,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
-
-export const voters = pgTable("voters", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  representativeId: uuid("representative_id")
-    .notNull()
-    .references(() => representatives.id),
-  voteDate: timestamp("vote_date").notNull(),
-});
+import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const elections = pgTable("elections", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -29,16 +14,8 @@ export const votes = pgTable("votes", {
     .notNull()
     .references(() => elections.id, { onDelete: "cascade" }),
   voterId: uuid("voter_id"),
-  representativeId: uuid("representative_id").references(
-    () => representatives.id
-  ),
+  representativeId: uuid("representative_id"),
   choice: uuid("alternative_id").references(() => electionVoteAlternatives.id),
-});
-
-export const representatives = pgTable("representatives", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
 });
 
 export const electionVoteAlternatives = pgTable("electionVoteAlternatives", {

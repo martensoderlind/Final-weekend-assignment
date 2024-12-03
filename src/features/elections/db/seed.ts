@@ -41,15 +41,18 @@ const seed = async () => {
   for (let i = 0; i < alternativesData.length; i++) {
     await voteService.addElectionOption(
       alternativesData[i].electionId,
-      alternativesData[i].choice
+      alternativesData[i].choice,
+      alternativesData[i].id
     );
   }
 
   const votesData = Array.from({ length: 100 }, () => {
     const election = voteService.sampleData(electionData);
-    const alternative = voteService.sampleData(
-      alternativesData.filter((alt) => alt.electionId === election.id)
+    const alternatives = alternativesData.filter(
+      (alt) => alt.electionId === election.id
     );
+    const alternative = voteService.sampleData(alternatives);
+    console.log("alternative:", alternative);
     return {
       id: randomUUID(),
       electionId: election.id,
