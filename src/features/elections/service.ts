@@ -179,6 +179,7 @@ export function createService(
         electionId,
         choice
       );
+      // console.log("agree:", votersThatAgree);
       return (votersThatAgree[0].count / totalVoter[0].count) * 100;
     },
     async getTotalRatioOfVotersThatAgree(representativeId: string) {

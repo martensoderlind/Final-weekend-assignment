@@ -3,7 +3,7 @@ import { voteService } from "../instance";
 import { faker } from "@faker-js/faker";
 
 const seed = async () => {
-  const electionData = Array.from({ length: 15 }, () => {
+  const electionData = Array.from({ length: 7 }, () => {
     const created = voteService.getRandomDate(4);
     let concluded: Date | null;
     let active: boolean;

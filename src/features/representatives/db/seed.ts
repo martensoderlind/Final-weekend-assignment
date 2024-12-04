@@ -3,7 +3,7 @@ import { representativeService } from "../instance";
 import { faker } from "@faker-js/faker";
 
 const seed = async () => {
-  const representativesData = Array.from({ length: 10 }, () => ({
+  const representativesData = Array.from({ length: 6 }, () => ({
     id: randomUUID(),
     name: faker.person.fullName(),
     email: faker.internet.email(),

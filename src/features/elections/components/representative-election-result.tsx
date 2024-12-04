@@ -10,19 +10,19 @@ export default async function RepresentativeElectionResult({
   vote,
   electionId,
 }: Props) {
-  console.log("vote", vote);
   const representatives = await voteService.getRepresentative(vote.voterId!);
   const voters = await voteService.representativeVotes(vote.voterId!);
   const voterAgreement = await voteService.getRatioOfVotersThatAgree(
     vote.representativeId!,
     electionId,
-    vote.id!
+    vote.choice!
   );
+  console.log("choice", vote.choice);
   return (
     <div className="grid grid-cols-3 gap-4 ">
       <p className="text-gray-950">{representatives[0].name}</p>
       <p className="text-center">{voters[0].count}</p>
-      <p className="text-center">{voterAgreement}%</p>
+      <p className="text-center">{voterAgreement.toFixed(0)}%</p>
     </div>
   );
 }
